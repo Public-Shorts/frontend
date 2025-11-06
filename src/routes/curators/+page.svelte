@@ -3,8 +3,8 @@
 </script>
 
 <div class="flex w-screen items-center overflow-y-auto bg-zinc-900 p-4">
-	<div class="flex max-w-2xl flex-col gap-8 text-zinc-100">
-		<div class="w-32 fill-zinc-100">
+	<div class="flex max-w-2xl flex-col gap-4 text-zinc-100">
+		<div class="mb-4 w-32 fill-zinc-100">
 			<Logo />
 		</div>
 

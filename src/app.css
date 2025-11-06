@@ -1,3 +1,11 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@tailwind utilities;
+
+@theme {
+	--font-PPMori: 'PP Mori', sans-serif;
+	--font-sans: 'PP Mori', sans-serif;
+	--font-w95fa: 'W95FA', sans-serif;
+}

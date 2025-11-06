@@ -9,4 +9,12 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children()}
+<main class="h-screen w-full overflow-y-auto bg-zinc-900">
+	{@render children()}
+</main>
+
+<style>
+	:global(body) {
+		background-color: var(--zinc-900);
+	}
+</style>

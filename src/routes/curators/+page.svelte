@@ -2,7 +2,7 @@
 	import Logo from '$lib/components/logo/logo.svelte';
 </script>
 
-<div class="flex w-screen items-center overflow-y-auto bg-zinc-900 p-4">
+<div class="flex w-screen items-center bg-zinc-900 p-4">
 	<div class="flex max-w-2xl flex-col gap-4 text-zinc-100">
 		<div class="mb-4 w-32 fill-zinc-100">
 			<Logo />
@@ -33,18 +33,23 @@
 			a diverse and numerous group of curators so it remains manageable for everyone. We planned two
 			physical meetings at Kanapé in Berlin to facilitate discussions and final decisions.
 		</p>
+		<p>The phase 1 happens remotely and you just need to watch the few videos assigned to you.</p>
+		<p>
+			For phase 2, you’ll participate in group viewings and discussions to finalize the selection.
+			It would be nice to particpate to a least 1 session.
+		</p>
 
 		<h2 class="font-bold">Timeline and key dates</h2>
 		<ul class="list-inside list-disc text-zinc-300">
 			<li><b>Open Call:</b> 12 Dec 2025 – 10 Jan 2025</li>
-			<li><b>Curation Phase 1 (Individual viewing):</b> 19 Jan – 31 Jan</li>
-			<li><b>Curation Phase 2 (Collective curation):</b> 1 Feb – 15 Feb</li>
-			<li><b>Physical meetings at Kanapé:</b> 6 & 13 Feb</li>
+			<li class="text-green-600"><b>Curation Phase 1 (Individual viewing):</b> 19 Jan – 31 Jan</li>
+			<li class="text-green-600"><b>Curation Phase 2 (Collective curation):</b> 1 Feb – 15 Feb</li>
+			<li class="text-green-600"><b>Physical meetings at Kanapé:</b> 6 & 13 Feb</li>
 			<li><b>Preparation of space and events:</b> 16 Feb – 27 Feb</li>
 			<li><b>Festival dates:</b> 27 Feb – 15 Mar</li>
 			<li><b>Festival opening and first screenings:</b> 27 Feb</li>
-			<li><b>Festival second screening session:</b> 27 Feb – 31 Mar</li>
-			<li><b>Festival closing and last screening session:</b> 27 Feb – 15 Mar</li>
+			<li><b>Festival second screening session:</b> 6 Mar</li>
+			<li><b>Festival closing and last screening session:</b> 13 Mar</li>
 		</ul>
 		<h2 class="font-bold">Is this paid?</h2>
 		<p>

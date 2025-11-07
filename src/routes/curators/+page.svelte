@@ -19,28 +19,30 @@
 
 		<h2 class="font-bold text-zinc-100">Public Shorts?</h2>
 		<p class="">
-			We are putting together a video festival, which will stream 24/7 on screens inside the glass
-			window of <a href="https://kanape.studio">kanapé</a>, which means that anyone could come and
-			watch the shorts during the festival period
+			We are putting together a 24/7 video festival, which will take over the screens inside the
+			glass window of <a href="https://kanape.studio">kanapé</a>, anyone passing by could come and
+			watch the shorts throughout the festival period.
 		</p>
-		<div class=""></div>
 		<p>
-			On top of this, we will have 3 screening sessions with the different shorts, with Q&A,
-			debates, etc.
+			On top of this, we will host three in person screening sessions of a selected series of
+			shorts, with Q&A, debates, discussions etc.
 		</p>
 		<h2 class="font-bold text-zinc-100">What does that entail?</h2>
-		<p class="">
-			You’ll review submitted works, take notes (Phase 1), and join collective discussions (Phase 2)
-			to shape the final selection. We're excpecting a lot of submissions so we are trying to gather
-			a diverse and numerous group of curators so it remains manageable for everyone. We planned two
-			physical meetings at Kanapé in Berlin to facilitate discussions and final decisions.
-		</p>
-		<p>The phase 1 happens remotely and you just need to watch the few videos assigned to you.</p>
 		<p>
-			For phase 2, you’ll participate in group viewings and discussions to finalize the selection.
-			It would be nice to particpate to a least 1 session.
+			As a part of the curatorial team, you’ll review submitted works, take notes, and join
+			collective discussions to shape the final selection. We're expecting a lot of submissions and
+			trying to gather a diverse and numerous group of curators so it remains manageable for
+			everyone. We planned two in person meetings at Kanapé in Berlin to facilitate discussions and
+			final decisions. To have an internal structure we planned two phases for the curation process:
 		</p>
-
+		<p>
+			Phase 1: watch and take notes on the videos assigned to you. The initial selection happens
+			already here.
+		</p>
+		<p>
+			Phase 2: participate in group viewings and discussions to finalize the selection. It would be
+			nice to participate to at least 1 session.
+		</p>
 		<h2 class="font-bold text-zinc-100">Timeline and key dates</h2>
 		<ul class="list-inside list-disc">
 			<li><b>Open Call:</b> 12 Dec 2025 – 10 Jan 2025</li>

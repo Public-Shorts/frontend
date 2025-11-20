@@ -5,6 +5,7 @@
 	import favicon16 from '$lib/assets/favicon-16x16.png';
 	import siteWebmanifest from '$lib/assets/site.webmanifest';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
+	import Navbar from '$lib/components/navbar/navbar.svelte';
 
 	let { children } = $props();
 </script>
@@ -18,7 +19,10 @@
 </svelte:head>
 
 <main class="h-screen w-full overflow-y-auto bg-zinc-900">
-	{@render children()}
+	<Navbar />
+	<div class="h-full w-full">
+		{@render children()}
+	</div>
 </main>
 
 <style>

@@ -2,11 +2,8 @@
 	import Logo from '$lib/components/logo/logo.svelte';
 </script>
 
-<div class="relative flex w-screen items-center bg-zinc-900 p-4">
-	<div class="z-10 flex max-w-2xl flex-col gap-4 text-zinc-400">
-		<a href="/" class="mb-4 w-32 fill-zinc-100">
-			<Logo />
-		</a>
+<div class="flex w-screen items-center bg-zinc-900 p-4 pt-40">
+	<div class="flex max-w-2xl flex-col gap-4 text-zinc-400">
 		<h1 class="text-2xl font-bold text-zinc-100">
 			Public Shorts: Video Festival in Berlin 2026, Curated by <em>you?</em>
 		</h1>
@@ -15,9 +12,6 @@
 			Hi, if you’ve received this very secret link, it’s because you’re invited to serve on the jury
 			of the upcoming <span class="italic">Public Shorts</span> video festival.
 		</p>
-		<div class="z-0 w-full p-4 lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2">
-			<img src="/images/Pictures/A4 - 25.png" alt="Illustration window" class="" />
-		</div>
 
 		<h2 class=" text-xl font-semibold text-zinc-100">What is Public Shorts?</h2>
 		<p class="">

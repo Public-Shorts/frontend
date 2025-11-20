@@ -2,12 +2,8 @@
 	import Logo from '$lib/components/logo/logo.svelte';
 </script>
 
-<div class="flex w-screen items-center bg-zinc-900 p-4">
+<div class="flex w-screen items-center bg-zinc-900 p-4 pt-40">
 	<div class="flex max-w-2xl flex-col gap-4 text-zinc-400">
-		<div class="mb-4 w-32 fill-zinc-100">
-			<Logo />
-		</div>
-
 		<h1 class="font-bold text-zinc-100">
 			Public Shorts: Video Festival in Berlin 2026, Curated by <i>you?</i>
 		</h1>

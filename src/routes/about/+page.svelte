@@ -6,8 +6,9 @@
 		</div>
 		<div>
 			Throughout the festival, the entire curated selection plays on loop on screens visible through
-			the glass windows at Kanapé (Hobrechstraße 54, 12047 Berlin), accessible to anyone passing by
-			at any time of day or night.
+			the glass windows at <a class="text-zinc-100" href="https://maps.app.goo.gl/UKxpSPXeA9ud5hyWA"
+				>Kanapé</a
+			> (Hobrechstraße 54, 12047 Berlin), accessible to anyone passing by at any time of day or night.
 		</div>
 		<div>
 			In addition to the continuous screening, we're hosting three special in-person events with

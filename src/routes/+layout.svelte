@@ -6,6 +6,7 @@
 	import siteWebmanifest from '$lib/assets/site.webmanifest';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
 	import Navbar from '$lib/components/navbar/navbar.svelte';
+	import Footer from '$lib/components/footer/Footer.svelte';
 
 	let { children } = $props();
 </script>
@@ -18,15 +19,16 @@
 	<link rel="manifest" href={siteWebmanifest} />
 </svelte:head>
 
-<main class="h-screen w-full overflow-y-auto bg-zinc-900">
+<main class="w-full overflow-y-auto bg-gallery-100">
 	<Navbar />
 	<div class="h-full w-full">
 		{@render children()}
 	</div>
 </main>
+<Footer />
 
 <style>
 	:global(body) {
-		background-color: var(--zinc-900);
+		background-color: var(--gallery-100);
 	}
 </style>

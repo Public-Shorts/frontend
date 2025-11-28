@@ -13,8 +13,7 @@
 </script>
 
 <div class="relative flex h-full w-full flex-col items-center">
-	<img src={images[currentImageIndex]} alt="Rotating festival" class="mb-8 max-h-[75dvh] w-auto" />
-	<div class="asbsolute flex items-stretch">
+	<div class="absolute flex h-full w-full items-stretch">
 		{#each images as item, index}
 			<!-- content here -->
 			<div
@@ -25,4 +24,5 @@
 			></div>
 		{/each}
 	</div>
+	<img src={images[currentImageIndex]} alt="Rotating festival" class="mb-8 max-h-[75dvh] w-auto" />
 </div>

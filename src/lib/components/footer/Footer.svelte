@@ -26,7 +26,7 @@
 			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Connect</h4>
 			<div class="flex flex-col gap-2">
 				<a href="https://instagram.com/public.shorts.festival" class="hover:text-gallery-900"
-					>Instagram ↗</a
+					>Instagram</a
 				>
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 			<form class="flex flex-col gap-3">
 				<label for="email" class="sr-only">Email Address</label>
 				<div
-					class="flex items-center gap-2 border-b border-gallery-300 pb-2 transition-colors focus-within:border-gallery-900"
+					class="flex items-center gap-2 border-gallery-300 pb-2 transition-colors focus-within:border-gallery-900"
 				>
 					<input
 						type="email"

@@ -2,8 +2,10 @@
 	import Logo from '../logo/logo.svelte';
 </script>
 
-<div class="flex w-full items-center justify-between p-4 pr-8">
-	<a href="/" class="mb-4 w-32 fill-gallery-900">
+<div
+	class="flex w-full items-center justify-between border-b border-gallery-200 bg-gallery-50 p-4 pr-8"
+>
+	<a href="/" class="mb-2 w-32 fill-gallery-900">
 		<Logo />
 	</a>
 	<div class="flex gap-8">

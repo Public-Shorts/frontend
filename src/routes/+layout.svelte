@@ -21,7 +21,7 @@
 
 <main class="w-full overflow-y-auto bg-gallery-100">
 	<Navbar />
-	<div class="h-full w-full">
+	<div class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-12">
 		{@render children()}
 	</div>
 </main>

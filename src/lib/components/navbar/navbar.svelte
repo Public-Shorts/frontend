@@ -12,28 +12,32 @@
 		<div class="flex gap-4">
 			<a
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">about</a
+				href="/festival">Festival</a
+			>
+			<a
+				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
+				href="/programme">Programme</a
 			>
 
 			<a
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">events</a
+				href="/events">Events</a
 			>
 			<a
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">partners</a
+				href="/partners">Partners</a
 			>
 			<a
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">contact</a
+				href="/press">Press</a
 			>
 			<a
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">support</a
+				href="https://paypal.me/publicshorts">Support</a
 			>
 			<a
 				class="bold border-b-2 border-accent-500 text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/about">submit</a
+				href="/about">Submit</a
 			>
 		</div>
 		<div class="flex gap-2">

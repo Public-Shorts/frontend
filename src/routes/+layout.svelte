@@ -19,16 +19,22 @@
 	<link rel="manifest" href={siteWebmanifest} />
 </svelte:head>
 
-<main class="w-full overflow-y-auto bg-gallery-100">
-	<Navbar />
-	<div class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-12">
+<Navbar />
+<main class="flex w-full justify-center bg-gallery-100 text-gallery-800">
+	<div
+		class="w-full max-w-3xl px-4 py-8 text-base leading-relaxed sm:px-6 sm:py-10
+               sm:text-lg lg:px-8 lg:py-16"
+	>
 		{@render children()}
 	</div>
 </main>
+
 <Footer />
 
 <style>
 	:global(body) {
 		background-color: var(--gallery-100);
+		color: var(--gallery-800);
+		margin: 0;
 	}
 </style>

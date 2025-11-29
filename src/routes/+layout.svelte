@@ -20,7 +20,7 @@
 </svelte:head>
 
 <Navbar />
-<main class="flex w-full justify-center bg-gallery-100 text-gallery-800">
+<main class="flex w-full justify-center bg-gallery-100 text-gallery-700">
 	<div
 		class="w-full max-w-3xl px-4 py-8 text-base leading-relaxed sm:px-6 sm:py-10
                sm:text-lg lg:px-8 lg:py-16"
@@ -33,8 +33,13 @@
 
 <style>
 	:global(body) {
-		background-color: var(--gallery-100);
+		background-color: var(--color-gallery-100);
 		color: var(--gallery-800);
 		margin: 0;
+	}
+	:global(a) {
+		color: var(--color-gallery-900);
+		text-underline-offset: 4px;
+		text-decoration: underline;
 	}
 </style>

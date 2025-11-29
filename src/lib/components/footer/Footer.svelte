@@ -72,3 +72,9 @@
 		<span class="">Berlin, DE</span>
 	</div>
 </footer>
+
+<style>
+	a {
+		text-decoration: none;
+	}
+</style>

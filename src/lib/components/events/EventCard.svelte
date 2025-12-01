@@ -40,7 +40,14 @@
 	<!-- Location -->
 	<div class="sm:col-span-3 sm:text-right">
 		<span class="text-sm text-gallery-500">
-			{location}
+			{#if location === 'Hobrechstraße 54, 12047 Berlin'}
+				<a href="https://maps.app.goo.gl/UVtYxpk5eqgVbmjP6" target="_blank" rel="noreferrer"
+					>{location}</a
+				>
+			{:else}
+				<!-- else content here -->
+				{location}
+			{/if}
 		</span>
 	</div>
 </div>

@@ -45,13 +45,8 @@
 				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/press">Press</a
 			>
-			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="https://paypal.me/publicshorts">Support</a
-			>
 			<div class="">
-				<p class="textaccent-500 absolute top-15 text-xs text-accent-500">open soon!</p>
-				<a class=" bold text-gallery-400" href="/submit">Submit</a>
+				<a class=" bold text-gallery-400" href="/submit">Open Call</a>
 			</div>
 		</div>
 		<div class="flex gap-2">
@@ -78,7 +73,7 @@
 		<a class="bold text-gallery-700" href="/press">Press</a>
 		<a class="bold text-gallery-700" href="https://paypal.me/publicshorts">Support</a>
 		<span class="relative">
-			<a class="bold text-gallery-400" href="/about">Submit</a>
+			<a class="bold text-gallery-400" href="/submit">Submit</a>
 			<p class="inline align-text-top text-xs text-accent-500">open soon!</p>
 		</span>
 

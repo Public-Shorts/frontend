@@ -8,18 +8,18 @@
 </script>
 
 <div
-	class="group grid grid-cols-1 gap-2 border-t border-gallery-200 py-4 first:border-t-0
-           sm:grid-cols-12 sm:items-baseline sm:gap-4 sm:py-5"
+	class="group grid grid-cols-1 pb-4
+           sm:grid-cols-12 sm:items-baseline"
 >
 	<!-- Date -->
-	<div class="sm:col-span-3">
-		<span class="text-xs font-medium tracking-[0.18em] text-gallery-500 uppercase">
+	<div class="sm:col-span-12">
+		<span class="text-xs tracking-widest text-gallery-400">
 			{date}
 		</span>
 	</div>
 
 	<!-- Title (optionally clickable) -->
-	<div class="sm:col-span-6">
+	<div class="sm:col-span-12">
 		{#if link}
 			<a
 				href={link}
@@ -31,15 +31,15 @@
 				{title}
 			</a>
 		{:else}
-			<h3 class="text-base font-medium text-gallery-900">
+			<h3 class="text-sm text-gallery-900">
 				{title}
 			</h3>
 		{/if}
 	</div>
 
 	<!-- Location -->
-	<div class="sm:col-span-3 sm:text-right">
-		<span class="text-sm text-gallery-500">
+	<div class="sm:col-span-12">
+		<span class="text-xs tracking-widest text-gallery-400">
 			{#if location === 'Hobrechstraße 54, 12047 Berlin'}
 				<a href="https://maps.app.goo.gl/UVtYxpk5eqgVbmjP6" target="_blank" rel="noreferrer"
 					>{location}</a

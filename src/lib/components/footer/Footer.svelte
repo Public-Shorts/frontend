@@ -25,6 +25,7 @@
 		<div class="flex flex-col gap-4">
 			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Connect</h4>
 			<div class="flex flex-col gap-2">
+				<a href="/contact" class="hover:text-gallery-900">Contact</a>
 				<a href="https://instagram.com/public.shorts.festival" class="hover:text-gallery-900"
 					>Instagram</a
 				>
@@ -36,7 +37,7 @@
 			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Legal</h4>
 			<div class="flex flex-col gap-2">
 				<a href="/impressum" class="hover:text-gallery-900">Impressum</a>
-				<a href="/privacy" class="hover:text-gallery-900">Privacy Policy</a>
+
 				<a href="/terms" class="hover:text-gallery-900">Terms of Service</a>
 			</div>
 		</div>

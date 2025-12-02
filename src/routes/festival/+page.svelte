@@ -4,10 +4,11 @@
 
 <div class="flex w-full justify-center px-4">
 	<section
-		class="leading-snugged grid w-full max-w-5xl grid-cols-1 gap-6 gap-y-10 py-12 text-base sm:grid-cols-6 sm:py-20"
+		class="leading-snugged grid w-full max-w-5xl grid-cols-1 gap-6 gap-y-10 py-12 text-base md:grid-cols-6 md:py-20"
 	>
-		<div class="font-semibold sm:col-span-1">Concept</div>
-		<div class="sm:col-span-3">
+		<h1 class=" text-3xl font-bold md:col-span-5 md:col-start-2">Festival</h1>
+		<div class="font-semibold md:col-span-1">Concept</div>
+		<div class="md:col-span-3">
 			Public Shorts is a 24/7 video festival taking place in Berlin from February 27 to March 15,
 			2026. Throughout the festival, the curated selection plays on loop on screens visible through
 			the glass windows at
@@ -21,7 +22,7 @@
 			</a>
 			(Hobrechstraße 54, 12047 Berlin), accessible to anyone passing by at any time of day or night.
 		</div>
-		<div class="content cover aspect-[3/4] sm:col-span-2">
+		<div class="content cover aspect-[3/4] md:col-span-2">
 			<img
 				src="/images/Pictures/window/window-pics-02.png"
 				alt="Window at Kanapé with CRT-TV"
@@ -29,13 +30,13 @@
 			/>
 		</div>
 
-		<div class="font-semibold sm:col-span-1">Events</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Events</div>
+		<div class="md:col-span-3">
 			In addition to the continuous screening, three special in-person events feature Q&amp;As,
 			debates, and discussions:
 		</div>
-		<div class="sm:col-span-2">
-			<div class="grid gap-4 sm:grid-cols-1">
+		<div class="md:col-span-2">
+			<div class="grid gap-4 md:grid-cols-1">
 				<EventCard
 					title="Festival Opening &amp; First Screening"
 					date="Fri, 27 Feb 2026, 19:00"
@@ -54,39 +55,39 @@
 			</div>
 		</div>
 
-		<div class="font-semibold sm:col-span-1">Open Call & Selection</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Open Call & Selection</div>
+		<div class="md:col-span-3">
 			All types of video media under 15 minutes are welcome: film, video, documentary, animation,
 			and experimental formats. The festival is curated by a diverse team of curators who
 			collectively shape the selection through open call submissions.
 		</div>
-		<div class="grid grid-cols-2 gap-4 sm:col-span-2 sm:gap-6">
+		<div class="grid grid-cols-2 gap-4 md:col-span-2 md:gap-6">
 			<div class="aspect-video bg-radial/hsl from-gallery-500 to-accent-300"></div>
 			<div class="aspect-video bg-linear-to-tl/hsl from-gallery-400 to-accent-400"></div>
 			<div class="aspect-video bg-linear-to-br/hsl from-gallery-300 to-accent-500"></div>
 			<div class="aspect-video bg-conic/hsl from-gallery-200 to-accent-600"></div>
 		</div>
 
-		<div class="font-semibold sm:col-span-1">Team</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Team</div>
+		<div class="md:col-span-3">
 			Célestin Meunier, Manus Nijhoff, Sena Doğan, Lilli Grube, and Su Durakbaşa.
 		</div>
-		<div class="hidden sm:col-span-2 sm:block"></div>
+		<div class="hidden md:col-span-2 md:block"></div>
 
-		<div class="font-semibold sm:col-span-1">Curatorial Team</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Curatorial Team</div>
+		<div class="md:col-span-3">
 			Federico Zurani, Manus Nijhoff, Mario Guzman, Juyeong Park, Stratos Bichakis, Christina
 			Pitiakoudi, Sena Doğan, Edlin Jap, Lorenzo Tani, Engy El Shenawy, Josue Flores, Moritz Weber,
 			Lilli Grube, Elisabeth Scholz, Pietro Lugaro, Su Durakbaşa.
 		</div>
-		<div class="hidden sm:col-span-2 sm:block"></div>
+		<div class="hidden md:col-span-2 md:block"></div>
 
-		<div class="font-semibold sm:col-span-1">Jury</div>
-		<div class="sm:col-span-3">Jamie Allen, Nina Fischer, Luce Delire, and Rachel Uwa.</div>
-		<div class="hidden sm:col-span-2 sm:block"></div>
+		<div class="font-semibold md:col-span-1">Jury</div>
+		<div class="md:col-span-3">Jamie Allen, Nina Fischer, Luce Delire, and Rachel Uwa.</div>
+		<div class="hidden md:col-span-2 md:block"></div>
 
-		<div class="font-semibold sm:col-span-1">Thanks</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Thanks</div>
+		<div class="md:col-span-3">
 			Special thanks to Zönoteka for hosting, and to all
 			<a
 				href="/partners"
@@ -105,10 +106,10 @@
 			</a>
 			for support and advising.
 		</div>
-		<div class="hidden sm:col-span-2 sm:block"></div>
+		<div class="hidden md:col-span-2 md:block"></div>
 
-		<div class="font-semibold sm:col-span-1">Donation</div>
-		<div class="sm:col-span-3">
+		<div class="font-semibold md:col-span-1">Donation</div>
+		<div class="md:col-span-3">
 			Donations help support the festival and its activities. You can donate via PayPal at
 			<a
 				href="https://paypal.me/publicshorts"
@@ -119,6 +120,6 @@
 				paypal.me/publicshorts
 			</a>.
 		</div>
-		<div class="hidden sm:col-span-2 sm:block"></div>
+		<div class="hidden md:col-span-2 md:block"></div>
 	</section>
 </div>

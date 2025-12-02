@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ImageCarousel from './ImageCarousel.svelte';
+
 	import EventCard from '$lib/components/events/EventCard.svelte';
 	import GridLayout from '../how-to-get-there/GridLayout.svelte';
 </script>
@@ -20,10 +22,13 @@
 		</a>, accessible to anyone passing by at any time of day or night.
 	</div>
 	<div class="content cover aspect-[3/4] md:col-span-2">
-		<img
-			src="/images/Pictures/window/window-pics-02.png"
-			alt="Window at Kanapé with CRT-TV"
-			class="h-full w-full object-cover"
+		<ImageCarousel
+			images={[
+				{ src: '/images/Pictures/window/window-pics-02.png', alt: 'Window at Kanapé with CRT-TV' },
+				{ src: '/images/Pictures/window/window-pics-01.png', alt: 'Window at Kanapé with CRT-TV' },
+				{ src: '/images/Pictures/window/window-pics-03.png', alt: 'Window at Kanapé with CRT-TV' },
+				{ src: '/images/Pictures/window/window-pics-04.png', alt: 'Window at Kanapé with CRT-TV' }
+			]}
 		/>
 	</div>
 

@@ -21,49 +21,34 @@
 			</div>
 		</div>
 
-		<!-- Column 2: Social / Network -->
+		<!-- Column 2: Info -->
 		<div class="flex flex-col gap-4">
-			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Connect</h4>
+			<h4 class="text-xs tracking-widest text-gallery-900 uppercase">Info</h4>
 			<div class="flex flex-col gap-2">
-				<a href="/contact" class="hover:text-gallery-900">Contact</a>
-				<a href="https://instagram.com/public.shorts.festival" class="hover:text-gallery-900"
-					>Instagram</a
-				>
+				<a href="/how-to-get-there" class="hover:text-gallery-900"> How to get there </a>
+				<a href="/faq" class="hover:text-gallery-900"> FAQ </a>
+				<a href="https://paypal.me/publicshorts" class="hover:text-gallery-900"> Donate </a>
 			</div>
 		</div>
 
-		<!-- Column 3: Legal / Meta -->
+		<!-- Column 3: Connect -->
 		<div class="flex flex-col gap-4">
-			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Legal</h4>
-			<div class="flex flex-col gap-2">
-				<a href="/impressum" class="hover:text-gallery-900">Impressum</a>
-
-				<a href="/terms" class="hover:text-gallery-900">Terms of Service</a>
+			<h4 class="text-xs tracking-widest text-gallery-900 uppercase">Connect</h4>
+			<div class="flex flex-col gap-3">
+				<a href="/contact" class="hover:text-gallery-900"> Contact </a>
+				<a href="https://instagram.com/public.shorts.festival" class="text hover:text-gallery-900">
+					Instagram
+				</a>
 			</div>
 		</div>
 
-		<!-- Column 4: Newsletter (Simplified) -->
+		<!-- Column 4: Legal -->
 		<div class="flex flex-col gap-4">
-			<h4 class=" text-xs tracking-widest text-gallery-900 uppercase">Updates</h4>
-			<form class="flex flex-col gap-3">
-				<label for="email" class="sr-only">Email Address</label>
-				<div
-					class="flex items-center gap-2 border-gallery-300 pb-2 transition-colors focus-within:border-gallery-900"
-				>
-					<input
-						type="email"
-						id="email"
-						placeholder="email@domain.com"
-						class="w-full bg-transparent text-gallery-900 placeholder-gallery-400 outline-none"
-					/>
-					<button
-						type="submit"
-						class="text-xs font-medium tracking-wider text-gallery-900 uppercase hover:text-accent-500"
-					>
-						→
-					</button>
-				</div>
-			</form>
+			<h4 class="text-xs tracking-widest text-gallery-900 uppercase">Legal</h4>
+			<div class="flex flex-col gap-2">
+				<a href="/impressum" class="hover:text-gallery-900"> Impressum </a>
+				<a href="/terms-of-service" class="hover:text-gallery-900"> Terms of Service </a>
+			</div>
 		</div>
 	</div>
 

@@ -37,7 +37,7 @@
 				href="/press">Press</a
 			>
 
-			<a class=" bold text-gallery-400" href="/submit">Open Call</a>
+			<a class=" bold text-gallery-400" href="/opencall">Open Call</a>
 		</div>
 	</section>
 	<div class="absolute right-4 hidden gap-2 lg:flex">

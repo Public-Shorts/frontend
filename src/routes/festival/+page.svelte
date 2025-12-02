@@ -23,7 +23,7 @@
 		<img
 			src="/images/Pictures/window/window-pics-02.png"
 			alt="Window at Kanapé with CRT-TV"
-			class="h-full w-full rounded-md object-cover"
+			class="h-full w-full object-cover"
 		/>
 	</div>
 

@@ -38,7 +38,7 @@
 		text-decoration: underline;
 	}
 	:global(::selection) {
-		background-color: var(--color-accent-500);
-		color: black;
+		background-color: var(--color-accent-200);
+		color: var(--color-accent-500);
 	}
 </style>

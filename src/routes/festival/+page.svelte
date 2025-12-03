@@ -21,7 +21,7 @@
 			Hobrechstraße 54, 12047 Berlin
 		</a>, accessible to anyone passing by at any time of day or night.
 	</div>
-	<div class="content cover aspect-[3/4] md:col-span-2">
+	<div class="content cover aspect-3/4 md:col-span-2">
 		<ImageCarousel
 			images={[
 				{ src: '/images/Pictures/window/window-pics-02.png', alt: 'Window at Kanapé with CRT-TV' },

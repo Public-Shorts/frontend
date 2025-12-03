@@ -71,11 +71,7 @@
 			<p class="inline align-text-top text-xs text-accent-500">open soon!</p>
 		</span>
 
-		<div class="flex gap-2 pt-2">
-			<a class="bold text-gallery-400" href="">EN</a>
-			<p class="text-gallery-200">|</p>
-			<a class="bold text-gallery-700" href="">DE</a>
-		</div>
+		<LanguageSwitcher />
 	</nav>
 {/if}
 

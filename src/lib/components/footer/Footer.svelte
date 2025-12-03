@@ -8,7 +8,7 @@
 <footer
 	class="w-full border-t border-gallery-200 bg-gallery-50 pt-16 pb-12 text-sm text-gallery-600"
 >
-	<div class="mx-auto grid max-w-screen-xl grid-cols-1 gap-12 px-8 md:grid-cols-4">
+	<div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-8 md:grid-cols-4">
 		<!-- Column 1: Identity -->
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-col gap-4 fill-gallery-400 leading-relaxed text-gallery-400">
@@ -53,7 +53,7 @@
 	</div>
 
 	<!-- Bottom Bar -->
-	<div class="mx-auto mt-16 flex max-w-screen-xl justify-between px-8 text-xs text-gallery-400">
+	<div class="mx-auto mt-16 flex max-w-7xl justify-between px-8 text-xs text-gallery-400">
 		<span>© {year} Public Shorts. All rights reserved.</span>
 		<span class="">Berlin, DE</span>
 	</div>

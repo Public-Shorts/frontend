@@ -1,10 +1,9 @@
-<script>
-	import Logo from '$lib/components/logo/logo.svelte';
+<script lang="ts">
 </script>
 
-<div class="bg-gallery-100 flex w-screen items-center p-4 pt-40">
-	<div class="text-gallery-400 flex max-w-2xl flex-col gap-4">
-		<h1 class="text-gallery-700 text-2xl font-bold">
+<div class="flex w-screen items-center bg-gallery-100 p-4 pt-40">
+	<div class="flex max-w-2xl flex-col gap-4 text-gallery-400">
+		<h1 class="text-2xl font-bold text-gallery-700">
 			Public Shorts: Video Festival in Berlin 2026, Curated by <em>you?</em>
 		</h1>
 
@@ -13,7 +12,7 @@
 			of the upcoming <span class="italic">Public Shorts</span> video festival.
 		</p>
 
-		<h2 class=" text-gallery-700 text-xl font-semibold">What is Public Shorts?</h2>
+		<h2 class=" text-xl font-semibold text-gallery-700">What is Public Shorts?</h2>
 		<p class="">
 			We are organizing a 24/7 video festival, which will take over the screens inside the glass
 			window of
@@ -25,7 +24,7 @@
 			including Q&amp;As, debates, discussions, and more.
 		</p>
 
-		<h2 class=" text-gallery-700 text-xl font-semibold">What does this entail?</h2>
+		<h2 class=" text-xl font-semibold text-gallery-700">What does this entail?</h2>
 		<p class="">
 			Our curatorial team handles pre-screening, categorizing, and note-taking for all submissions
 			(hopefully, there will be many!). That’s Curation Phase 1. As a jury member, you are welcome
@@ -38,7 +37,7 @@
 			moderate the screening session of your curated selection, if you wish.
 		</p>
 
-		<h2 class=" text-gallery-700 text-xl font-semibold">Timeline and Key Dates</h2>
+		<h2 class=" text-xl font-semibold text-gallery-700">Timeline and Key Dates</h2>
 		<ul class=" list-disc pl-5">
 			<li>Open Call: <span class="font-medium">12 Dec 2025 – 10 Jan 2026</span></li>
 			<li>
@@ -58,13 +57,13 @@
 			<li>Festival Closing and Last Screening: <span class="font-medium">13 Mar</span></li>
 		</ul>
 
-		<h2 class=" text-gallery-700 text-xl font-semibold">Is this paid?</h2>
+		<h2 class=" text-xl font-semibold text-gallery-700">Is this paid?</h2>
 		<p class="">
 			Not this year. We are all doing this as volunteers while we look for funding and sponsors, but
 			we are not counting on it. <span class="text-lg">🤷</span> Maybe next year!
 		</p>
 
-		<h2 class=" text-gallery-700 text-xl font-semibold">Next Step</h2>
+		<h2 class=" text-xl font-semibold text-gallery-700">Next Step</h2>
 		<p class="mb-6">
 			Please confirm your participation, or feel free to ask any questions, with the person who sent
 			you this link. Thank you so much for your help &mdash; we’re excited to make this festival

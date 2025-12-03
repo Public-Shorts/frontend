@@ -1,5 +1,5 @@
 <script>
-	import GridLayout from '../how-to-get-there/GridLayout.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
 </script>
 
 <div class="col-span-2"></div>

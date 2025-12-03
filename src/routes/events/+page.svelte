@@ -1,6 +1,6 @@
 <script>
 	import EventCard from '$lib/components/events/EventCard.svelte';
-	import GridLayout from '../../lib/components/GridLayout.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
 </script>
 
 <GridLayout>

@@ -1,5 +1,5 @@
 <script>
-	import GridLayout from './GridLayout.svelte';
+	import GridLayout from '$lib/components/GridLayout.svelte';
 </script>
 
 <GridLayout>

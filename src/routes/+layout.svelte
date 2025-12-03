@@ -28,7 +28,7 @@
 
 <style>
 	:global(body) {
-		background-color: var(--color-gallery-100);
+		background-color: var(--color-gallery-50);
 		color: var(--gallery-800);
 		margin: 0;
 	}

@@ -8,8 +8,9 @@
 </script>
 
 <div
-	class="group grid grid-cols-1 pb-4
-           sm:grid-cols-12 sm:items-baseline"
+	class="group sm:items-baselin grid grid-cols-1
+           border-r-2 border-gallery-600
+		   pb-4 sm:grid-cols-12"
 >
 	<!-- Date -->
 	<div class="sm:col-span-12">

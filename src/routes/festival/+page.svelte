@@ -1,8 +1,8 @@
 <script lang="ts">
-	import ImageCarousel from './ImageCarousel.svelte';
+	import ImageCarousel from '../../lib/components/ImageCarousel.svelte';
 
 	import EventCard from '$lib/components/events/EventCard.svelte';
-	import GridLayout from '../how-to-get-there/GridLayout.svelte';
+	import GridLayout from '../../lib/components/GridLayout.svelte';
 </script>
 
 <GridLayout>
@@ -85,28 +85,27 @@
 	<div class="hidden md:col-span-2 md:block"></div>
 
 	<div class="font-semibold md:col-span-1">Jury</div>
-	<div class="md:col-span-3">Jamie Allen, Nina Fischer, Luce Delire, and Rachel Uwa.</div>
+	<div class="md:col-span-3">
+		<a href="https://jamieallen.com/">Jamie Allen</a>,
+		<a href="https://getaphilosopher.com/luce_delire/">Luce Delire</a>,
+		<a href="https://www.fischerelsani.net/">Nina Fischer</a>,
+		<a href="https://www.schoolofma.org/people/rachel-uwa">Rachel Uwa</a>, and
+		<a href="https://www.fwuest.com/"> Florian Wüst</a>.
+	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 
 	<div class="font-semibold md:col-span-1">Thanks</div>
 	<div class="md:col-span-3">
-		Special thanks to Zönoteka for hosting, and to all
+		Thanks to Kanapé for hosting and the technical support, and to all our
 		<a
 			href="/partners"
 			class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
 		>
 			partners
 		</a>
-		and supporters. Many thanks to
-		<a
-			href="https://www.fwuest.com/"
-			class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
-			target="_blank"
-			rel="noreferrer"
-		>
-			Florian Wüst
-		</a>
-		for support and advising.
+		and supporters, and to all the artists submitting their works. Special thanks to
+		<a href="https://www.fwuest.com/"> Florian Wüst </a>
+		for his support and advising throughout the whole process.
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 

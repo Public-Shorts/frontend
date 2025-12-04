@@ -59,9 +59,16 @@
 
 	<div class="font-semibold md:col-span-1">Open Call & Selection</div>
 	<div class="md:col-span-3">
-		All types of video media under 15 minutes are welcome: film, video, documentary, animation, and
-		experimental formats. The festival is curated by a diverse team of curators who collectively
-		shape the selection through open call submissions.
+		<p>
+			All types of video media under 15 minutes, made in the past 3 years are welcome: film, video,
+			documentary, animation, and experimental formats. The festival is curated by a diverse team of
+			curators who collectively shape the selection through open call submissions.
+		</p>
+		<p>
+			See the
+			<a href="/opencall"> open call for submissions </a>
+			for the 2026 edition.
+		</p>
 	</div>
 	<div class="grid grid-cols-2 gap-4 md:col-span-2 md:gap-6">
 		<div class="aspect-video bg-radial/hsl from-gallery-500 to-accent-300"></div>

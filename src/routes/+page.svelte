@@ -12,10 +12,8 @@
 	});
 </script>
 
-<!-- Hero -->
-<!-- Removed border-b. Changed grid to stack vertically on desktop (rows) or use col-span-6 -->
+<!-- 
 <div class="flex flex-col md:col-span-6">
-	<!-- Image: Full width header (col-span-6) with cinematic aspect ratio -->
 	<div class="w-full">
 		<div class="aspect-video max-h-120 w-full overflow-hidden bg-black">
 			<ImageCarousel
@@ -43,14 +41,12 @@
 </div>
 <GridLayout>
 	<div class="flex flex-col md:col-span-5 md:col-start-2">
-		<!-- Text: Full width container, arranged for readability -->
 		<div class="flex flex-col gap-4 md:gap-6"></div>
-		<!-- Title - Scaled up for mobile impact (text-4xl) and massive on desktop -->
+
 		<h1 class="text-4xl leading-tight font-semibold tracking-tight md:text-8xl md:leading-[0.9]">
 			24/7 Video Festival
 		</h1>
 
-		<!-- Info block: Grid on desktop to align dates and description side-by-side -->
 		<div class="flex flex-col gap-3 md:grid md:grid-cols-6 md:gap-8"></div>
 		<div class="md:col-span-2">
 			<p class="text-lg font-medium md:text-xl">February 27 – March 15, 2026 · Berlin</p>
@@ -63,7 +59,7 @@
 		</div>
 	</div>
 
-	<!-- Open Call -->
+
 	<div class="font-semibold md:col-span-1 md:mt-16" id="open-call">Open Call for Submissions</div>
 
 	<div class=" md:col-span-3 md:mt-16">
@@ -78,7 +74,6 @@
 		</p>
 	</div>
 
-	<!-- Button -->
 	<a
 		href="/opencall"
 		class="mb-12 flex h-14 items-center justify-center border border-gallery-900 bg-transparent font-medium text-white transition-colors hover:opacity-80 md:col-span-2 md:mt-16"
@@ -86,7 +81,6 @@
 		Submit your work
 	</a>
 
-	<!-- Festival Dates -->
 	<div class=" font-semibold md:col-span-1 md:mb-0" id="festival-dates">2026 Festival Dates</div>
 
 	<div class="mb-10 flex flex-col gap-4 md:col-span-3 md:gap-6">
@@ -109,7 +103,6 @@
 		</div>
 	</div>
 
-	<!-- Events -->
 	<div class="mb-16 grid gap-4 md:col-span-2">
 		<EventCard
 			title="Festival Opening & First Screening"
@@ -127,4 +120,4 @@
 			location="TBA, Berlin"
 		/>
 	</div>
-</GridLayout>
+</GridLayout> -->

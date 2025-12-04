@@ -3,6 +3,13 @@
 	import Logo from '$lib/components/logo/logo.svelte';
 	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
+
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		goto('/festival');
+	});
 </script>
 
 <!-- Hero -->

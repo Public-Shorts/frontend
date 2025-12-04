@@ -5,6 +5,8 @@
 	import favicon16 from '$lib/assets/favicon-16x16.png';
 	import siteWebmanifest from '$lib/assets/site.webmanifest';
 	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
+	import Navbar from '$lib/components/navbar/navbar.svelte';
+	import Footer from '$lib/components/footer/Footer.svelte';
 
 	let { children } = $props();
 </script>
@@ -17,12 +19,26 @@
 	<link rel="manifest" href={siteWebmanifest} />
 </svelte:head>
 
-<main class="h-screen w-full overflow-y-auto bg-zinc-900">
+<Navbar />
+<main class="w-full bg-gallery-100 text-gallery-700">
 	{@render children()}
 </main>
 
+<Footer />
+
 <style>
 	:global(body) {
-		background-color: var(--zinc-900);
+		background-color: var(--color-gallery-50);
+		color: var(--gallery-800);
+		margin: 0;
+	}
+	:global(a) {
+		color: var(--color-gallery-900);
+		text-underline-offset: 4px;
+		text-decoration: underline;
+	}
+	:global(::selection) {
+		background-color: var(--color-accent-200);
+		color: var(--color-accent-500);
 	}
 </style>

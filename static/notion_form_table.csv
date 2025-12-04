@@ -1,0 +1,42 @@
+﻿Name,Text,Type,Notes,Required
+Name of the Director,The person who made the video.,text,,Yes
+Name of the person submitting,The following person is responsible for the accuracy of the information given in this form and shall be informed about the selection result.,text,,Yes
+Email,,email,,Yes
+Social Media account,,url,,No
+Website,,url,,No
+Phone,,phone,,No
+Original Title,,text,Short text,Yes
+English Title,,text,Short text,Yes
+Year of completion,Please note that submitted works must have been completed in 2023 or after.,year,After 2023,Yes
+Length (in minutes),"Submitted works should be no longer than 15 minutes. ",number,Should max 15,No
+Film language,,multi-select,Can also include none,Yes
+Short synopsis,,text,"up to 150 words, 800 characters with space ",Yes
+Categories,,multi-select,"Options: Documentary, Experimental, Animation, Narrative, LGBTQAI+, other → then text field",Yes
+Explicit,"We will be showing works across a kindergarten. Please indicate whether your work contains any of the following elements: 
+
+- Nudity
+- Sexual content
+- Blood/Violence
+- Epilepsi triggers
+- Strong language
+- Disturbing/triggering imagery
+- Other → what",boolean,"if yes than ‘What is explicit?’ is mandatory
+
+",Yes
+What is explicit?,,text,,No
+"AI ","For transparency purposes, was AI used in any way for the making of this film?",boolean,,Yes
+AI Explanation,"If yes, please tell us in a short text how AI was used:",text,,No
+Additional info,Anything else that needs to be known about the creation process,text,,No
+Previous Screenings,Has the film been or will it be presented at other festivals?,boolean,If yes then mandatory to say where,Yes
+Previous screening locations and year,,text,,No
+"Link to watch ",Needs to be accessible until the start of the festival,url,,Yes
+Link to download,So we can screen. Please provide a file with english subtitles.,url,,Yes
+Screenshots,Please attach up to 5 screenshots/film stills from your work.,image,,Yes
+Poster,"Poster ",image,,No
+Cast and Crew,"People involved in the projects and their roles. For example, John Doe - Rigger",text,,No
+Thanks,People you want to thank.,text,,No
+Special screening requirements,"Please let us know if your work has any special technical or spatial requirements for presentation (e.g., multi-channel sound, specific volume levels, unusual aspect ratio, looping instructions, external files, physical objects).",text,,No
+Terms and conditions,"- Please make sure that all information given above is correct.
+- Accept we use this info, including the screenshots when promoting the festival, whether for non-commercial or commercial endeavors.
+- No usage of copywritten material.
+- It’s our property to show within the festival",boolean,https://www.perplexity.ai/search/please-write-the-terms-and-con-Vwv4_kUFQgiwRegO3fwaDA#0,Yes

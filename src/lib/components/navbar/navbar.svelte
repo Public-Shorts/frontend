@@ -17,27 +17,28 @@
 	>
 		<div class="col-span-4 col-start-2 flex gap-10">
 			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
+				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/festival">Festival</a
 			>
 			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
+				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/programme">Programme</a
 			>
-			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/events">Events</a
+			<a class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400" href="/events"
+				>Events</a
 			>
 			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
+				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/partners">Partners</a
 			>
-			<a
-				class="bold text-gallery-700 transition-all duration-150 hover:text-gallery-400"
-				href="/press">Press</a
+			<a class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400" href="/press"
+				>Press</a
 			>
 
-			<a class=" bold text-gallery-400" href="/opencall">Open Call</a>
+			<a
+				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
+				href="/opencall">Open Call</a
+			>
 		</div>
 	</section>
 	<div class="absolute right-4 hidden gap-2 lg:flex">
@@ -61,15 +62,7 @@
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/events">Events</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/partners">Partners</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
-		<a
-			on:click={() => (open = !open)}
-			class="bold text-gallery-700"
-			href="https://paypal.me/publicshorts">Support</a
-		>
-		<span class="relative">
-			<a class="bold text-gallery-400" href="/submit">Submit</a>
-			<p class="inline align-text-top text-xs text-accent-500">open soon!</p>
-		</span>
+		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
 
 		<LanguageSwitcher />
 	</nav>
@@ -78,5 +71,9 @@
 <style>
 	a {
 		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+		text-decoration-line: 4px;
 	}
 </style>

@@ -4,6 +4,7 @@
 
 <div class="col-span-2"></div>
 <GridLayout>
+	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">Press</h1>
 	<p class="col-span-3 col-start-2">
 		<a
 			class="text-gallery-900"

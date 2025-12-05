@@ -14,7 +14,7 @@
   {@render children()}
 {:else}
 <div class="relative">
-  <button class="fixed bottom-2 left-2 text-white" onclick={progress}>
+  <button class="" onclick={progress}>
     Datenschutz
   </button>
 </div>

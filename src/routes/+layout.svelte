@@ -20,7 +20,8 @@
 </svelte:head>
 
 <Navbar />
-<main class="w-full bg-gallery-100 text-gallery-700">
+
+<main class="w-full bg-gallery-100 text-gallery-700 min-h-[calc(100dvh-97px)] sm:min-h-[calc(100dvh-121px)]">
 	{@render children()}
 </main>
 

@@ -54,17 +54,17 @@
   }
 </script>
 
-<div class="max-w-4xl mx-auto p-6 text-white">
+<div class="max-w-4xl mx-auto p-6">
   <h1 class="text-3xl font-bold mb-8">Submit Your Film</h1>
 
   {#if form?.success}
-    <div class="fixed bottom-6 right-6 bg-green-600 p-4 rounded shadow-lg z-50 max-w-md">
+    <div class="fixed bottom-6 right-6 bg-accent-500 p-4 rounded shadow-lg z-50 max-w-md">
       <p class="font-semibold">Submission successful! Thank you for submitting your film.</p>
     </div>
   {/if}
 
   {#if form?.error}
-    <div class="fixed bottom-6 right-6 bg-red-600 p-4 rounded shadow-lg z-50 max-w-md">
+    <div class="fixed bottom-6 right-6 bg-accent-800 p-4 rounded shadow-lg z-50 max-w-md">
       <p class="font-semibold">Error: {form.error}</p>
     </div>
   {/if}
@@ -83,7 +83,7 @@
   >
     <!-- Contact Information -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Contact Information</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Contact Information</h2>
 
       <div>
         <label for="submitterName" class="block mb-2">
@@ -95,10 +95,10 @@
           name="submitterName"
           required
           value={form?.submitterName ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">
-          The following person is responsible for the accuracy of the information given in this form and shall be informed about the selection result.
+        <p class="text-sm text-gallery-500 mt-1">
+          This person is responsible for the accuracy of the information given in this form and shall be informed about the selection result.
         </p>
         {#if form?.errors?.submitterName}
           <p class="text-red-500 text-sm mt-1">{form.errors.submitterName}</p>
@@ -115,7 +115,7 @@
           name="email"
           required
           value={form?.email ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         {#if form?.errors?.email}
           <p class="text-red-500 text-sm mt-1">{form.errors.email}</p>
@@ -129,7 +129,7 @@
           id="phone"
           name="phone"
           value={form?.phone ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
       </div>
 
@@ -141,7 +141,7 @@
           name="socialMedia"
           value={form?.socialMedia ?? ''}
           placeholder="Instagram, Twitter, etc."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
       </div>
 
@@ -152,14 +152,14 @@
           id="website"
           name="website"
           value={form?.website ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
       </div>
     </section>
 
     <!-- Film Information -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Film Information</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Film Information</h2>
 
       <div>
         <label for="directorName" class="block mb-2">
@@ -171,9 +171,9 @@
           name="directorName"
           required
           value={form?.directorName ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">The person who made the video.</p>
+        <p class="text-sm text-gallery-500 mt-1">The person who made the video.</p>
         {#if form?.errors?.directorName}
           <p class="text-red-500 text-sm mt-1">{form.errors.directorName}</p>
         {/if}
@@ -189,7 +189,7 @@
           name="originalTitle"
           required
           value={form?.originalTitle ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         {#if form?.errors?.originalTitle}
           <p class="text-red-500 text-sm mt-1">{form.errors.originalTitle}</p>
@@ -206,7 +206,7 @@
           name="englishTitle"
           required
           value={form?.englishTitle ?? ''}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         {#if form?.errors?.englishTitle}
           <p class="text-red-500 text-sm mt-1">{form.errors.englishTitle}</p>
@@ -226,9 +226,9 @@
             min="2023"
             max="2100"
             value={form?.yearOfCompletion ?? ''}
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           />
-          <p class="text-sm text-gray-400 mt-1">Please note that submitted works must have been completed in 2023 or after.</p>
+          <p class="text-sm text-gallery-500 mt-1">Please note that submitted works must have been completed in 2023 or after.</p>
           {#if form?.errors?.yearOfCompletion}
             <p class="text-red-500 text-sm mt-1">{form.errors.yearOfCompletion}</p>
           {/if}
@@ -246,9 +246,9 @@
             min="1"
             max="15"
             value={form?.length ?? ''}
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           />
-          <p class="text-sm text-gray-400 mt-1">Submitted works should be no longer than 15 minutes.</p>
+          <p class="text-sm text-gallery-500 mt-1">Submitted works should be no longer than 15 minutes.</p>
           {#if form?.errors?.length}
             <p class="text-red-500 text-sm mt-1">{form.errors.length}</p>
           {/if}
@@ -259,7 +259,7 @@
         <label class="block mb-2">
           Film Language(s) <span class="text-red-500">*</span>
         </label>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gray-800 border border-gray-600 rounded">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gallery-50 border border-gallery-300 rounded">
           {#each LANGUAGES as language}
             <label class="flex items-center space-x-2 cursor-pointer">
               <input
@@ -289,9 +289,9 @@
           value={form?.synopsis ?? ''}
           maxlength="800"
           rows="6"
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         ></textarea>
-        <p class="text-sm text-gray-400 mt-1">Up to 150 words, 800 characters with space</p>
+        <p class="text-sm text-gallery-500 mt-1">Up to 150 words, 800 characters with space</p>
         {#if form?.errors?.synopsis}
           <p class="text-red-500 text-sm mt-1">{form.errors.synopsis}</p>
         {/if}
@@ -301,7 +301,7 @@
         <label class="block mb-2">
           Categories <span class="text-red-500">*</span>
         </label>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gray-800 border border-gray-600 rounded">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gallery-50 border border-gallery-300 rounded">
           {#each CATEGORIES as category}
             <label class="flex items-center space-x-2 cursor-pointer">
               <input
@@ -314,7 +314,7 @@
             </label>
           {/each}
         </div>
-        <p class="text-sm text-gray-400 mt-1">Options: Documentary, Experimental, Animation, Narrative, LGBTQAI+, Other</p>
+        <p class="text-sm text-gallery-500 mt-1">Options: Documentary, Experimental, Animation, Narrative, LGBTQAI+, Other</p>
         <input type="hidden" name="categories" value={selectedCategories.join(', ')} />
         {#if form?.errors?.categories}
           <p class="text-red-500 text-sm mt-1">{form.errors.categories}</p>
@@ -329,7 +329,7 @@
             id="categoryOther"
             name="categoryOther"
             value={form?.categoryOther ?? ''}
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           />
         </div>
       {/if}
@@ -337,7 +337,7 @@
 
     <!-- Media Files -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Media Files</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Media Files</h2>
 
       <div>
         <label for="linkToWatch" class="block mb-2">
@@ -350,9 +350,9 @@
           required
           value={form?.linkToWatch ?? ''}
           placeholder="https://vimeo.com/..."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">Needs to be accessible until the start of the festival</p>
+        <p class="text-sm text-gallery-500 mt-1">Needs to be accessible until the start of the festival</p>
         {#if form?.errors?.linkToWatch}
           <p class="text-red-500 text-sm mt-1">{form.errors.linkToWatch}</p>
         {/if}
@@ -367,9 +367,9 @@
           required
           value={form?.linkToDownload ?? ''}
           placeholder="https://drive.google.com/..."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">So we can screen. Please provide a file with english subtitles.</p>
+        <p class="text-sm text-gallery-500 mt-1">So we can screen. Please provide a file with english subtitles.</p>
         {#if form?.errors?.linkToDownload}
           <p class="text-red-500 text-sm mt-1">{form.errors.linkToDownload}</p>
         {/if}
@@ -387,9 +387,9 @@
           multiple
           required
           bind:files={screenshots}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">Please attach up to 5 screenshots/film stills from your work.</p>
+        <p class="text-sm text-gallery-500 mt-1">Please attach up to 5 screenshots/film stills from your work.</p>
         {#if form?.errors?.screenshots}
           <p class="text-red-500 text-sm mt-1">{form.errors.screenshots}</p>
         {/if}
@@ -403,9 +403,9 @@
           name="poster"
           accept="image/*"
           bind:files={poster}
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gray-400 mt-1">Upload your film poster (JPG, PNG, etc.)</p>
+        <p class="text-sm text-gallery-500 mt-1">Upload your film poster (JPG, PNG, etc.)</p>
         {#if form?.errors?.poster}
           <p class="text-red-500 text-sm mt-1">{form.errors.poster}</p>
         {/if}
@@ -414,7 +414,7 @@
 
     <!-- Credits -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Credits</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Credits</h2>
 
       <div>
         <label for="castAndCrew" class="block mb-2">Cast and Crew</label>
@@ -424,7 +424,7 @@
           value={form?.castAndCrew ?? ''}
           rows="6"
           placeholder="List your cast and crew members..."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         ></textarea>
       </div>
 
@@ -436,14 +436,14 @@
           value={form?.thanks ?? ''}
           rows="4"
           placeholder="Acknowledgments and special thanks..."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         ></textarea>
       </div>
     </section>
 
     <!-- Additional Information -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Additional Information</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Additional Information</h2>
 
       <div class="space-y-2">
         <label class="flex items-start">
@@ -455,7 +455,7 @@
           />
           <span>
             This film contains explicit content
-            <span class="block text-sm text-gray-400 mt-1">
+            <span class="block text-sm text-gallery-500 mt-1">
               We will be showing works across a kindergarten. Please indicate whether your work contains any of the following elements: Nudity, Sexual content, Blood/Violence, Epilepsi triggers, Strong language, Disturbing/triggering imagery
             </span>
           </span>
@@ -470,7 +470,7 @@
             name="explicitDetails"
             value={form?.explicitDetails ?? ''}
             rows="3"
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           ></textarea>
           {#if form?.errors?.explicitDetails}
             <p class="text-red-500 text-sm mt-1">{form.errors.explicitDetails}</p>
@@ -488,7 +488,7 @@
           />
           <span>
             AI was used in the creation of this film
-            <span class="block text-sm text-gray-400 mt-1">
+            <span class="block text-sm text-gallery-500 mt-1">
               For transparency purposes, was AI used in any way for the making of this film?
             </span>
           </span>
@@ -503,7 +503,7 @@
             name="aiExplanation"
             value={form?.aiExplanation ?? ''}
             rows="3"
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           ></textarea>
           {#if form?.errors?.aiExplanation}
             <p class="text-red-500 text-sm mt-1">{form.errors.aiExplanation}</p>
@@ -521,7 +521,7 @@
           />
           <span>
             This film has been screened previously
-            <span class="block text-sm text-gray-400 mt-1">
+            <span class="block text-sm text-gallery-500 mt-1">
               Has the film been or will it be presented at other festivals?
             </span>
           </span>
@@ -537,7 +537,7 @@
             value={form?.previousScreeningLocations ?? ''}
             rows="3"
             placeholder="Festival names, venues, dates..."
-            class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
           ></textarea>
           {#if form?.errors?.previousScreeningLocations}
             <p class="text-red-500 text-sm mt-1">{form.errors.previousScreeningLocations}</p>
@@ -553,7 +553,7 @@
           value={form?.additionalInfo ?? ''}
           rows="4"
           placeholder="Anything else that needs to be known about the creation process"
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         ></textarea>
       </div>
 
@@ -565,14 +565,14 @@
           value={form?.specialRequirements ?? ''}
           rows="3"
           placeholder="Please let us know if your work has any special technical or spatial requirements for presentation (e.g., multi-channel sound, specific volume levels, unusual aspect ratio, looping instructions, external files, physical objects)."
-          class="w-full p-2 bg-gray-800 border border-gray-600 rounded"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         ></textarea>
       </div>
     </section>
 
     <!-- Terms and Conditions -->
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-gray-600 pb-2">Terms and Conditions</h2>
+      <h2 class="text-2xl font-semibold border-b border-gallery-300 pb-2">Terms and Conditions</h2>
 
       <label class="flex items-start">
         <input
@@ -583,10 +583,10 @@
         />
         <span>
           I accept the terms and conditions <span class="text-red-500">*</span>
-          <span class="block text-sm text-gray-400 mt-2">
+          <span class="block text-sm text-gallery-500 mt-2">
             By checking this box, I confirm that:
           </span>
-          <ul class="block text-sm text-gray-400 mt-1 ml-4 list-disc space-y-1">
+          <ul class="block text-sm text-gallery-500 mt-1 ml-4 list-disc space-y-1">
             <li>All information given above is correct</li>
             <li>I accept that the festival may use this information, including the screenshots, when promoting the festival, whether for non-commercial or commercial endeavors</li>
             <li>No copyrighted material has been used without proper authorization</li>
@@ -604,7 +604,7 @@
       <button
         type="submit"
         disabled={isSubmitting}
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+        class="w-full bg-accent-500 hover:bg-accent-600 font-semibold py-3 px-6 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? 'Submitting...' : 'Submit Film'}
       </button>
@@ -616,6 +616,6 @@
   input:focus,
   textarea:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--color-accent-500);
   }
 </style>

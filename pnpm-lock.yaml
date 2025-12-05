@@ -14,6 +14,9 @@ importers:
       '@eslint/js':
         specifier: ^9.38.0
         version: 9.39.1
+      '@iconify/svelte':
+        specifier: ^5.1.0
+        version: 5.1.0(svelte@5.43.4)
       '@sanity/client':
         specifier: ^6.28.0
         version: 6.29.1

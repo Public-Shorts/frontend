@@ -26,7 +26,7 @@
 			<h4 class="text-xs tracking-widest text-gallery-900 uppercase">Info</h4>
 			<div class="flex flex-col gap-2">
 				<a href="/how-to-get-there" class="hover:text-gallery-900"> How to get there </a>
-				<a href="/faq" class="hover:text-gallery-900"> FAQ </a>
+				<a href="/FAQ" class="hover:text-gallery-900"> FAQ </a>
 				<a href="https://paypal.me/publicshorts" class="hover:text-gallery-900"> Donate </a>
 			</div>
 		</div>

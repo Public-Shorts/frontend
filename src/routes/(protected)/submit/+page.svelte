@@ -34,6 +34,8 @@
 		{ title: 'Comedy', value: 'comedy' },
 		{ title: 'Horror', value: 'horror' },
 		{ title: 'Science Fiction / Fantasy', value: 'sci_fi_fantasy' },
+		{ title: 'Technology', value: 'technology' },
+		{ title: 'Abstract', value: 'abstract' },
 		{ title: 'Other', value: 'other' }
 	];
 
@@ -56,8 +58,15 @@
 </script>
 
 <div class="mx-auto max-w-4xl p-6">
-	<h1 class="mb-8 text-3xl font-bold">Submit Your Film</h1>
-
+	<div class=" mb-8">
+		<h1 class=" text-3xl font-bold">Submit Your Film</h1>
+		<p>
+			If you have any questions, please refer to our <a
+				href="/FAQ"
+				class="text-accent-600 underline">FAQ</a
+			> page before submitting.
+		</p>
+	</div>
 	{#if form?.success}
 		<div class="fixed right-6 bottom-6 z-50 max-w-md rounded bg-accent-500 p-4 shadow-lg">
 			<p class="font-semibold">Submission successful! Thank you for submitting your film.</p>
@@ -134,29 +143,6 @@
 					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 				/>
 			</div>
-
-			<div>
-				<label for="socialMedia" class="mb-2 block">Social Media</label>
-				<input
-					type="text"
-					id="socialMedia"
-					name="socialMedia"
-					value={form?.socialMedia ?? ''}
-					placeholder="Instagram etc."
-					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
-				/>
-			</div>
-
-			<div>
-				<label for="website" class="mb-2 block">Website</label>
-				<input
-					type="url"
-					id="website"
-					name="website"
-					value={form?.website ?? ''}
-					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
-				/>
-			</div>
 		</section>
 
 		<!-- Film Information -->
@@ -179,6 +165,28 @@
 				{#if form?.errors?.directorName}
 					<p class="mt-1 text-sm text-red-500">{form.errors.directorName}</p>
 				{/if}
+			</div>
+			<div>
+				<label for="socialMedia" class="mb-2 block">Social Media</label>
+				<input
+					type="text"
+					id="socialMedia"
+					name="socialMedia"
+					value={form?.socialMedia ?? ''}
+					placeholder="Instagram etc."
+					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+				/>
+			</div>
+
+			<div>
+				<label for="website" class="mb-2 block">Website</label>
+				<input
+					type="url"
+					id="website"
+					name="website"
+					value={form?.website ?? ''}
+					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+				/>
 			</div>
 
 			<div>

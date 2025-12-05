@@ -10,9 +10,7 @@
 	let selectedCategories = $state<string[]>(
 		form?.categories?.split(',').map((c) => c.trim()) ?? []
 	);
-	let selectedLanguages = $state<string[]>(
-		form?.filmLanguage?.split(',').map((l) => l.trim()) ?? []
-	);
+
 	let showCategoryOther = $state(selectedCategories.includes('other'));
 	let isSubmitting = $state(false);
 
@@ -46,14 +44,6 @@
 			selectedCategories = [...selectedCategories, value];
 		}
 		showCategoryOther = selectedCategories.includes('other');
-	}
-
-	function toggleLanguage(value: string) {
-		if (selectedLanguages.includes(value && value !== '')) {
-			selectedLanguages = selectedLanguages.filter((l) => l !== value);
-		} else {
-			selectedLanguages = [...selectedLanguages, value];
-		}
 	}
 </script>
 
@@ -271,12 +261,13 @@
 
 			<div>
 				<label for="filmLanguage" class="mb-2 block">
-					Film Language(s) <span class="text-red-500">*</span>
+					Film Language <span class="text-red-500">*</span>
 				</label>
 				<select
 					id="filmLanguage"
 					name="filmLanguage"
-					onchange={(e) => toggleLanguage((e.target as HTMLSelectElement).value)}
+					required
+					value={form?.filmLanguage ?? ''}
 					class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 				>
 					<option value="">Select a language...</option>
@@ -284,28 +275,6 @@
 						<option value={language.value}>{language.title}</option>
 					{/each}
 				</select>
-				<p class="mt-1 text-sm text-gallery-500">Click to select multiple languages</p>
-
-				{#if selectedLanguages.length > 0}
-					<div class="mt-2 flex flex-wrap gap-2">
-						{#each selectedLanguages as lang}
-							<span
-								class="inline-flex items-center gap-1 rounded bg-accent-200 px-2 py-1 text-sm text-accent-500"
-							>
-								{LANGUAGES.find((l) => l.value === lang)?.title || lang}
-								<button
-									type="button"
-									onclick={() => toggleLanguage(lang)}
-									class="hover:text-accent-900"
-								>
-									×
-								</button>
-							</span>
-						{/each}
-					</div>
-				{/if}
-
-				<input type="hidden" name="filmLanguage" value={selectedLanguages.join(', ')} />
 				{#if form?.errors?.filmLanguage}
 					<p class="mt-1 text-sm text-red-500">{form.errors.filmLanguage}</p>
 				{/if}

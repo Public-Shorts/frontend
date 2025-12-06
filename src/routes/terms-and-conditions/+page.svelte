@@ -70,7 +70,34 @@
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">5. Screening Rights</div>
+	<div class="font-semibold md:col-span-1">5. Prohibited Content (Germany)</div>
+	<div class="md:col-span-5">
+		<p class="mb-2">
+			By submitting, you confirm that the content does not violate the laws of the Federal Republic
+			of Germany. The following are strictly prohibited and will result in immediate
+			disqualification:
+		</p>
+		<ul class="list-disc space-y-2 pl-4">
+			<li>
+				<strong>Hate Speech & Incitement:</strong> Content that incites hatred, violence, or
+				discrimination against individuals or groups based on nationality, ethnicity, religion,
+				gender, sexual orientation, or disability (in accordance with § 130 StGB -
+				<em>Volksverhetzung</em>).
+			</li>
+			<li>
+				<strong>Unconstitutional Symbols:</strong> The use of symbols, insignia, or propaganda of unconstitutional
+				organizations (e.g., Nazi symbols) is prohibited unless used clearly for educational, artistic,
+				or documentary purposes (§ 86a StGB).
+			</li>
+			<li>
+				<strong>Protection of Minors:</strong> Since screens are visible in public space 24/7,
+				content must not be pornographic or deemed "harmful to minors" (indexed or rated 18+) under
+				the German Protection of Young Persons Act (<em>JuSchG</em>).
+			</li>
+		</ul>
+	</div>
+
+	<div class="font-semibold md:col-span-1">6. Screening Rights</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
@@ -86,7 +113,7 @@
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">6. Archiving</div>
+	<div class="font-semibold md:col-span-1">7. Archiving</div>
 	<div class="md:col-span-5">
 		<p>
 			The Festival may keep a digital copy of the Video and materials in its internal archive for
@@ -94,7 +121,7 @@
 		</p>
 	</div>
 
-	<div class="font-semibold md:col-span-1">7. Selection & Data</div>
+	<div class="font-semibold md:col-span-1">8. Selection & Data</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
@@ -108,7 +135,7 @@
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">8. Jurisdiction</div>
+	<div class="font-semibold md:col-span-1">9. Jurisdiction</div>
 	<div class="md:col-span-5">
 		<p>
 			These Terms are governed by the laws of the Federal Republic of Germany. Place of jurisdiction
@@ -178,7 +205,29 @@
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">5. Archivierung & Datenschutz</div>
+	<div class="font-semibold md:col-span-1">5. Verbotene Inhalte (Deutschland)</div>
+	<div class="md:col-span-5">
+		<p class="mb-2">
+			Mit der Einreichung bestätigen Sie, dass der Inhalt nicht gegen die Gesetze der Bundesrepublik
+			Deutschland verstößt. Folgende Inhalte sind streng untersagt und führen zum Ausschluss:
+		</p>
+		<ul class="list-disc space-y-2 pl-4">
+			<li>
+				<strong>Hassrede & Volksverhetzung:</strong> Inhalte, die zu Hass, Gewalt oder Diskriminierung
+				aufstacheln (gemäß § 130 StGB).
+			</li>
+			<li>
+				<strong>Verfassungswidrige Kennzeichen:</strong> Symbole verfassungswidriger Organisationen (z.
+				B. NS-Symbolik) sind verboten, außer sie dienen eindeutig der Kunst oder Aufklärung (§ 86a StGB).
+			</li>
+			<li>
+				<strong>Jugendschutz:</strong> Da die Bildschirme öffentlich einsehbar sind, dürfen Inhalte
+				nicht pornografisch oder jugendgefährdend sein (Jugendschutzgesetz – <em>JuSchG</em>).
+			</li>
+		</ul>
+	</div>
+
+	<div class="font-semibold md:col-span-1">6. Archivierung & Datenschutz</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
@@ -190,7 +239,7 @@
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">6. Gerichtsstand</div>
+	<div class="font-semibold md:col-span-1">7. Gerichtsstand</div>
 	<div class="md:col-span-5">
 		<p>Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand ist Berlin.</p>
 	</div>

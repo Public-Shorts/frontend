@@ -46,6 +46,24 @@
 		}
 		showCategoryOther = selectedCategories.includes('other');
 	}
+
+	let screenshotPreviews: string[] = [];
+	let posterPreview: string | null = null;
+
+	function handleScreenshotsChange(files: FileList | null) {
+		// Revoke old URLs
+		screenshotPreviews.forEach((url) => URL.revokeObjectURL(url));
+		screenshotPreviews = files
+			? Array.from(files)
+					.slice(0, 5)
+					.map((file) => URL.createObjectURL(file))
+			: [];
+	}
+
+	function handlePosterChange(files: FileList | null) {
+		if (posterPreview) URL.revokeObjectURL(posterPreview);
+		posterPreview = files && files[0] ? URL.createObjectURL(files[0]) : null;
+	}
 </script>
 
 <GridLayout>
@@ -104,22 +122,21 @@
 				{isSubmitting ? 'Submitting...' : 'Submit Video'}
 				<p></p>
 			</button>
+			{#if form?.success}
+				<div class="fixed right-6 bottom-6 z-50 max-w-md rounded bg-accent-500 p-4 shadow-lg">
+					<p class="font-semibold">Submission successful! Thank you for submitting your video.</p>
+				</div>
+			{/if}
+
+			{#if form?.error}
+				<div class="fixed right-6 bottom-6 z-50 max-w-md rounded bg-accent-800 p-4 shadow-lg">
+					<p class="font-semibold">Error: {form.error}</p>
+				</div>
+			{/if}
 		</div>
 	</div>
 
 	<div class="md:order-first md:col-span-4">
-		{#if form?.success}
-			<div class="fixed right-6 bottom-6 z-50 max-w-md rounded bg-accent-500 p-4 shadow-lg">
-				<p class="font-semibold">Submission successful! Thank you for submitting your video.</p>
-			</div>
-		{/if}
-
-		{#if form?.error}
-			<div class="fixed right-6 bottom-6 z-50 max-w-md rounded bg-accent-800 p-4 shadow-lg">
-				<p class="font-semibold">Error: {form.error}</p>
-			</div>
-		{/if}
-
 		<form
 			method="POST"
 			enctype="multipart/form-data"
@@ -135,7 +152,7 @@
 		>
 			<!-- Contact Information -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">Contact Information</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Contact Information</h2>
 
 				<div>
 					<label for="submitterName" class="mb-2 block">
@@ -189,7 +206,7 @@
 
 			<!-- Video Information -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">Video Information</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Video Information</h2>
 
 				<div>
 					<label for="directorName" class="mb-2 block">
@@ -381,7 +398,7 @@
 
 				{#if showCategoryOther}
 					<div>
-						<label for="categoryOther" class="mb-2 block">Please specify other category</label>
+						<label for="categoryOther" class="mb-2 block">Please specify other categories</label>
 						<input
 							type="text"
 							id="categoryOther"
@@ -395,7 +412,7 @@
 
 			<!-- Media Files -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">Media Files</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Media Files</h2>
 
 				<div>
 					<label for="linkToWatch" class="mb-2 block">
@@ -411,7 +428,7 @@
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">
-						Needs to be accessible until the start of the festival
+						Make sure the link is working.Needs to be accessible until the start of the festival.
 					</p>
 					{#if form?.errors?.linkToWatch}
 						<p class="mt-1 text-sm text-red-500">{form.errors.linkToWatch}</p>
@@ -431,7 +448,9 @@
 						placeholder="https://drive.google.com/..."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
-					<p class="mt-1 text-sm text-gallery-500">Please provide a file with English subtitles.</p>
+					<p class="mt-1 text-sm text-gallery-500">
+						Make sure the link is working. Please provide a file with English subtitles.
+					</p>
 					{#if form?.errors?.linkToDownload}
 						<p class="mt-1 text-sm text-red-500">{form.errors.linkToDownload}</p>
 					{/if}
@@ -449,11 +468,27 @@
 						multiple
 						required
 						bind:files={screenshots}
-						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+						onchange={() => handleScreenshotsChange(screenshots)}
+						class="block w-full text-sm text-gallery-600
+           file:mr-4 file:rounded-md file:border-0
+           file:bg-accent-500 file:px-4 file:py-2
+           file:text-sm file:font-semibold file:text-white
+           hover:file:bg-accent-600"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">
 						Please attach up to 5 screenshots/video stills from your work.
 					</p>
+
+					{#if screenshotPreviews.length}
+						<div class="mt-3 grid grid-cols-3 gap-2">
+							{#each screenshotPreviews as src}
+								<div class="overflow-hidden rounded border border-gallery-200">
+									<img {src} alt="Screenshot preview" class="h-24 w-full object-cover" />
+								</div>
+							{/each}
+						</div>
+					{/if}
+
 					{#if form?.errors?.screenshots}
 						<p class="mt-1 text-sm text-red-500">{form.errors.screenshots}</p>
 					{/if}
@@ -467,9 +502,21 @@
 						name="poster"
 						accept="image/*"
 						bind:files={poster}
-						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+						onchange={() => handlePosterChange(poster)}
+						class="block w-full text-sm text-gallery-600
+           file:mr-4 file:rounded-md file:border-0
+           file:bg-accent-500 file:px-4 file:py-2
+           file:text-sm file:font-semibold file:text-white
+           hover:file:bg-accent-600"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">Upload your video poster (JPG, PNG, etc.)</p>
+
+					{#if posterPreview}
+						<div class="mt-3 w-40 overflow-hidden rounded border border-gallery-200">
+							<img src={posterPreview} alt="Poster preview" class="h-56 w-full object-cover" />
+						</div>
+					{/if}
+
 					{#if form?.errors?.poster}
 						<p class="mt-1 text-sm text-red-500">{form.errors.poster}</p>
 					{/if}
@@ -478,7 +525,7 @@
 
 			<!-- Credits -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">Credits</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Credits</h2>
 
 				<div>
 					<label for="castAndCrew" class="mb-2 block">Cast and Crew</label>
@@ -507,9 +554,7 @@
 
 			<!-- Additional Information -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">
-					Additional Information
-				</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Additional Information</h2>
 
 				<div class="space-y-2">
 					<label class="flex items-start">
@@ -626,9 +671,7 @@
 
 			<!-- Terms and Conditions -->
 			<section class="space-y-4">
-				<h2 class="border-b border-gallery-300 pb-2 text-2xl font-semibold">
-					Terms and Conditions
-				</h2>
+				<h2 class=" border-gallery-300 pb-2 font-semibold">Terms and Conditions</h2>
 
 				<label class="flex items-start">
 					<input type="checkbox" name="termsAccepted" required class="mt-1 mr-2" />

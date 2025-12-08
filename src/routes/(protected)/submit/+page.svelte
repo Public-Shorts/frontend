@@ -24,18 +24,18 @@
 		{ title: 'Environment / Nature', value: 'environment' },
 		{ title: 'Experimental', value: 'experimental' },
 		{ title: 'Horror', value: 'horror' },
-		{ title: 'LGBTQAI+', value: 'lgbtqai' },
+		{ title: 'LGBTQIA+', value: 'lgbtqia' },
 		{ title: 'Made with a mobile phone', value: 'mobile' },
 		{ title: 'Micro-Short', value: 'micro' },
 		{ title: 'Music Video', value: 'music_video' },
 		{ title: 'Narrative', value: 'narrative' },
-		{ title: 'Other', value: 'other' },
 		{ title: 'Performance', value: 'performance' },
 		{ title: 'Science Fiction / Fantasy', value: 'sci_fi_fantasy' },
 		{ title: 'Social Impact / Activism', value: 'social_impact' },
 		{ title: 'Technology', value: 'technology' },
 		{ title: 'Urban', value: 'urban' },
-		{ title: 'Visual-Only', value: 'silent_visual' }
+		{ title: 'Visual-Only', value: 'silent_visual' },
+		{ title: 'Other', value: 'other' }
 	];
 
 	function toggleCategory(value: string) {
@@ -373,7 +373,7 @@
 						Categories <span class="text-red-500">*</span>
 					</label>
 					<div
-						class="grid grid-cols-2 gap-2 rounded border border-gallery-300 bg-gallery-50 p-3 md:grid-cols-3"
+						class="grid grid-flow-col auto-rows-fr grid-rows-7 gap-2 rounded border border-gallery-300 bg-gallery-50 p-3 md:grid-rows-7"
 					>
 						{#each CATEGORIES as category}
 							<label class="flex cursor-pointer items-center space-x-2">
@@ -428,7 +428,7 @@
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">
-						Make sure the link is working.Needs to be accessible until the start of the festival.
+						Make sure the link is working. Needs to be accessible until the start of the festival.
 					</p>
 					{#if form?.errors?.linkToWatch}
 						<p class="mt-1 text-sm text-red-500">{form.errors.linkToWatch}</p>
@@ -449,7 +449,8 @@
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">
-						Make sure the link is working. Please provide a file with English subtitles.
+						Make sure the link is working and does not expire – like WeTransfer. It's best to use a
+						drive or cloud service. Please provide a file with English subtitles.
 					</p>
 					{#if form?.errors?.linkToDownload}
 						<p class="mt-1 text-sm text-red-500">{form.errors.linkToDownload}</p>
@@ -458,7 +459,7 @@
 
 				<div>
 					<label for="screenshots" class="mb-2 block">
-						Screenshots <span class="text-red-500">*</span>
+						Stills <span class="text-red-500">*</span>
 					</label>
 					<input
 						type="file"
@@ -476,7 +477,7 @@
            hover:file:bg-accent-600"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">
-						Please attach up to 5 screenshots/video stills from your work.
+						Please attach up to 5 video stills from your work.
 					</p>
 
 					{#if screenshotPreviews.length}

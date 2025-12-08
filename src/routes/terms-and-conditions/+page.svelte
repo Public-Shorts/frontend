@@ -101,8 +101,10 @@
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
-				Selected Videos may be shown multiple times during the Festival without additional fees.
+				There is no fee for submission or screening. The Artist grants the Festival the right to
+				screen.
 			</li>
+			<li>Selected Videos may be shown multiple times during the Festival.</li>
 			<li>
 				The Festival may include the Video in "best-of" or recap programs directly related to the
 				specific Festival edition.
@@ -144,63 +146,75 @@
 	</div>
 
 	<!-- German Section -->
-	<h1
-		class="border-t border-t-2 border-gallery-300 pt-4 pt-12 text-3xl font-bold md:col-span-5 md:col-start-2"
-	>
-		Teilnahmebedingungen
+	<h1 class="mb-4 text-3xl font-bold md:col-span-5 md:col-start-2">
+		Allgemeine Geschäftsbedingungen
 	</h1>
 
 	<div class="font-semibold md:col-span-1">Vereinbarung</div>
 	<div class="md:col-span-5">
 		<p>
-			Mit der Einreichung eines Werkes (das „Video“) beim Public Shorts Video Festival stimmt die
-			einreichende Person oder Organisation („Künstler*in“) den folgenden Bedingungen zu.
+			Mit der Einreichung eines Werkes (das „Video“) beim Public Shorts Video Festival erklärt sich
+			die einreichende Person oder Institution („Künstler*in“) mit den folgenden
+			Geschäftsbedingungen einverstanden.
 		</p>
 	</div>
 
-	<div class="font-semibold md:col-span-1">1. Rechte & Echtheit</div>
+	<div class="font-semibold md:col-span-1">1. Teilnahmeberechtigung & Urheberschaft</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
-				Die Künstler*in bestätigt, Urheber*in und/oder berechtigte*r Rechteinhaber*in aller
-				Bestandteile des Videos zu sein.
-			</li>
-			<li>Alle Angaben im Einreichungsformular sind wahrheitsgemäß und vollständig.</li>
-		</ul>
-	</div>
-
-	<div class="font-semibold md:col-span-1">2. Vorführrechte</div>
-	<div class="md:col-span-5">
-		<ul class="list-disc space-y-2 pl-4">
-			<li>
-				Das Festival erhält das nicht-exklusive Recht, das Video während der Laufzeit auf allen
-				Screens und Fenstern (auch im öffentlichen Raum) zu zeigen.
-			</li>
-			<li>Dies umfasst auch Testvorführungen und interne Sichtungen.</li>
-		</ul>
-	</div>
-
-	<div class="font-semibold md:col-span-1">3. Nutzung & Promotion</div>
-	<div class="md:col-span-5">
-		<ul class="list-disc space-y-2 pl-4">
-			<li>
-				Informationen zum Werk dürfen für werbliche und informative Zwecke (Print, Web, Social
-				Media) genutzt werden.
+				Die Künstler*in bestätigt, Urheber*in und/oder autorisierte*r Rechteinhaber*in des Videos
+				sowie aller zugehörigen Materialien (einschließlich Ton, Bilder, Text und Grafiken) zu sein
+				und berechtigt zu sein, die hierin beschriebenen Rechte zu gewähren.
 			</li>
 			<li>
-				Das Festival darf Standbilder und Screenshots für die Bewerbung des Festivals in
-				nicht-kommerziellen und kommerziellen Kontexten verwenden.
+				Die Künstler*in garantiert, dass alle im Einreichungsformular gemachten Angaben wahr,
+				vollständig und korrekt sind.
 			</li>
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">4. Urheberrechte Dritter</div>
+	<div class="font-semibold md:col-span-1">2. Festivalpräsentation</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
-			<li>Das Video darf keine Rechte Dritter verletzen und kein unbefugtes Material enthalten.</li>
 			<li>
-				Die Künstler*in stellt das Festival von allen Ansprüchen frei, die aus Rechtsverletzungen
-				resultieren.
+				Die Künstler*in gewährt dem Festival eine nicht-exklusive, weltweite und gebührenfreie
+				Lizenz zur Vorführung des Videos während des Festivals auf allen vom Festival kontrollierten
+				Bildschirmen, Fenstern und Projektionsflächen, einschließlich kontinuierlicher Schleifen,
+				die vom öffentlichen Raum aus sichtbar sind.
+			</li>
+			<li>
+				Dies schließt Vorführrechte für offizielle Veranstaltungen, Testscreenings und interne
+				Previews ein.
+			</li>
+		</ul>
+	</div>
+
+	<div class="font-semibold md:col-span-1">3. Promotion & Nutzung</div>
+	<div class="md:col-span-5">
+		<ul class="list-disc space-y-2 pl-4">
+			<li>
+				Das Festival darf eingereichte Informationen (Titel, Name der Künstler*in, Synopsis etc.) zu
+				Werbezwecken in Print-, Online- und sozialen Medien verwenden.
+			</li>
+			<li>
+				Die Künstler*in stimmt ausdrücklich zu, dass das Festival Standbilder, Screenshots aus dem
+				Video und Pressebilder zur Bewerbung des Festivals in nicht-kommerziellen und kommerziellen
+				Kontexten (z. B. Pressemitteilungen, Plakate, Website, soziale Medien) verwenden darf.
+			</li>
+		</ul>
+	</div>
+
+	<div class="font-semibold md:col-span-1">4. Urheberrecht & Haftung</div>
+	<div class="md:col-span-5">
+		<ul class="list-disc space-y-2 pl-4">
+			<li>
+				Die Künstler*in bestätigt, dass das Video kein unautorisiertes urheberrechtlich geschütztes
+				Material (z. B. Musik, Filmausschnitte) enthält und keine Rechte Dritter verletzt.
+			</li>
+			<li>
+				Die Künstler*in verpflichtet sich, das Festival von jeglichen Ansprüchen oder Kosten
+				freizuhalten, die aus Rechtsverletzungen oder falschen Angaben entstehen.
 			</li>
 		</ul>
 	</div>
@@ -208,39 +222,76 @@
 	<div class="font-semibold md:col-span-1">5. Verbotene Inhalte (Deutschland)</div>
 	<div class="md:col-span-5">
 		<p class="mb-2">
-			Mit der Einreichung bestätigen Sie, dass der Inhalt nicht gegen die Gesetze der Bundesrepublik
-			Deutschland verstößt. Folgende Inhalte sind streng untersagt und führen zum Ausschluss:
+			Mit der Einreichung wird bestätigt, dass der Inhalt keine Gesetze der Bundesrepublik
+			Deutschland verletzt. Folgende Inhalte sind strengstens untersagt und führen zur sofortigen
+			Disqualifikation:
 		</p>
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
-				<strong>Hassrede & Volksverhetzung:</strong> Inhalte, die zu Hass, Gewalt oder Diskriminierung
-				aufstacheln (gemäß § 130 StGB).
+				<strong>Hassrede & Aufstachelung:</strong> Inhalte, die zu Hass, Gewalt oder Diskriminierung
+				gegen Personen oder Gruppen aufgrund von Nationalität, Ethnie, Religion, Geschlecht,
+				sexueller Orientierung oder Behinderung aufrufen (gemäß § 130 StGB –
+				<em>Volksverhetzung</em>).
 			</li>
 			<li>
-				<strong>Verfassungswidrige Kennzeichen:</strong> Symbole verfassungswidriger Organisationen (z.
-				B. NS-Symbolik) sind verboten, außer sie dienen eindeutig der Kunst oder Aufklärung (§ 86a StGB).
+				<strong>Verfassungswidrige Symbole:</strong> Die Verwendung von Symbolen, Abzeichen oder Propaganda
+				verfassungswidriger Organisationen (z. B. NS-Symbole) ist verboten, es sei denn, sie erfolgt
+				eindeutig zu Bildungs-, künstlerischen oder dokumentarischen Zwecken (§ 86a StGB).
 			</li>
 			<li>
-				<strong>Jugendschutz:</strong> Da die Bildschirme öffentlich einsehbar sind, dürfen Inhalte
-				nicht pornografisch oder jugendgefährdend sein (Jugendschutzgesetz – <em>JuSchG</em>).
+				<strong>Jugendschutz:</strong> Da Bildschirme im öffentlichen Raum rund um die Uhr sichtbar
+				sind, darf der Inhalt weder pornografisch noch als „jugendgefährdend“ (indiziert oder ab 18
+				Jahren) im Sinne des Jugendschutzgesetzes (<em>JuSchG</em>) eingestuft sein.
 			</li>
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">6. Archivierung & Datenschutz</div>
+	<div class="font-semibold md:col-span-1">6. Vorführrechte</div>
 	<div class="md:col-span-5">
 		<ul class="list-disc space-y-2 pl-4">
 			<li>
-				Das Festival darf eine Kopie des Videos zu Archiv- und Dokumentationszwecken behalten.
+				Für Einreichung und Vorführung wird keine Gebühr erhoben. Die Künstler*in gewährt dem
+				Festival das Recht zur Vorführung.
+			</li>
+			<li>Ausgewählte Videos können während des Festivals mehrfach gezeigt werden.</li>
+			<li>
+				Das Festival darf das Video in „Best-of“- oder Rückblicksprogrammen präsentieren, die in
+				direktem Zusammenhang mit der jeweiligen Festivalausgabe stehen.
 			</li>
 			<li>
-				Personenbezogene Daten werden zur Durchführung des Festivals gespeichert und verarbeitet.
+				Alle weiteren Rechte verbleiben bei der Künstler*in; das Urheberrecht wird nicht an das
+				Festival übertragen.
 			</li>
 		</ul>
 	</div>
 
-	<div class="font-semibold md:col-span-1">7. Gerichtsstand</div>
+	<div class="font-semibold md:col-span-1">7. Archivierung</div>
 	<div class="md:col-span-5">
-		<p>Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand ist Berlin.</p>
+		<p>
+			Das Festival darf eine digitale Kopie des Videos und der zugehörigen Materialien in seinem
+			internen Archiv zu Dokumentations- und nicht-kommerziellen Forschungszwecken aufbewahren.
+		</p>
+	</div>
+
+	<div class="font-semibold md:col-span-1">8. Auswahl & Daten</div>
+	<div class="md:col-span-5">
+		<ul class="list-disc space-y-2 pl-4">
+			<li>
+				Die Einreichung garantiert keine Auswahl. Das Festival behält sich das Recht vor, ein Video
+				aus technischen oder rechtlichen Gründen zu entfernen.
+			</li>
+			<li>
+				Die Künstler*in willigt in die Verarbeitung personenbezogener Daten zum Zwecke der
+				Festivalorganisation und Kommunikation ein.
+			</li>
+		</ul>
+	</div>
+
+	<div class="font-semibold md:col-span-1">9. Gerichtsstand</div>
+	<div class="md:col-span-5">
+		<p>
+			Diese Bedingungen unterliegen dem Recht der Bundesrepublik Deutschland. Gerichtsstand ist
+			Berlin.
+		</p>
 	</div>
 </GridLayout>

@@ -1,7 +1,7 @@
 import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from "$env/static/public";
 import { SANITY_TOKEN } from "$env/static/private";
 import { createClient } from "@sanity/client";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
 // Authenticated client for server-side operations (mutations, uploads)
@@ -177,6 +177,7 @@ export const actions = {
       const synopsis = formData.get('synopsis')?.toString();
       const categories = formData.get('categories')?.toString();
       const linkToWatch = formData.get('linkToWatch')?.toString();
+      const linkPassword = formData.get('linkPassword')?.toString();
       const linkToDownload = formData.get('linkToDownload')?.toString();
       const termsAccepted = formData.get('termsAccepted') === 'on';
       const explicit = formData.get('explicit') === 'true';
@@ -240,6 +241,7 @@ export const actions = {
           categories,
           categoryOther: formData.get('categoryOther')?.toString(),
           linkToWatch,
+          linkPassword,
           linkToDownload,
           explicitDetails,
           aiExplanation,
@@ -300,6 +302,7 @@ export const actions = {
         previousScreenings,
         previousScreeningLocations: previousScreeningLocations || undefined,
         linkToWatch,
+        linkPassword: linkPassword || undefined,
         linkToDownload,
         screenshots: screenshotAssets,
         poster: posterAsset || undefined,
@@ -321,9 +324,18 @@ export const actions = {
         cookies.delete('submit_session_id', { path: '/submit' });
       }
 
-      return {
-        success: true,
-      };
+      // Redirect to success page with submission details
+      const params = new URLSearchParams({
+        title: englishTitle,
+        director: directorName,
+        email: email,
+      });
+
+      if (posterAsset) {
+        params.set('poster', encodeURIComponent(JSON.stringify(posterAsset)));
+      }
+
+      throw redirect(303, `/submit/success?${params.toString()}`);
     } catch (error) {
       console.error('Submission error:', error);
       return fail(500, {

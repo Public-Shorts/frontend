@@ -2,6 +2,7 @@
   import { enhance } from '$app/forms';
   import type { PageProps, Snapshot } from './$types';
   import SimpleImage from '$lib/sanity/SimpleImage.svelte';
+  import SEO from "$lib/components/SEO.svelte"
 
   let { data, form }: PageProps = $props();
 
@@ -399,9 +400,8 @@
   }
 </script>
 
-<svelte:head>
-  <title>Submit | Public Shorts | Berlin</title>
-</svelte:head>
+
+<SEO title="Submit | Public Shorts | Berlin" />
 
 
 {#if unlocked}
@@ -711,6 +711,19 @@
       </div>
 
       <div>
+        <label for="linkPassword" class="block mb-2">Link Password</label>
+        <input
+          type="text"
+          id="linkPassword"
+          name="linkPassword"
+          value={form?.linkPassword ?? ''}
+          placeholder="Password (if required)"
+          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
+        />
+        <p class="text-sm text-gallery-500 mt-1">If we need a password to see your video, add it here</p>
+      </div>
+
+      <div>
         <label for="linkToDownload" class="block mb-2">Link to Download <span class="text-red-500">*</span></label>
         <input
           type="url"
@@ -735,7 +748,7 @@
 
         {#if screenshotFiles.length > 0}
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3 p-3 bg-gallery-50 border border-gallery-300 rounded">
-            {#each screenshotFiles as screenshot, index (screenshot.id)}
+            {#each screenshotFiles as screenshot, index (screenshot.id + index)}
               <div
                 class="relative group cursor-move bg-white rounded border-2 transition-all"
                 class:border-accent-500={draggedIndex === index}

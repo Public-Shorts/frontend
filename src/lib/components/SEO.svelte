@@ -8,7 +8,7 @@
     description = "",
     imageAlt = "",
     imageUrl = "/",
-    language = "de-de",
+    language = "en-us",
     imageWidth = "",
     imageHeight = ""
 } = $props()

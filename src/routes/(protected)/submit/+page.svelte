@@ -85,11 +85,23 @@
         console.log('Parsed data:', data);
 
         // Handle devalue serialization format - data comes as array
-        // Structure is [{ success, asset }, true, { _type, asset }, ...]
-        // We want the first object's asset property, which is at index 2
-        const asset = Array.isArray(data) ? data[2] : data.asset;
-        console.log('Extracted asset:', asset);
-        return asset;
+        // The devalue format uses numeric references, so we need to find the actual asset object
+        // Structure: [{ success, asset }, true, { _type, asset }, "image", { _type, _ref }, "reference", "image-xxx"]
+        // We need to build the proper asset object with the _ref string
+        if (Array.isArray(data)) {
+          // Find the image reference string (last item in array)
+          const refString = data[data.length - 1];
+          const asset = {
+            _type: 'image',
+            asset: {
+              _type: 'reference',
+              _ref: refString
+            }
+          };
+          console.log('Extracted asset:', asset);
+          return asset;
+        }
+        return data.asset;
       }
 
       // Log error if upload failed
@@ -426,9 +438,24 @@
     enctype="multipart/form-data"
     use:enhance={() => {
       isSubmitting = true;
-      return async ({ update }) => {
-        await update();
-        isSubmitting = false;
+      return async ({ result, update }) => {
+        if (result.type === 'success' && result.data?.success) {
+          // Build success page URL with params
+          const params = new URLSearchParams({
+            title: result.data.title,
+            director: result.data.director,
+            email: result.data.email,
+          });
+
+          if (result.data.poster) {
+            params.set('poster', encodeURIComponent(JSON.stringify(result.data.poster)));
+          }
+
+          window.location.href = `/submit/success?${params.toString()}`;
+        } else {
+          await update();
+          isSubmitting = false;
+        }
       };
     }}
     class="space-y-8"

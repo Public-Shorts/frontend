@@ -324,18 +324,14 @@ export const actions = {
         cookies.delete('submit_session_id', { path: '/submit' });
       }
 
-      // Redirect to success page with submission details
-      const params = new URLSearchParams({
+      return {
+        success: true,
+        submissionId: result._id,
         title: englishTitle,
         director: directorName,
         email: email,
-      });
-
-      if (posterAsset) {
-        params.set('poster', encodeURIComponent(JSON.stringify(posterAsset)));
-      }
-
-      throw redirect(303, `/submit/success?${params.toString()}`);
+        poster: posterAsset
+      };
     } catch (error) {
       console.error('Submission error:', error);
       return fail(500, {

@@ -9,7 +9,8 @@
 	<div class="md:col-span-5">
 		<p class="mb-12">
 			We are grateful for the support of our partners who help make the 24/7 Video Festival
-			possible.
+			possible. If you are interested in becoming a partner, please reach out to us at
+			<a href="mailto:hi@publicshorts.org">hi@publicshorts.org</a>
 		</p>
 		<div class="mt-6 flex flex-col items-start gap-8 md:grid md:grid-cols-3">
 			<a

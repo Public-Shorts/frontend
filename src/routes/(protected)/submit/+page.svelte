@@ -320,7 +320,7 @@
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						/>
 						<p class="mt-1 text-sm text-gallery-500">
-							Submitted works should be no longer than 15 minutes.
+							Submitted works should be no longer than 15 minutes. Round to the nearest minute.
 						</p>
 						{#if form?.errors?.length}
 							<p class="mt-1 text-sm text-red-500">{form.errors.length}</p>

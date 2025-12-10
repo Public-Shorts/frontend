@@ -36,5 +36,11 @@
 			<summary class="cursor-pointer font-semibold">Who can submit?</summary>
 			<p class="mt-2 pl-4">Everyone can submit: including professionals, students, and amateurs.</p>
 		</details>
+		<details class="mb-4">
+			<summary class="cursor-pointer font-semibold">How do I know I got selected?</summary>
+			<p class="mt-2 pl-4">
+				Submissions will be review in January and Feruary 2026. We will contact you afterwards.
+			</p>
+		</details>
 	</div>
 </GridLayout>

@@ -2,7 +2,7 @@ import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from "$env/static/pub
 import { SANITY_TOKEN } from "$env/static/private";
 import { createClient } from "@sanity/client";
 import { fail } from "@sveltejs/kit";
-import type { Actions } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 
 // Authenticated client for server-side operations (mutations, uploads)
 const authenticatedClient = createClient({
@@ -13,20 +13,43 @@ const authenticatedClient = createClient({
   apiVersion: "2025-02-21",
 });
 
+// Session storage for temporary uploads
+const sessionUploads = new Map<string, { screenshots: any[], poster: any | null }>();
+
+export const load: PageServerLoad = async ({ cookies }) => {
+  const sessionId = cookies.get('submit_session_id');
+
+  if (sessionId && sessionUploads.has(sessionId)) {
+    const uploads = sessionUploads.get(sessionId);
+    return {
+      uploadedImages: uploads
+    };
+  }
+
+  return {
+    uploadedImages: null
+  };
+};
+
 async function uploadImageToSanity(file: File): Promise<any> {
   try {
+    console.log('Uploading to Sanity:', file.name, file.type, file.size);
     const buffer = await file.arrayBuffer();
     const asset = await authenticatedClient.assets.upload('image', Buffer.from(buffer), {
       filename: file.name,
       contentType: file.type,
     });
-    return {
+    console.log('Sanity upload complete, asset ID:', asset._id);
+
+    const imageRef = {
       _type: 'image',
       asset: {
         _type: 'reference',
         _ref: asset._id,
       },
     };
+    console.log('Created image reference:', imageRef);
+    return imageRef;
   } catch (error) {
     console.error('Error uploading image:', error);
     throw new Error('Failed to upload image');
@@ -34,7 +57,111 @@ async function uploadImageToSanity(file: File): Promise<any> {
 }
 
 export const actions = {
-  default: async ({ request }) => {
+  uploadImage: async ({ request, cookies }) => {
+    try {
+      const formData = await request.formData();
+      const file = formData.get('file') as File;
+      const type = formData.get('type')?.toString(); // 'screenshot' or 'poster'
+
+      if (!file || file.size === 0) {
+        return fail(400, { error: 'No file provided' });
+      }
+
+      // Upload to Sanity
+      const asset = await uploadImageToSanity(file);
+
+      // Get or create session ID
+      let sessionId = cookies.get('submit_session_id');
+      if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        cookies.set('submit_session_id', sessionId, {
+          path: '/submit',
+          httpOnly: true,
+          sameSite: 'strict',
+          maxAge: 60 * 60 * 24 // 24 hours
+        });
+      }
+
+      // Store in session
+      if (!sessionUploads.has(sessionId)) {
+        sessionUploads.set(sessionId, { screenshots: [], poster: null });
+      }
+
+      const uploads = sessionUploads.get(sessionId)!;
+
+      if (type === 'poster') {
+        uploads.poster = asset;
+      } else {
+        uploads.screenshots.push(asset);
+      }
+
+      console.log('Upload successful, returning asset:', asset);
+
+      return {
+        success: true,
+        asset
+      };
+    } catch (error) {
+      console.error('Upload error:', error);
+      return fail(500, {
+        error: error instanceof Error ? error.message : 'Failed to upload image'
+      });
+    }
+  },
+
+  deleteImage: async ({ request, cookies }) => {
+    try {
+      const formData = await request.formData();
+      const assetId = formData.get('assetId')?.toString();
+      const type = formData.get('type')?.toString();
+
+      const sessionId = cookies.get('submit_session_id');
+      if (!sessionId || !sessionUploads.has(sessionId)) {
+        return fail(400, { error: 'No session found' });
+      }
+
+      const uploads = sessionUploads.get(sessionId)!;
+
+      if (type === 'poster') {
+        uploads.poster = null;
+      } else {
+        uploads.screenshots = uploads.screenshots.filter(
+          s => s.asset._ref !== assetId?.replace('image-', '').replace(/-[a-z]+$/, '')
+        );
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Delete error:', error);
+      return fail(500, { error: 'Failed to delete image' });
+    }
+  },
+
+  reorderScreenshots: async ({ request, cookies }) => {
+    try {
+      const formData = await request.formData();
+      const order = JSON.parse(formData.get('order')?.toString() || '[]');
+
+      const sessionId = cookies.get('submit_session_id');
+      if (!sessionId || !sessionUploads.has(sessionId)) {
+        return fail(400, { error: 'No session found' });
+      }
+
+      const uploads = sessionUploads.get(sessionId)!;
+      const reordered = order.map((assetRef: string) =>
+        uploads.screenshots.find(s => s.asset._ref === assetRef)
+      ).filter(Boolean);
+
+      uploads.screenshots = reordered;
+
+      return { success: true };
+    } catch (error) {
+      console.error('Reorder error:', error);
+      return fail(500, { error: 'Failed to reorder images' });
+    }
+  },
+
+  submit: async ({ request, cookies }) => {
     try {
       const formData = await request.formData();
 
@@ -124,32 +251,21 @@ export const actions = {
         });
       }
 
-      // Handle file uploads
-      const posterFile = formData.get('poster') as File | null;
-      const screenshotsFiles = formData.getAll('screenshots') as File[];
+      // Get uploaded images from session
+      const sessionId = cookies.get('submit_session_id');
+      let screenshotAssets: any[] = [];
+      let posterAsset: any = null;
+
+      if (sessionId && sessionUploads.has(sessionId)) {
+        const uploads = sessionUploads.get(sessionId)!;
+        screenshotAssets = uploads.screenshots;
+        posterAsset = uploads.poster;
+      }
 
       // Validate screenshots (required)
-      const validScreenshots = screenshotsFiles.filter(f => f && f.size > 0);
-      if (validScreenshots.length === 0) {
+      if (screenshotAssets.length === 0) {
         errors.screenshots = 'At least one screenshot is required';
         return fail(400, { errors });
-      }
-      if (validScreenshots.length > 5) {
-        errors.screenshots = 'Maximum 5 screenshots allowed';
-        return fail(400, { errors });
-      }
-
-      // Upload screenshots
-      const screenshotAssets = [];
-      for (const screenshotFile of validScreenshots) {
-        const asset = await uploadImageToSanity(screenshotFile);
-        screenshotAssets.push(asset);
-      }
-
-      // Upload poster (optional)
-      let posterAsset = null;
-      if (posterFile && posterFile.size > 0) {
-        posterAsset = await uploadImageToSanity(posterFile);
       }
 
       // Parse comma-separated values into arrays
@@ -198,6 +314,12 @@ export const actions = {
       const result = await authenticatedClient.create(submission);
 
       console.log('Submission created:', result._id);
+
+      // Clear session uploads after successful submission
+      if (sessionId && sessionUploads.has(sessionId)) {
+        sessionUploads.delete(sessionId);
+        cookies.delete('submit_session_id', { path: '/submit' });
+      }
 
       return {
         success: true,

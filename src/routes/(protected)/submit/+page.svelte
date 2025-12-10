@@ -1,52 +1,358 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import type { PageProps, Snapshot } from './$types';
+  import SimpleImage from '$lib/sanity/SimpleImage.svelte';
 
   let { data, form }: PageProps = $props();
 
   let i = $state(0)
   let unlocked = $derived(i > 7)
-  let submitterName = $state("")
+  let submitterName = $state(form?.submitterName ?? "")
   let email = $state(form?.email ?? '')
   let phone = $state(form?.phone ?? '')
   let socialMedia = $state(form?.socialMedia ?? '')
   let website = $state(form?.website ?? '')
   let directorName = $state(form?.directorName ?? '')
-  let screenshots = $state<FileList | null>(null);
-  let poster = $state<FileList | null>(null);
+
+  // Image file management
+  type UploadedImage = { asset: { _ref: string } };
+  type ImagePreview = { id: string; file: File; preview: string; uploading?: boolean; uploaded?: UploadedImage };
+
+  let screenshotFiles = $state<ImagePreview[]>([]);
+  let posterFile = $state<ImagePreview | null>(null);
+  let viewingImage = $state<{ src: string; asset?: UploadedImage; index?: number } | null>(null);
+  let draggedIndex = $state<number | null>(null);
+
+  // Initialize from server data
+  $effect(() => {
+    if (data.uploadedImages) {
+      screenshotFiles = data.uploadedImages.screenshots.map((asset: UploadedImage) => ({
+        id: asset.asset._ref,
+        file: null as any, // Already uploaded
+        preview: '',
+        uploaded: asset
+      }));
+
+      if (data.uploadedImages.poster) {
+        posterFile = {
+          id: data.uploadedImages.poster.asset._ref,
+          file: null as any,
+          preview: '',
+          uploaded: data.uploadedImages.poster
+        };
+      }
+    }
+  });
+
   let selectedCategories = $state<string[]>(form?.categories?.split(',').map(c => c.trim()) ?? []);
   let selectedLanguages = $state<string[]>(form?.filmLanguage?.split(',').map(l => l.trim()) ?? []);
   let showCategoryOther = $state(selectedCategories.includes('other'));
   let isSubmitting = $state(false);
-      
+
   const progress = () => i++
+
+  // Helper functions for file handling
+  function createImagePreview(file: File): ImagePreview {
+    return {
+      id: crypto.randomUUID(),
+      file,
+      preview: URL.createObjectURL(file)
+    };
+  }
+
+  async function uploadFile(file: File, type: 'screenshot' | 'poster'): Promise<UploadedImage | null> {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', type);
+
+      const response = await fetch('?/uploadImage', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'x-sveltekit-action': 'true'
+        }
+      });
+
+      const result = await response.json();
+      console.log('Upload response:', result);
+
+      // SvelteKit action responses have type: 'success' or 'failure'
+      if (result.type === 'success' && result.data) {
+        // Parse the data if it's a string (SvelteKit serializes it)
+        const data = typeof result.data === 'string' ? JSON.parse(result.data) : result.data;
+        console.log('Parsed data:', data);
+
+        // Handle devalue serialization format - data comes as array
+        // Structure is [{ success, asset }, true, { _type, asset }, ...]
+        // We want the first object's asset property, which is at index 2
+        const asset = Array.isArray(data) ? data[2] : data.asset;
+        console.log('Extracted asset:', asset);
+        return asset;
+      }
+
+      // Log error if upload failed
+      if (result.type === 'failure') {
+        console.error('Upload failed:', result.data);
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Upload error:', error);
+      return null;
+    }
+  }
+
+  async function handleScreenshotsChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const newFiles = Array.from(input.files).slice(0, 5 - screenshotFiles.length);
+
+    for (const file of newFiles) {
+      const preview: ImagePreview = {
+        id: crypto.randomUUID(),
+        file,
+        preview: URL.createObjectURL(file),
+        uploading: true
+      };
+
+      screenshotFiles = [...screenshotFiles, preview];
+
+      // Upload in background
+      const uploaded = await uploadFile(file, 'screenshot');
+      const index = screenshotFiles.findIndex(f => f.id === preview.id);
+
+      if (index !== -1) {
+        if (uploaded) {
+          console.log('Upload successful, updating preview:', uploaded);
+          screenshotFiles[index] = {
+            ...screenshotFiles[index],
+            uploaded,
+            uploading: false
+          };
+          screenshotFiles = [...screenshotFiles]; // Trigger reactivity
+        } else {
+          console.error('Upload failed for:', file.name);
+          screenshotFiles[index] = {
+            ...screenshotFiles[index],
+            uploading: false
+          };
+          screenshotFiles = [...screenshotFiles]; // Trigger reactivity
+        }
+      }
+    }
+
+    // Reset input
+    input.value = '';
+  }
+
+  async function handlePosterChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+
+    // Clean up old preview
+    if (posterFile && posterFile.preview) {
+      URL.revokeObjectURL(posterFile.preview);
+    }
+
+    posterFile = {
+      id: crypto.randomUUID(),
+      file,
+      preview: URL.createObjectURL(file),
+      uploading: true
+    };
+
+    // Upload in background
+    const uploaded = await uploadFile(file, 'poster');
+    if (posterFile) {
+      if (uploaded) {
+        console.log('Poster upload successful:', uploaded);
+        posterFile = {
+          ...posterFile,
+          uploaded,
+          uploading: false
+        };
+      } else {
+        console.error('Poster upload failed');
+        posterFile = {
+          ...posterFile,
+          uploading: false
+        };
+      }
+    }
+
+    input.value = '';
+  }
+
+  async function removeScreenshot(id: string) {
+    const file = screenshotFiles.find(f => f.id === id);
+    if (file) {
+      if (file.preview) URL.revokeObjectURL(file.preview);
+
+      // Delete from server if uploaded
+      if (file.uploaded) {
+        const formData = new FormData();
+        formData.append('assetId', file.uploaded.asset._ref);
+        formData.append('type', 'screenshot');
+
+        await fetch('?/deleteImage', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'x-sveltekit-action': 'true'
+          }
+        });
+      }
+    }
+    screenshotFiles = screenshotFiles.filter(f => f.id !== id);
+  }
+
+  async function removePoster() {
+    if (posterFile) {
+      if (posterFile.preview) URL.revokeObjectURL(posterFile.preview);
+
+      // Delete from server if uploaded
+      if (posterFile.uploaded) {
+        const formData = new FormData();
+        formData.append('assetId', posterFile.uploaded.asset._ref);
+        formData.append('type', 'poster');
+
+        await fetch('?/deleteImage', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'x-sveltekit-action': 'true'
+          }
+        });
+      }
+
+      posterFile = null;
+    }
+  }
+
+  function viewImage(src: string, asset?: UploadedImage, index?: number) {
+    viewingImage = { src, asset, index };
+  }
+
+  function closeViewer() {
+    viewingImage = null;
+  }
+
+  function viewNext() {
+    if (viewingImage?.index !== undefined && viewingImage.index < screenshotFiles.length - 1) {
+      viewingImage = { src: screenshotFiles[viewingImage.index + 1].preview, index: viewingImage.index + 1 };
+    }
+  }
+
+  function viewPrev() {
+    if (viewingImage?.index !== undefined && viewingImage.index > 0) {
+      viewingImage = { src: screenshotFiles[viewingImage.index - 1].preview, index: viewingImage.index - 1 };
+    }
+  }
+
+  // Drag and drop handlers
+  function handleDragStart(index: number) {
+    draggedIndex = index;
+  }
+
+  function handleDragOver(event: DragEvent, index: number) {
+    event.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+
+    const newFiles = [...screenshotFiles];
+    const [draggedItem] = newFiles.splice(draggedIndex, 1);
+    newFiles.splice(index, 0, draggedItem);
+    screenshotFiles = newFiles;
+    draggedIndex = index;
+  }
+
+  async function handleDragEnd() {
+    draggedIndex = null;
+
+    // Sync order to server
+    const order = screenshotFiles
+      .filter(f => f.uploaded)
+      .map(f => f.uploaded!.asset._ref);
+
+    if (order.length > 0) {
+      const formData = new FormData();
+      formData.append('order', JSON.stringify(order));
+
+      await fetch('?/reorderScreenshots', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'x-sveltekit-action': 'true'
+        }
+      });
+    }
+  }
+
+  function formatFileSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
 
 	export const snapshot: Snapshot<string> = {
 		capture: () => {
       const all = {
+        i,
         submitterName,
         email,
         phone,
-        unlocked,
+        socialMedia,
+        website,
+        directorName,
         selectedCategories,
         selectedLanguages,
         showCategoryOther,
-        isSubmitting
+        // Store uploaded asset references so images persist
+        screenshots: screenshotFiles
+          .filter(f => f.uploaded)
+          .map(f => ({ id: f.id, uploaded: f.uploaded })),
+        poster: posterFile?.uploaded ? {
+          id: posterFile.id,
+          uploaded: posterFile.uploaded
+        } : null
       }
-      console.log("capture ", all)
       return JSON.stringify(all)
     },
 		restore: (value) => {
       const parsed = JSON.parse(value)
 
-      unlocked = parsed.unlocked
+      i = parsed.i
       submitterName = parsed.submitterName
       email = parsed.email
       phone = parsed.phone
-      // selectedCategories = parsed.selectedCategories
-      // selectedLanguages = parsed.selectedLanguages
-      // showCategoryOther = parsed.showCategoryOther
-      // isSubmitting = parsed.isSubmitting
+      socialMedia = parsed.socialMedia
+      website = parsed.website
+      directorName = parsed.directorName
+      selectedCategories = parsed.selectedCategories
+      selectedLanguages = parsed.selectedLanguages
+      showCategoryOther = parsed.showCategoryOther
+
+      // Restore uploaded images
+      if (parsed.screenshots && Array.isArray(parsed.screenshots)) {
+        screenshotFiles = parsed.screenshots.map((s: any) => ({
+          id: s.id,
+          file: null as any,
+          preview: '',
+          uploaded: s.uploaded
+        }));
+      }
+
+      if (parsed.poster) {
+        posterFile = {
+          id: parsed.poster.id,
+          file: null as any,
+          preview: '',
+          uploaded: parsed.poster.uploaded
+        };
+      }
     }
 	};
 
@@ -93,6 +399,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Submit | Public Shorts | Berlin</title>
+</svelte:head>
+
 
 {#if unlocked}
 <div class="max-w-4xl mx-auto p-6">
@@ -111,6 +421,7 @@
   {/if}
 
   <form
+    action="?/submit"
     method="POST"
     enctype="multipart/form-data"
     use:enhance={() => {
@@ -211,10 +522,10 @@
           id="directorName"
           name="directorName"
           required
-          value={directorName}
+          bind:value={directorName}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
-        <p class="text-sm text-gallery-500 mt-1">The person who made the video.</p>
+        <p class="text-sm text-gallery-500 mt-1">The person who made the video. In case of multiple directors, use commas to separate</p>
         {#if form?.errors?.directorName}
           <p class="text-red-500 text-sm mt-1">{form.errors.directorName}</p>
         {/if}
@@ -419,18 +730,86 @@
       <div>
         <label for="screenshots" class="block mb-2">
           Screenshots <span class="text-red-500">*</span>
+          <span class="text-sm font-normal text-gallery-500">({screenshotFiles.length}/5)</span>
         </label>
-        <input
-          type="file"
-          id="screenshots"
-          name="screenshots"
-          accept="image/*"
-          multiple
-          required
-          bind:files={screenshots}
-          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
-        />
-        <p class="text-sm text-gallery-500 mt-1">Please attach up to 5 screenshots/film stills from your work.</p>
+
+        {#if screenshotFiles.length > 0}
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3 p-3 bg-gallery-50 border border-gallery-300 rounded">
+            {#each screenshotFiles as screenshot, index (screenshot.id)}
+              <div
+                class="relative group cursor-move bg-white rounded border-2 transition-all"
+                class:border-accent-500={draggedIndex === index}
+                class:border-gallery-300={draggedIndex !== index}
+                class:opacity-50={draggedIndex === index || screenshot.uploading}
+                draggable="true"
+                ondragstart={() => handleDragStart(index)}
+                ondragover={(e) => handleDragOver(e, index)}
+                ondragend={handleDragEnd}
+              >
+                <button
+                  type="button"
+                  onclick={() => viewImage(screenshot.preview, screenshot.uploaded, index)}
+                  class="w-full aspect-video overflow-hidden rounded-t relative"
+                  disabled={screenshot.uploading}
+                >
+                  {#if screenshot.uploaded}
+                    <SimpleImage
+                      asset={screenshot.uploaded}
+                      alt="Screenshot {index + 1}"
+                      width={400}
+                      class="w-full h-full object-cover"
+                    />
+                  {:else}
+                    <img
+                      src={screenshot.preview}
+                      alt="Screenshot {index + 1}"
+                      class="w-full h-full object-cover"
+                    />
+                  {/if}
+                  {#if screenshot.uploading}
+                    <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
+                      <div class="text-white text-xs">Uploading...</div>
+                    </div>
+                  {/if}
+                </button>
+                <div class="p-2 text-xs">
+                  <p class="truncate text-gallery-700 font-medium">{screenshot.file?.name || 'Uploaded image'}</p>
+                  {#if screenshot.file}
+                    <p class="text-gallery-500">{formatFileSize(screenshot.file.size)}</p>
+                  {/if}
+                </div>
+                <button
+                  type="button"
+                  onclick={() => removeScreenshot(screenshot.id)}
+                  class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
+                  aria-label="Remove screenshot"
+                  disabled={screenshot.uploading}
+                >
+                  ✕
+                </button>
+                <div class="absolute top-1 left-1 bg-gallery-900 text-white px-2 py-0.5 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                  {index + 1}
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+
+        {#if screenshotFiles.length < 5}
+          <input
+            type="file"
+            id="screenshots"
+            accept="image/*"
+            multiple
+            onchange={handleScreenshotsChange}
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors"
+          />
+        {/if}
+
+        <p class="text-sm text-gallery-500 mt-1">Please attach up to 5 screenshots/film stills from your work. Drag to reorder.</p>
+        {#if screenshotFiles.length === 0}
+          <p class="text-red-500 text-sm mt-1">At least one screenshot is required</p>
+        {/if}
         {#if form?.errors?.screenshots}
           <p class="text-red-500 text-sm mt-1">{form.errors.screenshots}</p>
         {/if}
@@ -438,14 +817,65 @@
 
       <div>
         <label for="poster" class="block mb-2">Poster</label>
-        <input
-          type="file"
-          id="poster"
-          name="poster"
-          accept="image/*"
-          bind:files={poster}
-          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
-        />
+
+        {#if posterFile}
+          <div class="mb-3 p-3 bg-gallery-50 border border-gallery-300 rounded">
+            <div class="relative group max-w-xs mx-auto bg-white rounded border-2 border-gallery-300" class:opacity-50={posterFile.uploading}>
+              <button
+                type="button"
+                onclick={() => viewImage(posterFile.preview, posterFile.uploaded)}
+                class="w-full aspect-[2/3] overflow-hidden rounded-t relative"
+                disabled={posterFile.uploading}
+              >
+                {#if posterFile.uploaded}
+                  <SimpleImage
+                    asset={posterFile.uploaded}
+                    alt="Film poster"
+                    width={400}
+                    class="w-full h-full object-cover"
+                  />
+                {:else}
+                  <img
+                    src={posterFile.preview}
+                    alt="Film poster"
+                    class="w-full h-full object-cover"
+                  />
+                {/if}
+                {#if posterFile.uploading}
+                  <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
+                    <div class="text-white text-xs">Uploading...</div>
+                  </div>
+                {/if}
+              </button>
+              <div class="p-2 text-xs">
+                <p class="truncate text-gallery-700 font-medium">{posterFile.file?.name || 'Uploaded image'}</p>
+                {#if posterFile.file}
+                  <p class="text-gallery-500">{formatFileSize(posterFile.file.size)}</p>
+                {/if}
+              </div>
+              <button
+                type="button"
+                onclick={removePoster}
+                class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
+                aria-label="Remove poster"
+                disabled={posterFile.uploading}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        {/if}
+
+        {#if !posterFile}
+          <input
+            type="file"
+            id="poster"
+            accept="image/*"
+            onchange={handlePosterChange}
+            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors"
+          />
+        {/if}
+
         <p class="text-sm text-gallery-500 mt-1">Upload your film poster (JPG, PNG, etc.)</p>
         {#if form?.errors?.poster}
           <p class="text-red-500 text-sm mt-1">{form.errors.poster}</p>
@@ -660,6 +1090,72 @@
 </div>
 {/if}
 
+<!-- Fullscreen Image Viewer Modal -->
+{#if viewingImage}
+  <div
+    class="fixed inset-0 bg-gallery-900 bg-opacity-95 z-50 flex items-center justify-center p-4"
+    onclick={closeViewer}
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image viewer"
+  >
+    <button
+      type="button"
+      onclick={closeViewer}
+      class="absolute top-4 right-4 bg-white text-gallery-900 w-10 h-10 rounded-full hover:bg-accent-500 hover:text-white transition-colors flex items-center justify-center text-xl font-bold z-10"
+      aria-label="Close viewer"
+    >
+      ✕
+    </button>
+
+    {#if viewingImage.index !== undefined}
+      <button
+        type="button"
+        onclick={(e) => { e.stopPropagation(); viewPrev(); }}
+        disabled={viewingImage.index === 0}
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white text-gallery-900 w-12 h-12 rounded-full hover:bg-accent-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-2xl font-bold"
+        aria-label="Previous image"
+      >
+        ‹
+      </button>
+
+      <button
+        type="button"
+        onclick={(e) => { e.stopPropagation(); viewNext(); }}
+        disabled={viewingImage.index === screenshotFiles.length - 1}
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white text-gallery-900 w-12 h-12 rounded-full hover:bg-accent-500 hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-2xl font-bold"
+        aria-label="Next image"
+      >
+        ›
+      </button>
+    {/if}
+
+    <div
+      class="max-w-7xl max-h-full"
+      onclick={(e) => e.stopPropagation()}
+    >
+      {#if viewingImage.asset}
+        <SimpleImage
+          asset={viewingImage.asset}
+          alt="Full size preview"
+          width={1920}
+          class="max-w-full max-h-[90vh] object-contain rounded"
+        />
+      {:else}
+        <img
+          src={viewingImage.src}
+          alt="Full size preview"
+          class="max-w-full max-h-[90vh] object-contain rounded"
+        />
+      {/if}
+      {#if viewingImage.index !== undefined}
+        <p class="text-center text-white mt-4 text-sm">
+          Image {viewingImage.index + 1} of {screenshotFiles.length}
+        </p>
+      {/if}
+    </div>
+  </div>
+{/if}
 
 
 <style>

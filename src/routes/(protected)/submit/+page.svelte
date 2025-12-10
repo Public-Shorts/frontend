@@ -1,15 +1,54 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import type { PageProps } from './$types';
+  import type { PageProps, Snapshot } from './$types';
 
   let { data, form }: PageProps = $props();
 
+  let i = $state(0)
+  let unlocked = $derived(i > 7)
+  let submitterName = $state("")
+  let email = $state(form?.email ?? '')
+  let phone = $state(form?.phone ?? '')
+  let socialMedia = $state(form?.socialMedia ?? '')
+  let website = $state(form?.website ?? '')
+  let directorName = $state(form?.directorName ?? '')
   let screenshots = $state<FileList | null>(null);
   let poster = $state<FileList | null>(null);
   let selectedCategories = $state<string[]>(form?.categories?.split(',').map(c => c.trim()) ?? []);
   let selectedLanguages = $state<string[]>(form?.filmLanguage?.split(',').map(l => l.trim()) ?? []);
   let showCategoryOther = $state(selectedCategories.includes('other'));
   let isSubmitting = $state(false);
+      
+  const progress = () => i++
+
+	export const snapshot: Snapshot<string> = {
+		capture: () => {
+      const all = {
+        submitterName,
+        email,
+        phone,
+        unlocked,
+        selectedCategories,
+        selectedLanguages,
+        showCategoryOther,
+        isSubmitting
+      }
+      console.log("capture ", all)
+      return JSON.stringify(all)
+    },
+		restore: (value) => {
+      const parsed = JSON.parse(value)
+
+      unlocked = parsed.unlocked
+      submitterName = parsed.submitterName
+      email = parsed.email
+      phone = parsed.phone
+      // selectedCategories = parsed.selectedCategories
+      // selectedLanguages = parsed.selectedLanguages
+      // showCategoryOther = parsed.showCategoryOther
+      // isSubmitting = parsed.isSubmitting
+    }
+	};
 
   const CATEGORIES = [
     { title: 'Documentary', value: 'documentary' },
@@ -54,6 +93,8 @@
   }
 </script>
 
+
+{#if unlocked}
 <div class="max-w-4xl mx-auto p-6">
   <h1 class="text-3xl font-bold mb-8">Submit Your Film</h1>
 
@@ -93,8 +134,8 @@
           type="text"
           id="submitterName"
           name="submitterName"
+          bind:value={submitterName}
           required
-          value={form?.submitterName ?? ''}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         <p class="text-sm text-gallery-500 mt-1">
@@ -114,7 +155,7 @@
           id="email"
           name="email"
           required
-          value={form?.email ?? ''}
+          bind:value={email}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         {#if form?.errors?.email}
@@ -128,7 +169,7 @@
           type="tel"
           id="phone"
           name="phone"
-          value={form?.phone ?? ''}
+          bind:value={phone}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
       </div>
@@ -139,7 +180,7 @@
           type="text"
           id="socialMedia"
           name="socialMedia"
-          value={form?.socialMedia ?? ''}
+          bind:value={socialMedia}
           placeholder="Instagram, Twitter, etc."
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
@@ -151,7 +192,7 @@
           type="url"
           id="website"
           name="website"
-          value={form?.website ?? ''}
+          bind:value={website}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
       </div>
@@ -170,7 +211,7 @@
           id="directorName"
           name="directorName"
           required
-          value={form?.directorName ?? ''}
+          value={directorName}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         <p class="text-sm text-gallery-500 mt-1">The person who made the video.</p>
@@ -611,6 +652,15 @@
     </div>
   </form>
 </div>
+{:else}
+<div class="absolute w-full h-20 bottom-0 left-0 flex justify-center items-center">
+  <button class:text-accent-500={i > 6} class:font-bold={i > 6} onclick={progress}>
+    Datenschutz
+  </button>
+</div>
+{/if}
+
+
 
 <style>
   input:focus,

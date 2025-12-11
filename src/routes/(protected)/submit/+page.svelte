@@ -406,27 +406,15 @@
 	let screenshotPreviews: string[] = [];
 	let posterPreview: string | null = null;
 
-	function handleScreenshotsChange(files: FileList | null) {
-		// Revoke old URLs
-		screenshotPreviews.forEach((url) => URL.revokeObjectURL(url));
-		screenshotPreviews = files
-			? Array.from(files)
-					.slice(0, 5)
-					.map((file) => URL.createObjectURL(file))
-			: [];
-	}
 
-	function handlePosterChange(files: FileList | null) {
-		if (posterPreview) URL.revokeObjectURL(posterPreview);
-		posterPreview = files && files[0] ? URL.createObjectURL(files[0]) : null;
-	}
+
 </script>
 
 
 <SEO title="Submit | Public Shorts | Berlin" />
 
-
 {#if unlocked}
+
 <GridLayout>
 	<div class="md:order-last md:col-span-2">
 		<div
@@ -624,23 +612,6 @@
 					/>
 				</div>
 
-      <div>
-        <label for="directorName" class="block mb-2">
-          Name of the Director(s) <span class="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="directorName"
-          name="directorName"
-          required
-          bind:value={directorName}
-          class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
-        />
-        <p class="text-sm text-gallery-500 mt-1">The person who made the video. In case of multiple directors, use commas to separate</p>
-        {#if form?.errors?.directorName}
-          <p class="text-red-500 text-sm mt-1">{form.errors.directorName}</p>
-        {/if}
-      </div>
 
       <div>
         <label for="originalTitle" class="block mb-2">
@@ -1204,6 +1175,8 @@
 			</div>
 		</form>
 	</div>
+
+</GridLayout>
 {:else}
 <div class="absolute w-full h-20 bottom-0 left-0 flex justify-center items-center">
   <button class:text-accent-500={i > 6} class:font-bold={i > 6} onclick={progress}>
@@ -1211,7 +1184,6 @@
   </button>
 </div>
 {/if}
-
 <!-- Fullscreen Image Viewer Modal -->
 {#if viewingImage}
   <div
@@ -1279,7 +1251,7 @@
   </div>
 {/if}
 
-</GridLayout>
+
 
 <style>
 	input:focus,

@@ -1,7 +1,8 @@
 <script>
 	import GridLayout from '$lib/components/GridLayout.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 </script>
-
+<SEO title="Press" />
 <div class="col-span-2"></div>
 <GridLayout>
 	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">Press</h1>

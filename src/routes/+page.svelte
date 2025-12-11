@@ -10,7 +10,9 @@
 	onMount(() => {
 		goto('/festival');
 	});
+	import SEO from '$lib/components/SEO.svelte';
 </script>
+<SEO  />
 
 <!-- 
 <div class="flex flex-col md:col-span-6">

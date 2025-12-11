@@ -1,6 +1,8 @@
 <script lang="ts">
 	import GridLayout from '../../lib/components/GridLayout.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 </script>
+<SEO title="FAQ" />
 
 <GridLayout>
 	<h1 class="mb-4 text-3xl font-bold md:col-span-5 md:col-start-2">FAQ</h1>

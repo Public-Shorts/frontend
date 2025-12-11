@@ -1,8 +1,9 @@
 <script>
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import Map from '$lib/components/Map.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 </script>
-
+<SEO title="How to get there" />
 <GridLayout>
 	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">How to get there</h1>
 	<div class="w-full md:col-span-3">

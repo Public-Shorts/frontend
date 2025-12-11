@@ -460,7 +460,7 @@
 </script>
 
 
-<SEO title="Submit | Public Shorts | Berlin" />
+<SEO title="Submit a video" />
 
 {#if unlocked}
 

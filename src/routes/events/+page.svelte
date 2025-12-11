@@ -1,7 +1,9 @@
 <script>
 	import EventCard from '$lib/components/events/EventCard.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 </script>
+<SEO title="Events" />
 
 <GridLayout>
 	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">Events</h1>

@@ -1,6 +1,8 @@
 <script>
 	import GridLayout from '$lib/components/GridLayout.svelte';
+	import SEO from '$lib/components/SEO.svelte';
 </script>
+<SEO title="Programme" />
 
 <div class="col-span-2"></div>
 <GridLayout>

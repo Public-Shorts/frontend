@@ -1,16 +1,16 @@
 <script lang="ts">
   import { page } from "$app/state"
-  const defaultTitle : string = ""
+  const defaultTitle : string = "24/7 Video Festival in Berlin"
   let {
     url = page.url.toString(),
-    prependTitle = "",
+    prependTitle = "Public Shorts | ",
     title = defaultTitle,
-    description = "",
-    imageAlt = "",
-    imageUrl = "/",
+    description = "The 24/7 Video Festival in Berlin showcases short videos from around the world in a continuous 24-hour screening event.",
+    imageAlt = "Window into Public Shorts Festival",
+    imageUrl = "/images/og-image.png",
     language = "en-us",
-    imageWidth = "",
-    imageHeight = ""
+    imageWidth = "1200",
+    imageHeight = "630"
 } = $props()
 </script>
 

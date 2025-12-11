@@ -44,7 +44,7 @@
       <div class="pt-4">
         <a
           href="/"
-          class="inline-block bg-accent-500 hover:bg-accent-600 font-semibold py-3 px-8 rounded transition no-underline"
+          class="inline-block font-semibold py-3 px-8 rounded transition "
         >
           Home
         </a>

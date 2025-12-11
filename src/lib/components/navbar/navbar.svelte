@@ -55,7 +55,7 @@
 
 {#if open}
 	<nav
-		class="flex flex-col gap-8 border-b border-gallery-200 bg-gallery-50 px-8 py-16 pb-4 text-2xl lg:hidden"
+		class="flex flex-col gap-8 border-b border-gallery-200 bg-gallery-50 px-8 py-16 text-2xl lg:hidden"
 	>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/festival">Festival</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/programme">Programme</a>

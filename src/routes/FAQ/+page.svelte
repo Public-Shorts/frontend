@@ -25,7 +25,20 @@
 				</li>
 			</ul>
 		</details>
-
+		<details class="mb-4">
+			<summary class="cursor-pointer font-semibold">Can you hear sound throught this big glass window?</summary>
+			<p class="mt-2 pl-4">
+				Yes. There is a live audio stream that can be accessed via a QR code on site. However, we strongly suggest to use subtitles. 
+			</p>
+		</details>
+		<details class="mb-4">
+			<summary class="cursor-pointer font-semibold">Can I submit an aspect-ratio different from 4:3?</summary>
+			<p class="mt-2 pl-4">
+				Of course. We accept all aspect-ratios. Videos will be scaled to fit the screen while
+				maintaining their original aspect-ratio. 
+				If you want to avoid black bars, consider modifying your video to 4:3 before submission.
+			</p>
+		</details>
 		<details class="mb-4">
 			<summary class="cursor-pointer font-semibold">Is it paid?</summary>
 			<p class="mt-2 pl-4">

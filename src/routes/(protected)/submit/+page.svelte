@@ -545,9 +545,9 @@
         if (result.type === 'success' && result.data?.success) {
           // Build success page URL with params
           const params = new URLSearchParams({
-            title: result.data.title,
-            director: result.data.director,
-            email: result.data.email,
+            title: String(result.data.title ?? ''),
+            director: String(result.data.director ?? ''),
+            email: String(result.data.email ?? ''),
           });
 
           if (result.data.poster) {
@@ -786,33 +786,34 @@
 					{/if}
 				</div>
 
-				<div>
-					<label class="mb-2 block">
-						Categories <span class="text-red-500">*</span>
-					</label>
-					<div
-						class="grid grid-flow-col auto-rows-fr grid-rows-7 gap-2 rounded border border-gallery-300 bg-gallery-50 p-3 md:grid-rows-7"
-					>
-						{#each CATEGORIES as category}
-							<label class="flex cursor-pointer items-center space-x-2">
-								<input
-									type="checkbox"
-									checked={selectedCategories.includes(category.value)}
-									onchange={() => toggleCategory(category.value)}
-									class="cursor-pointer"
-								/>
-								<span class="text-sm">{category.title}</span>
-							</label>
-						{/each}
-					</div>
-					<p class="mt-1 text-sm text-gallery-500">
-						Please select all categories that apply to your video.
-					</p>
-					<input type="hidden" name="categories" value={selectedCategories.join(', ')} />
-					{#if form?.errors?.categories}
-						<p class="mt-1 text-sm text-red-500">{form.errors.categories}</p>
-					{/if}
-				</div>
+        <div>
+          <h2 class="mb-2 block">
+            Categories <span class="text-red-500">*</span>
+          </h2>
+          <div
+            class="grid grid-flow-col auto-rows-fr grid-rows-7 gap-2 rounded border border-gallery-300 bg-gallery-50 p-3 md:grid-rows-7"
+          >
+            {#each CATEGORIES as category}
+              <label class="flex cursor-pointer items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.includes(category.value)}
+                  onchange={() => toggleCategory(category.value)}
+                  disabled={!selectedCategories.includes(category.value) && selectedCategories.length >= 5}
+                  class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                />
+                <span class="text-sm" class:opacity-50={!selectedCategories.includes(category.value) && selectedCategories.length >= 5}>{category.title}</span>
+              </label>
+            {/each}
+          </div>
+          <p class="mt-1 text-sm text-gallery-500">
+            Please select maximum 5 categories that apply to your video. ({selectedCategories.length}/5 selected)
+          </p>
+          <input type="hidden" name="categories" value={selectedCategories.join(', ')} />
+          {#if form?.errors?.categories}
+            <p class="mt-1 text-sm text-red-500">{form.errors.categories}</p>
+          {/if}
+        </div>
 
 				{#if showCategoryOther}
 					<div>
@@ -898,73 +899,83 @@
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3 p-3 bg-gallery-50 border border-gallery-300 rounded">
             {#each screenshotFiles as screenshot, index (screenshot.id + index)}
               <div
-                class="relative group cursor-move bg-white rounded border-2 transition-all"
-                class:border-accent-500={draggedIndex === index}
-                class:border-gallery-300={draggedIndex !== index}
-                class:opacity-50={draggedIndex === index || screenshot.uploading}
-                draggable="true"
-                ondragstart={() => handleDragStart(index)}
-                ondragover={(e) => handleDragOver(e, index)}
-                ondragend={handleDragEnd}
+          class="relative group cursor-move bg-white rounded border-2 transition-all"
+          class:border-accent-500={draggedIndex === index}
+          class:border-gallery-300={draggedIndex !== index}
+          class:opacity-50={draggedIndex === index || screenshot.uploading}
+          draggable="true"
+          ondragstart={() => handleDragStart(index)}
+          ondragover={(e) => handleDragOver(e, index)}
+          ondragend={handleDragEnd}
+          role="button"
+          tabindex="0"
               >
-                <button
-                  type="button"
-                  onclick={() => viewImage(screenshot.preview, screenshot.uploaded, index)}
-                  class="w-full aspect-video overflow-hidden rounded-t relative"
-                  disabled={screenshot.uploading}
-                >
-                  {#if screenshot.uploaded}
-                    <SimpleImage
-                      asset={screenshot.uploaded}
-                      alt="Screenshot {index + 1}"
-                      width={400}
-                      class="w-full h-full object-cover"
-                    />
-                  {:else}
-                    <img
-                      src={screenshot.preview}
-                      alt="Screenshot {index + 1}"
-                      class="w-full h-full object-cover"
-                    />
-                  {/if}
-                  {#if screenshot.uploading}
-                    <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
-                      <div class="text-white text-xs">Uploading...</div>
-                    </div>
-                  {/if}
-                </button>
-                <div class="p-2 text-xs">
-                  <p class="truncate text-gallery-700 font-medium">{screenshot.file?.name || 'Uploaded image'}</p>
-                  {#if screenshot.file}
-                    <p class="text-gallery-500">{formatFileSize(screenshot.file.size)}</p>
-                  {/if}
-                </div>
-                <button
-                  type="button"
-                  onclick={() => removeScreenshot(screenshot.id)}
-                  class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
-                  aria-label="Remove screenshot"
-                  disabled={screenshot.uploading}
-                >
-                  ✕
-                </button>
-                <div class="absolute top-1 left-1 bg-gallery-900 text-white px-2 py-0.5 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity">
-                  {index + 1}
-                </div>
+          <button
+            type="button"
+            onclick={() => viewImage(screenshot.preview, screenshot.uploaded, index)}
+            class="w-full aspect-video overflow-hidden rounded-t relative"
+            disabled={screenshot.uploading}
+          >
+            {#if screenshot.uploaded}
+              <SimpleImage
+                asset={screenshot.uploaded}
+                alt="Screenshot {index + 1}"
+                width={400}
+                class="w-full h-full object-cover"
+              />
+            {:else}
+              <img
+                src={screenshot.preview}
+                alt="Screenshot {index + 1}"
+                class="w-full h-full object-cover"
+              />
+            {/if}
+            {#if screenshot.uploading}
+              <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
+                <div class="text-white text-xs">Uploading...</div>
+              </div>
+            {/if}
+          </button>
+          <div class="p-2 text-xs">
+            <p class="truncate text-gallery-700 font-medium">{screenshot.file?.name || 'Uploaded image'}</p>
+            {#if screenshot.file}
+              <p class="text-gallery-500">{formatFileSize(screenshot.file.size)}</p>
+            {/if}
+          </div>
+          <button
+            type="button"
+            onclick={() => removeScreenshot(screenshot.id)}
+            class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
+            aria-label="Remove screenshot"
+            disabled={screenshot.uploading}
+          >
+            ✕
+          </button>
+          <div class="absolute top-1 left-1 bg-gallery-900 text-white px-2 py-0.5 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+            {index + 1}
+          </div>
               </div>
             {/each}
           </div>
         {/if}
 
         {#if screenshotFiles.length < 5}
-          <input
-            type="file"
-            id="screenshots"
-            accept="image/*"
-            multiple
-            onchange={handleScreenshotsChange}
-            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors"
-          />
+          <label for="screenshots" class="relative block w-full p-4 bg-gallery-50 border-2 border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors text-center">
+            <span class="inline-block px-4 py-2 bg-accent-500 text-white rounded font-medium hover:bg-accent-600 transition-colors">
+              Choose Files
+            </span>
+            <span class="block mt-2 text-sm text-gallery-600">
+              or drag and drop
+            </span>
+            <input
+              type="file"
+              id="screenshots"
+              accept="image/*"
+              multiple
+              onchange={handleScreenshotsChange}
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </label>
         {/if}
 
         <p class="text-sm text-gallery-500 mt-1">Please attach up to 5video stills from your work. Drag to reorder.</p>
@@ -974,75 +985,84 @@
         {#if form?.errors?.screenshots}
           <p class="text-red-500 text-sm mt-1">{form.errors.screenshots}</p>
         {/if}
-      </div>
+            </div>
 
-      <div>
+            <div>
         <label for="poster" class="block mb-2">Poster</label>
 
         {#if posterFile}
           <div class="mb-3 p-3 bg-gallery-50 border border-gallery-300 rounded">
             <div class="relative group max-w-xs mx-auto bg-white rounded border-2 border-gallery-300" class:opacity-50={posterFile.uploading}>
               <button
-                type="button"
-                onclick={() => viewImage(posterFile.preview, posterFile.uploaded)}
-                class="w-full aspect-[2/3] overflow-hidden rounded-t relative"
-                disabled={posterFile.uploading}
+          type="button"
+          onclick={() => posterFile && viewImage(posterFile.preview, posterFile.uploaded)}
+          class="w-full aspect-2/3 overflow-hidden rounded-t relative"
+          disabled={posterFile.uploading}
               >
-                {#if posterFile.uploaded}
-                  <SimpleImage
-                    asset={posterFile.uploaded}
-                    alt="Film poster"
-                    width={400}
-                    class="w-full h-full object-cover"
-                  />
-                {:else}
-                  <img
-                    src={posterFile.preview}
-                    alt="Film poster"
-                    class="w-full h-full object-cover"
-                  />
-                {/if}
-                {#if posterFile.uploading}
-                  <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
-                    <div class="text-white text-xs">Uploading...</div>
-                  </div>
-                {/if}
+          {#if posterFile.uploaded}
+            <SimpleImage
+              asset={posterFile.uploaded}
+              alt="Film poster"
+              width={400}
+              class="w-full h-full object-cover"
+            />
+          {:else}
+            <img
+              src={posterFile.preview}
+              alt="Film poster"
+              class="w-full h-full object-cover"
+            />
+          {/if}
+          {#if posterFile.uploading}
+            <div class="absolute inset-0 bg-gallery-900 bg-opacity-50 flex items-center justify-center">
+              <div class="text-white text-xs">Uploading...</div>
+            </div>
+          {/if}
               </button>
               <div class="p-2 text-xs">
-                <p class="truncate text-gallery-700 font-medium">{posterFile.file?.name || 'Uploaded image'}</p>
-                {#if posterFile.file}
-                  <p class="text-gallery-500">{formatFileSize(posterFile.file.size)}</p>
-                {/if}
+          <p class="truncate text-gallery-700 font-medium">{posterFile.file?.name || 'Uploaded image'}</p>
+          {#if posterFile.file}
+            <p class="text-gallery-500">{formatFileSize(posterFile.file.size)}</p>
+          {/if}
               </div>
               <button
-                type="button"
-                onclick={removePoster}
-                class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
-                aria-label="Remove poster"
-                disabled={posterFile.uploading}
+          type="button"
+          onclick={removePoster}
+          class="absolute top-1 right-1 bg-gallery-900 text-white w-6 h-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-accent-500 flex items-center justify-center"
+          aria-label="Remove poster"
+          disabled={posterFile.uploading}
               >
-                ✕
+          ✕
               </button>
             </div>
           </div>
         {/if}
 
         {#if !posterFile}
-          <input
-            type="file"
-            id="poster"
-            accept="image/*"
-            onchange={handlePosterChange}
-            class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors"
-          />
+          <label for="poster" class="relative block w-full p-4 bg-gallery-50 border-2 border-gallery-300 rounded cursor-pointer hover:border-accent-500 transition-colors text-center">
+            <span class="inline-block px-4 py-2 bg-accent-500 text-white rounded font-medium hover:bg-accent-600 transition-colors">
+              Choose File
+            </span>
+            <span class="block mt-2 text-sm text-gallery-600">
+              or drag and drop
+            </span>
+            <input
+              type="file"
+              id="poster"
+              accept="image/*"
+              onchange={handlePosterChange}
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </label>
         {/if}
 
         <p class="text-sm text-gallery-500 mt-1">Upload your film poster (JPG, PNG, etc.)</p>
         {#if form?.errors?.poster}
           <p class="text-red-500 text-sm mt-1">{form.errors.poster}</p>
         {/if}
-      </div>
-    </section>
+            </div>
+          </section>
+
 
 			<!-- Credits -->
 			<section class="space-y-4">
@@ -1251,9 +1271,11 @@
   <div
     class="fixed inset-0 bg-gallery-900 bg-opacity-95 z-50 flex items-center justify-center p-4"
     onclick={closeViewer}
+    onkeydown={(e) => e.key === 'Escape' && closeViewer()}
     role="dialog"
     aria-modal="true"
     aria-label="Image viewer"
+    tabindex="-1"
   >
     <button
       type="button"
@@ -1284,34 +1306,36 @@
       >
         ›
       </button>
+        <div
+          class="max-w-7xl max-h-full"
+          onclick={(e) => e.stopPropagation()}
+          onkeydown={(e) => e.stopPropagation()}
+          role="presentation"
+        >
+    
+          {#if viewingImage.asset}
+            <SimpleImage
+              asset={viewingImage.asset}
+              alt="Full size preview"
+              width={1920}
+              class="max-w-full max-h-[90vh] object-contain rounded"
+            />
+          {:else}
+            <img
+              src={viewingImage.src}
+              alt="Full size preview"
+              class="max-w-full max-h-[90vh] object-contain rounded"
+            />
+          {/if}
+          {#if viewingImage.index !== undefined}
+            <p class="text-center text-white mt-4 text-sm">
+              Image {viewingImage.index + 1} of {screenshotFiles.length}
+            </p>
+          {/if}
+        </div>
+        {/if}
+      </div>
     {/if}
-
-    <div
-      class="max-w-7xl max-h-full"
-      onclick={(e) => e.stopPropagation()}
-    >
-      {#if viewingImage.asset}
-        <SimpleImage
-          asset={viewingImage.asset}
-          alt="Full size preview"
-          width={1920}
-          class="max-w-full max-h-[90vh] object-contain rounded"
-        />
-      {:else}
-        <img
-          src={viewingImage.src}
-          alt="Full size preview"
-          class="max-w-full max-h-[90vh] object-contain rounded"
-        />
-      {/if}
-      {#if viewingImage.index !== undefined}
-        <p class="text-center text-white mt-4 text-sm">
-          Image {viewingImage.index + 1} of {screenshotFiles.length}
-        </p>
-      {/if}
-    </div>
-  </div>
-{/if}
 
 
 

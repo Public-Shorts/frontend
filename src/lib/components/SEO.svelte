@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/state"
-  const defaultTitle = ""
+  const defaultTitle : string = ""
   let {
     url = page.url.toString(),
     prependTitle = "",

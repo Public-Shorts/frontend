@@ -16,6 +16,23 @@
   let socialMedia = $state(form?.socialMedia ?? '')
   let website = $state(form?.website ?? '')
   let directorName = $state(form?.directorName ?? '')
+  let originalTitle = $state(form?.originalTitle ?? "")
+  let englishTitle = $state(form?.englishTitle ?? "")
+  let yearOfCompletion = $state(form?.yearOfCompletion ?? "")
+  let length = $state(form?.length ?? "")
+  let videoLanguage = $state(form?.videoLanguage ?? "")
+  let synopsis = $state(form?.synopsis ?? "")
+  let categoryOther = $state(form?.categoryOther ?? "")
+  let linkToWatch = $state(form?.linkToWatch ?? "")
+  let linkPassword = $state(form?.linkPassword ?? "")
+  let linkToDownload = $state(form?.linkToDownload ?? "")
+  let castAndCrew = $state(form?.castAndCrew ?? "")
+  let thanks = $state(form?.thanks ?? "")
+  let explicitDetails = $state(form?.explicitDetails ?? "")
+  let aiExplanation = $state(form?.aiExplanation ?? "")
+  let previousScreeningLocations = $state(form?.previousScreeningLocations ?? "")
+  let additionalInfo = $state(form?.additionalInfo ?? "")
+  let specialRequirements = $state(form?.specialRequirements ?? "")
 
   // Image file management
   type UploadedImage = { asset: { _ref: string } };
@@ -25,6 +42,10 @@
   let posterFile = $state<ImagePreview | null>(null);
   let viewingImage = $state<{ src: string; asset?: UploadedImage; index?: number } | null>(null);
   let draggedIndex = $state<number | null>(null);
+  let selectedCategories = $state<string[]>(form?.categories?.split(',').map(c => c.trim()) ?? []);
+  let selectedLanguages = $state<string[]>(form?.filmLanguage?.split(',').map(l => l.trim()) ?? []);
+  let showCategoryOther = $state(selectedCategories.includes('other'));
+  let isSubmitting = $state(false);
 
   // Initialize from server data
   $effect(() => {
@@ -46,11 +67,6 @@
       }
     }
   });
-
-  let selectedCategories = $state<string[]>(form?.categories?.split(',').map(c => c.trim()) ?? []);
-  let selectedLanguages = $state<string[]>(form?.filmLanguage?.split(',').map(l => l.trim()) ?? []);
-  let showCategoryOther = $state(selectedCategories.includes('other'));
-  let isSubmitting = $state(false);
 
   const progress = () => i++
 
@@ -325,6 +341,23 @@
         selectedCategories,
         selectedLanguages,
         showCategoryOther,
+        originalTitle,
+        englishTitle,
+        yearOfCompletion,
+        length,
+        videoLanguage,
+        synopsis,
+        categoryOther,
+        linkToWatch,
+        linkPassword,
+        linkToDownload,
+        castAndCrew,
+        thanks,
+        explicitDetails,
+        aiExplanation,
+        previousScreeningLocations,
+        additionalInfo,
+        specialRequirements,
         // Store uploaded asset references so images persist
         screenshots: screenshotFiles
           .filter(f => f.uploaded)
@@ -349,6 +382,23 @@
       selectedCategories = parsed.selectedCategories
       selectedLanguages = parsed.selectedLanguages
       showCategoryOther = parsed.showCategoryOther
+      originalTitle = parsed.originalTitle
+      englishTitle = parsed.englishTitle
+      yearOfCompletion = parsed.yearOfCompletion
+      length = parsed.length
+      videoLanguage = parsed.videoLanguage
+      synopsis = parsed.synopsis
+      categoryOther = parsed.categoryOther
+      linkToWatch = parsed.linkToWatch
+      linkPassword = parsed.linkPassword
+      linkToDownload = parsed.linkToDownload
+      castAndCrew = parsed.castAndCrew
+      thanks = parsed.thanks
+      explicitDetails = parsed.explicitDetails
+      aiExplanation = parsed.aiExplanation
+      previousScreeningLocations = parsed.previousScreeningLocations
+      additionalInfo = parsed.additionalInfo
+      specialRequirements = parsed.specialRequirements
 
       // Restore uploaded images
       if (parsed.screenshots && Array.isArray(parsed.screenshots)) {
@@ -581,7 +631,7 @@
 						id="directorName"
 						name="directorName"
 						required
-						value={form?.directorName ?? ''}
+						bind:value={directorName}
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
 					<p class="mt-1 text-sm text-gallery-500">The person who made the video.</p>
@@ -622,7 +672,7 @@
           id="originalTitle"
           name="originalTitle"
           required
-          value={form?.originalTitle ?? ''}
+          bind:value={originalTitle}
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
         {#if form?.errors?.originalTitle}
@@ -639,7 +689,7 @@
 						id="englishTitle"
 						name="englishTitle"
 						required
-						value={form?.englishTitle ?? ''}
+						bind:value={englishTitle}
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
 					{#if form?.errors?.englishTitle}
@@ -659,7 +709,7 @@
 							required
 							min="2023"
 							max="2100"
-							value={form?.yearOfCompletion ?? ''}
+							bind:value={yearOfCompletion}
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						/>
 						<p class="mt-1 text-sm text-gallery-500">
@@ -681,7 +731,7 @@
 							required
 							min="1"
 							max="15"
-							value={form?.length ?? ''}
+							bind:value={length}
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						/>
 						<p class="mt-1 text-sm text-gallery-500">
@@ -701,7 +751,7 @@
 						id="videoLanguage"
 						name="videoLanguage"
 						required
-						value={form?.videoLanguage ?? ''}
+						bind:value={videoLanguage}
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					>
 						<option value="">Select a language...</option>
@@ -722,7 +772,7 @@
 						id="synopsis"
 						name="synopsis"
 						required
-						value={form?.synopsis ?? ''}
+						bind:value={synopsis}
 						maxlength="800"
 						rows="6"
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
@@ -768,7 +818,7 @@
 							type="text"
 							id="categoryOther"
 							name="categoryOther"
-							value={form?.categoryOther ?? ''}
+							bind:value={categoryOther}
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						/>
 					</div>
@@ -788,7 +838,7 @@
 						id="linkToWatch"
 						name="linkToWatch"
 						required
-						value={form?.linkToWatch ?? ''}
+						bind:value={linkToWatch}
 						placeholder="https://vimeo.com/..."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
@@ -806,7 +856,7 @@
           type="text"
           id="linkPassword"
           name="linkPassword"
-          value={form?.linkPassword ?? ''}
+          bind:value={linkPassword}
           placeholder="Password (if required)"
           class="w-full p-2 bg-gallery-50 border border-gallery-300 rounded"
         />
@@ -822,7 +872,7 @@
 						id="linkToDownload"
 						name="linkToDownload"
 						required
-						value={form?.linkToDownload ?? ''}
+						bind:value={linkToDownload}
 						placeholder="https://drive.google.com/..."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 					/>
@@ -1000,7 +1050,7 @@
 					<textarea
 						id="castAndCrew"
 						name="castAndCrew"
-						value={form?.castAndCrew ?? ''}
+						bind:value={castAndCrew}
 						rows="6"
 						placeholder="List your cast, crew members, and their roles..."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
@@ -1012,7 +1062,7 @@
 					<textarea
 						id="thanks"
 						name="thanks"
-						value={form?.thanks ?? ''}
+						bind:value={thanks}
 						rows="4"
 						placeholder="Acknowledgments and thanks..."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
@@ -1045,7 +1095,7 @@
 						<textarea
 							id="explicitDetails"
 							name="explicitDetails"
-							value={form?.explicitDetails ?? ''}
+							bind:value={explicitDetails}
 							rows="3"
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						></textarea>
@@ -1073,7 +1123,7 @@
 						<textarea
 							id="aiExplanation"
 							name="aiExplanation"
-							value={form?.aiExplanation ?? ''}
+							bind:value={aiExplanation}
 							rows="3"
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
 						></textarea>
@@ -1101,7 +1151,7 @@
 						<textarea
 							id="previousScreeningLocations"
 							name="previousScreeningLocations"
-							value={form?.previousScreeningLocations ?? ''}
+							bind:value={previousScreeningLocations}
 							rows="3"
 							placeholder="Festival names, venues, dates..."
 							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
@@ -1117,7 +1167,7 @@
 					<textarea
 						id="additionalInfo"
 						name="additionalInfo"
-						value={form?.additionalInfo ?? ''}
+						bind:value={additionalInfo}
 						rows="4"
 						placeholder="Anything else that needs to be known about the creation process"
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
@@ -1129,7 +1179,7 @@
 					<textarea
 						id="specialRequirements"
 						name="specialRequirements"
-						value={form?.specialRequirements ?? ''}
+						bind:value={specialRequirements}
 						rows="3"
 						placeholder="Please let us know if your work has any special technical or spatial requirements for presentation (e.g., multi-channel sound, specific volume levels, unusual aspect ratio, looping instructions, external files, physical objects)."
 						class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"

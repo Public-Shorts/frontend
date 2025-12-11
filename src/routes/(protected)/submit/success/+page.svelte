@@ -8,7 +8,7 @@
 
 <SEO title="Submission Success | Public Shorts | Berlin" />
 
-<div class="min-h-screen flex items-center justify-center p-6">
+<div class="min-h-screen flex items-center justify-center px-6 py-20">
   <div class="max-w-2xl w-full text-center space-y-8">
     <h1 class="text-4xl md:text-5xl font-bold">Thank You!</h1>
 
@@ -44,9 +44,9 @@
       <div class="pt-4">
         <a
           href="/"
-          class="inline-block bg-accent-500 hover:bg-accent-600 font-semibold py-3 px-8 rounded transition"
+          class="inline-block bg-accent-500 hover:bg-accent-600 font-semibold py-3 px-8 rounded transition no-underline"
         >
-          Return to Home
+          Home
         </a>
       </div>
     </div>

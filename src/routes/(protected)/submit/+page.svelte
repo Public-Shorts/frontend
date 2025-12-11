@@ -45,6 +45,9 @@
   let selectedCategories = $state<string[]>(form?.categories?.split(',').map(c => c.trim()) ?? []);
   let selectedLanguages = $state<string[]>(form?.filmLanguage?.split(',').map(l => l.trim()) ?? []);
   let showCategoryOther = $state(selectedCategories.includes('other'));
+  let explicit = $state(false);
+  let aiUsed = $state(false);
+  let previousScreenings = $state(false);
   let isSubmitting = $state(false);
 
   // Initialize from server data
@@ -759,8 +762,12 @@
 							<option value={language.value}>{language.title}</option>
 						{/each}
 					</select>
+					<input type="hidden" name="filmLanguage" value={videoLanguage} />
 					{#if form?.errors?.videoLanguage}
 						<p class="mt-1 text-sm text-red-500">{form.errors.videoLanguage}</p>
+					{/if}
+					{#if form?.errors?.filmLanguage}
+						<p class="mt-1 text-sm text-red-500">{form.errors.filmLanguage}</p>
 					{/if}
 				</div>
 
@@ -1076,7 +1083,7 @@
 
 				<div class="space-y-2">
 					<label class="flex items-start">
-						<input type="checkbox" name="explicit" value="true" class="mt-1 mr-2" />
+						<input type="checkbox" name="explicit" value="true" bind:checked={explicit} class="mt-1 mr-2" />
 						<span>
 							This video contains explicit content
 							<span class="mt-1 block text-sm text-gallery-500">
@@ -1088,26 +1095,29 @@
 						</span>
 					</label>
 
-					<div class="ml-6">
-						<label for="explicitDetails" class="mb-2 block text-sm">
-							What is explicit? <span class="text-red-500">*</span> (if checked above)
-						</label>
-						<textarea
-							id="explicitDetails"
-							name="explicitDetails"
-							bind:value={explicitDetails}
-							rows="3"
-							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
-						></textarea>
-						{#if form?.errors?.explicitDetails}
-							<p class="mt-1 text-sm text-red-500">{form.errors.explicitDetails}</p>
-						{/if}
-					</div>
+					{#if explicit}
+						<div class="ml-6">
+							<label for="explicitDetails" class="mb-2 block text-sm">
+								What is explicit? <span class="text-red-500">*</span>
+							</label>
+							<textarea
+								id="explicitDetails"
+								name="explicitDetails"
+								bind:value={explicitDetails}
+								rows="3"
+								required
+								class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+							></textarea>
+							{#if form?.errors?.explicitDetails}
+								<p class="mt-1 text-sm text-red-500">{form.errors.explicitDetails}</p>
+							{/if}
+						</div>
+					{/if}
 				</div>
 
 				<div class="space-y-2">
 					<label class="flex items-start">
-						<input type="checkbox" name="aiUsed" value="true" class="mt-1 mr-2" />
+						<input type="checkbox" name="aiUsed" value="true" bind:checked={aiUsed} class="mt-1 mr-2" />
 						<span>
 							AI was used in the creation of this video
 							<span class="mt-1 block text-sm text-gallery-500">
@@ -1116,26 +1126,29 @@
 						</span>
 					</label>
 
-					<div class="ml-6">
-						<label for="aiExplanation" class="mb-2 block text-sm">
-							If yes, please tell us in a short text how AI was used:
-						</label>
-						<textarea
-							id="aiExplanation"
-							name="aiExplanation"
-							bind:value={aiExplanation}
-							rows="3"
-							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
-						></textarea>
-						{#if form?.errors?.aiExplanation}
-							<p class="mt-1 text-sm text-red-500">{form.errors.aiExplanation}</p>
-						{/if}
-					</div>
+					{#if aiUsed}
+						<div class="ml-6">
+							<label for="aiExplanation" class="mb-2 block text-sm">
+								If yes, please tell us in a short text how AI was used: <span class="text-red-500">*</span>
+							</label>
+							<textarea
+								id="aiExplanation"
+								name="aiExplanation"
+								bind:value={aiExplanation}
+								rows="3"
+								required
+								class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+							></textarea>
+							{#if form?.errors?.aiExplanation}
+								<p class="mt-1 text-sm text-red-500">{form.errors.aiExplanation}</p>
+							{/if}
+						</div>
+					{/if}
 				</div>
 
 				<div class="space-y-2">
 					<label class="flex items-start">
-						<input type="checkbox" name="previousScreenings" value="true" class="mt-1 mr-2" />
+						<input type="checkbox" name="previousScreenings" value="true" bind:checked={previousScreenings} class="mt-1 mr-2" />
 						<span>
 							This video has been screened previously
 							<span class="mt-1 block text-sm text-gallery-500">
@@ -1144,22 +1157,25 @@
 						</span>
 					</label>
 
-					<div class="ml-6">
-						<label for="previousScreeningLocations" class="mb-2 block text-sm">
-							Previous screening locations and year <span class="text-red-500">*</span> (if checked above)
-						</label>
-						<textarea
-							id="previousScreeningLocations"
-							name="previousScreeningLocations"
-							bind:value={previousScreeningLocations}
-							rows="3"
-							placeholder="Festival names, venues, dates..."
-							class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
-						></textarea>
-						{#if form?.errors?.previousScreeningLocations}
-							<p class="mt-1 text-sm text-red-500">{form.errors.previousScreeningLocations}</p>
-						{/if}
-					</div>
+					{#if previousScreenings}
+						<div class="ml-6">
+							<label for="previousScreeningLocations" class="mb-2 block text-sm">
+								Previous screening locations and year <span class="text-red-500">*</span>
+							</label>
+							<textarea
+								id="previousScreeningLocations"
+								name="previousScreeningLocations"
+								bind:value={previousScreeningLocations}
+								rows="3"
+								placeholder="Festival names, venues, dates..."
+								required
+								class="w-full rounded border border-gallery-300 bg-gallery-50 p-2"
+							></textarea>
+							{#if form?.errors?.previousScreeningLocations}
+								<p class="mt-1 text-sm text-red-500">{form.errors.previousScreeningLocations}</p>
+							{/if}
+						</div>
+					{/if}
 				</div>
 
 				<div>

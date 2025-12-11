@@ -83,7 +83,7 @@
 
 	<div class="font-semibold md:col-span-1">How to submit</div>
 	<div class="md:col-span-3">
-		<p>Use the <a href="/submit">submission form</a> to send: a streaming link (with password if needed), a short synopsis, runtime, year, and basic credits. After curation in January–February, all artists are informed and selected works receive tech and event details.</p>
+		<p>Use the <a href={!isPastOpenCall ? "/submit" : ""}>submission form</a> to send: a streaming link (with password if needed), a short synopsis, runtime, year, and basic credits. After curation in January–February, all artists are informed and selected works receive tech and event details.</p>
 		<p>For more information, you can checkout our <a href="/FAQ">FAQ</a></p>
 	</div>
 	

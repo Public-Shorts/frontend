@@ -5,7 +5,7 @@
     url = page.url.toString(),
     prependTitle = "Public Shorts | ",
     title = defaultTitle,
-    description = "The 24/7 Video Festival in Berlin showcases short videos from around the world in a continuous 24-hour screening event.",
+    description = "The 24/7 Video Festival in Berlin showcases short videos in a continuous 24-hour screening.",
     imageAlt = "Window into Public Shorts Festival",
     imageUrl = "/images/og-image.png",
     language = "en-us",

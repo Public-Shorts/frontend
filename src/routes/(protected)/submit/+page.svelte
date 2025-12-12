@@ -12,8 +12,9 @@
   type UploadedImage = { asset: { _ref: string } };
   type ImagePreview = { id: string; file: File; preview: string; uploading?: boolean; uploaded?: UploadedImage };
 
+
   let i = $state(0)
-  let unlocked = $derived(i > 7)
+  let unlocked = true;
 
   // Form fields
   let submitterName = $state(form?.submitterName ?? "")
@@ -479,7 +480,7 @@
 			<p class=" ">
 				If you have any questions, please refer to our
 				<a href="/FAQ" class="words text-accent-600 underline">FAQ</a>
-				page before submitting.
+				page before submitting, or contact us at <a href="mailto:hi@publicshorts.org">hi@publicshorts.org</a>
 			</p>
 
 			<ol class="list-inside list-decimal pb-4 text-gallery-500">

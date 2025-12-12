@@ -33,13 +33,13 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 async function uploadImageToSanity(file: File): Promise<any> {
 	try {
-		console.log('Uploading to Sanity:', file.name, file.type, file.size);
+		// console.log('Uploading to Sanity:', file.name, file.type, file.size);
 		const buffer = await file.arrayBuffer();
 		const asset = await authenticatedClient.assets.upload('image', Buffer.from(buffer), {
 			filename: file.name,
 			contentType: file.type
 		});
-		console.log('Sanity upload complete, asset ID:', asset._id);
+		// console.log('Sanity upload complete, asset ID:', asset._id);
 
 		const imageRef = {
 			_type: 'image',
@@ -48,7 +48,7 @@ async function uploadImageToSanity(file: File): Promise<any> {
 				_ref: asset._id
 			}
 		};
-		console.log('Created image reference:', imageRef);
+		// console.log('Created image reference:', imageRef);
 		return imageRef;
 	} catch (error) {
 		console.error('Error uploading image:', error);
@@ -95,7 +95,7 @@ export const actions = {
 				uploads.screenshots.push(asset);
 			}
 
-			console.log('Upload successful, returning asset:', asset);
+			// console.log('Upload successful, returning asset:', asset);
 
 			return {
 				success: true,
@@ -314,7 +314,7 @@ export const actions = {
 			// Submit to Sanity
 			const result = await authenticatedClient.create(submission);
 
-			console.log('Submission created:', result._id);
+			// console.log('Submission created:', result._id);
 
 			// Clear session uploads after successful submission
 			if (sessionId && sessionUploads.has(sessionId)) {

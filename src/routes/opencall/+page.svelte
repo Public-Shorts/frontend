@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	const openCallDate = new Date('2025-12-12T15:00:00');
-	const openCallDeadline = new Date('2027-01-16T23:59:59');
+	const openCallDeadline = new Date('2026-01-11T23:59:59');
 	const today = new Date();
 	// check if the current date is past the open call date
 	const isPastOpenCall = today > openCallDate;
@@ -28,9 +28,12 @@
 	<div class="font-semibold md:col-span-1"></div>
 	<div class="md:col-span-1"></div>
 	<div class="md:col-span-4 ">
-		<button on:click={()=>goto('/submit')} disabled={!isPastOpenCall} class="inline-block px-8 py-3 border-2 border-black disabled:border-0 text-current font-semibold hover:opacity-75  transition-colors duration-300 disabled:bg-gallery-400 disabled:text-gallery-100 cursor-pointer">Submit a video</button>
+		<button on:click={()=>goto('/submit')} disabled={!isPastOpenCall && isBeforeDeadline} class="inline-block px-8 py-3 border-2 border-black disabled:border-0 text-current font-semibold hover:opacity-75  transition-colors duration-300 disabled:bg-gallery-400 disabled:text-gallery-100 cursor-pointer">Submit a video</button>
 		{#if !isPastOpenCall}
 			<p class="pt-2 text-gallery-500 ">The open call will open on December 12, 2025 at 17:00.</p>
+		{/if}
+		{#if isAfterDeadline}
+			<p class="pt-2 text-gallery-500 ">The open call has now closed.</p>
 		{/if}
 	</div>
 	<div class="md:col-span-1"></div>

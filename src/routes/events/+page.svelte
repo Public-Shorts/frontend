@@ -3,6 +3,7 @@
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 </script>
+
 <SEO title="Events" />
 
 <GridLayout>
@@ -29,18 +30,18 @@
 		<div class="grid gap-4 md:grid-cols-1">
 			<EventCard
 				title="Festival Opening &amp; First Screening"
-				date="Fri, 27 Feb 2026, 19:00"
-				location="TBA, Berlin"
+				date="Thu, 26 Feb 2026, 19:00"
+				location="Kino & Bar in der Königstadt, Berlin"
 			/>
 			<EventCard
 				title="Second Screening Session"
-				date="Fri, 6 Mar 2026, 19:00"
-				location="TBA, Berlin"
+				date="Thu, 5 Mar 2026, 19:00"
+				location="Kino & Bar in der Königstadt, Berlin"
 			/>
 			<EventCard
 				title="Festival Closing &amp; Last Screening"
 				date="Fri, 13 Mar 2026, 19:00"
-				location="TBA, Berlin"
+				location="Kino & Bar in der Königstadt, Berlin"
 			/>
 		</div>
 	</div>

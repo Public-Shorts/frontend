@@ -275,6 +275,43 @@ export const groqQueries = {
       }
     }
   }`,
+  tvSelection: `*[_type == "tvSelection"][0]{
+    "films": films[]{
+      selectionMethod,
+      "film": film->{
+        _id,
+        englishTitle,
+        originalTitle,
+        directorName,
+        yearOfCompletion,
+        length,
+        categories,
+        "poster": poster{ asset->{ _id, url, metadata } },
+        "screenshot": screenshots[0]{ asset->{ _id, url, metadata } }
+      }
+    }
+  }`,
+  filmDetail: `*[_type == "submission" && _id == $id][0]{
+    _id,
+    englishTitle,
+    originalTitle,
+    directorName,
+    yearOfCompletion,
+    length,
+    filmLanguage,
+    synopsis,
+    categories,
+    categoryOther,
+    website,
+    explicit,
+    explicitDetails,
+    castAndCrew,
+    thanks,
+    previousScreenings,
+    previousScreeningLocations,
+    "poster": poster{ asset->{ _id, url, metadata } },
+    "screenshots": screenshots[]{ asset->{ _id, url, metadata } }
+  }`,
   event: `*[_type == "event" && slug.current == $slug][0]{
     _id,
     title,
@@ -415,3 +452,12 @@ export type PaginatedResponse<T> = {
 } & {
   total: number;
 };
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}

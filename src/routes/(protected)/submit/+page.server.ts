@@ -1,8 +1,10 @@
 import { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } from '$env/static/public';
 import { SANITY_TOKEN } from '$env/static/private';
 import { createClient } from '@sanity/client';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+
+const OPEN_CALL_DEADLINE = new Date('2026-01-11T23:59:59');
 
 // Authenticated client for server-side operations (mutations, uploads)
 const authenticatedClient = createClient({
@@ -17,6 +19,10 @@ const authenticatedClient = createClient({
 const sessionUploads = new Map<string, { screenshots: any[]; poster: any | null }>();
 
 export const load: PageServerLoad = async ({ cookies }) => {
+	if (new Date() > OPEN_CALL_DEADLINE) {
+		redirect(302, '/opencall');
+	}
+
 	const sessionId = cookies.get('submit_session_id');
 
 	if (sessionId && sessionUploads.has(sessionId)) {
@@ -58,6 +64,9 @@ async function uploadImageToSanity(file: File): Promise<any> {
 
 export const actions = {
 	uploadImage: async ({ request, cookies }) => {
+		if (new Date() > OPEN_CALL_DEADLINE) {
+			return fail(403, { error: 'Submissions are closed' });
+		}
 		try {
 			const formData = await request.formData();
 			const file = formData.get('file') as File;
@@ -162,6 +171,9 @@ export const actions = {
 	},
 
 	submit: async ({ request, cookies }) => {
+		if (new Date() > OPEN_CALL_DEADLINE) {
+			return fail(403, { error: 'Submissions are closed' });
+		}
 		try {
 			const formData = await request.formData();
 

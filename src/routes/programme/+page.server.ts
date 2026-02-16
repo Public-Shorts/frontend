@@ -21,9 +21,14 @@ type TvSelection = {
 	films: SelectionEntry[] | null;
 };
 
-function addSlugs(films: FilmSummary[]) {
+export async function load() {
+	const data = await getDocument<TvSelection>(groqQueries.tvSelection);
+	const entries = data?.films ?? [];
+
+	const films = entries.filter((e) => e.film).map((e) => e.film);
+
 	const slugCounts = new Map<string, number>();
-	return films.map((film) => {
+	const filmsWithSlugs = films.map((film) => {
 		let slug = slugify(film.englishTitle);
 		const count = slugCounts.get(slug) ?? 0;
 		slugCounts.set(slug, count + 1);
@@ -32,26 +37,6 @@ function addSlugs(films: FilmSummary[]) {
 		}
 		return { ...film, slug };
 	});
-}
 
-export async function load() {
-	const data = await getDocument<TvSelection>(groqQueries.tvSelection);
-	const entries = data?.films ?? [];
-
-	const highlightFilms: FilmSummary[] = [];
-	const selectionFilms: FilmSummary[] = [];
-
-	for (const entry of entries) {
-		if (!entry.film) continue;
-		if (entry.selectionMethod === 'highlight') {
-			highlightFilms.push(entry.film);
-		} else {
-			selectionFilms.push(entry.film);
-		}
-	}
-
-	return {
-		highlights: addSlugs(highlightFilms),
-		films: addSlugs(selectionFilms)
-	};
+	return { films: filmsWithSlugs };
 }

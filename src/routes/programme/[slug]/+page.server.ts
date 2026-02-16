@@ -42,7 +42,6 @@ export async function load({ params }) {
 
 	const slugCounts = new Map<string, number>();
 	let matchedId: string | null = null;
-	let matchedMethod: 'highlight' | 'score' = 'score';
 
 	for (const entry of entries) {
 		if (!entry.film) continue;
@@ -54,7 +53,6 @@ export async function load({ params }) {
 		}
 		if (slug === params.slug) {
 			matchedId = entry.film._id;
-			matchedMethod = entry.selectionMethod;
 		}
 	}
 
@@ -68,5 +66,5 @@ export async function load({ params }) {
 		error(404, 'Film not found');
 	}
 
-	return { film, isHighlight: matchedMethod === 'highlight' };
+	return { film };
 }

@@ -291,6 +291,33 @@ export const groqQueries = {
       }
     }
   }`,
+  screenings: `*[_type == "screening"] | order(date asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    date,
+    location,
+    description
+  }`,
+  screening: `*[_type == "screening" && slug.current == $slug][0]{
+    _id,
+    title,
+    "slug": slug.current,
+    date,
+    location,
+    description,
+    "films": *[_type == "submission" && assignedScreening._ref == ^._id]{
+      _id,
+      englishTitle,
+      originalTitle,
+      directorName,
+      yearOfCompletion,
+      length,
+      categories,
+      "poster": poster{ asset->{ _id, url, metadata } },
+      "screenshot": screenshots[0]{ asset->{ _id, url, metadata } }
+    }
+  }`,
   filmDetail: `*[_type == "submission" && _id == $id][0]{
     _id,
     englishTitle,

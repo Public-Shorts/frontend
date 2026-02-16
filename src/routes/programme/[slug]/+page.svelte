@@ -6,7 +6,6 @@
 
 	let { data } = $props();
 	const film = data.film;
-	const isHighlight = data.isHighlight;
 
 	const categoryLabels: Record<string, string> = {
 		abstract: 'Abstract',
@@ -63,18 +62,13 @@
 
 	{#if screenshotImages.length > 0}
 		<div class="md:col-span-6">
-			<div class="aspect-video w-full overflow-hidden {isHighlight ? 'border-l-4 border-accent-500' : ''}">
+			<div class="aspect-video w-full overflow-hidden">
 				<ImageCarousel images={screenshotImages} />
 			</div>
 		</div>
 	{/if}
 
 	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">
-		{#if isHighlight}
-			<span class="mb-2 block text-xs font-semibold uppercase tracking-widest text-accent-500">
-				Curator Highlight
-			</span>
-		{/if}
 		{film.englishTitle}
 		{#if showOriginalTitle}
 			<span class="mt-1 block text-lg font-normal text-gallery-500">

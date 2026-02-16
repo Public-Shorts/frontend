@@ -4,6 +4,20 @@
 	import EventCard from '$lib/components/events/EventCard.svelte';
 	import GridLayout from '../../lib/components/GridLayout.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+
+	let { data } = $props();
+
+	function formatDate(iso: string): string {
+		const d = new Date(iso);
+		return d.toLocaleDateString('en-GB', {
+			weekday: 'short',
+			day: 'numeric',
+			month: 'short',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+	}
 </script>
 <SEO />
 
@@ -16,7 +30,7 @@
 		the glass windows at
 		<a
 			class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
-			href="https://maps.app.goo.gl/UKxpSPXeA9ud5hyWA"
+			href="https://maps.app.goo.gl/ik5tm9Xrx9MPuDnRA"
 			target="_blank"
 			rel="noreferrer"
 		>
@@ -34,30 +48,25 @@
 		/>
 	</div>
 
-	<div class="font-semibold md:col-span-1">Events</div>
-	<div class="md:col-span-3">
-		In addition to the continuous display in the window, three special in-person events feature
-		Q&amp;As, debates, and discussions:
-	</div>
-	<div class="md:col-span-2">
-		<div class="grid gap-4 md:grid-cols-1">
-			<EventCard
-				title="Festival Opening &amp; First Screening"
-				date="Fri, 27 Feb 2026, 19:00"
-				location="TBA, Berlin"
-			/>
-			<EventCard
-				title="Second Screening Session"
-				date="Fri, 6 Mar 2026, 19:00"
-				location="TBA, Berlin"
-			/>
-			<EventCard
-				title="Festival Closing &amp; Last Screening"
-				date="Fri, 13 Mar 2026, 19:00"
-				location="TBA, Berlin"
-			/>
+	{#if data.screenings.length > 0}
+		<div class="font-semibold md:col-span-1">Events</div>
+		<div class="md:col-span-3">
+			In addition to the continuous display in the window, special in-person events feature Q&amp;As,
+			debates, and discussions:
 		</div>
-	</div>
+		<div class="md:col-span-2">
+			<div class="grid gap-4 md:grid-cols-1">
+				{#each data.screenings as screening}
+					<EventCard
+						title={screening.title}
+						date={formatDate(screening.date)}
+						location={screening.location}
+						href="/events/{screening.slug}"
+					/>
+				{/each}
+			</div>
+		</div>
+	{/if}
 
 	<div class="font-semibold md:col-span-1">Open Call & Selection</div>
 	<div class="md:col-span-3">

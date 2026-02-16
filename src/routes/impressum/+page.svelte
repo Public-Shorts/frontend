@@ -1,3 +1,8 @@
+<script>
+	let { data } = $props();
+	const contactEmail = data.festivalSettings?.contactEmail ?? 'hi@publicshorts.org';
+</script>
+
 <div class="flex h-full w-full items-center justify-center">
 	<div class="text-gallery-400 flex max-w-lg flex-col gap-4">
 		<div>
@@ -10,8 +15,8 @@
 		<div>
 			<span class="text-gallery-700 font-semibold">Kontakt:</span><br />
 			<span
-				>Email: <a href="mailto:hi@publicshorts.org" class="text-blue-600 underline"
-					>hi@publicshorts.org</a
+				>Email: <a href="mailto:{contactEmail}" class="text-blue-600 underline"
+					>{contactEmail}</a
 				></span
 			>
 		</div>

@@ -9,7 +9,18 @@ type Screening = {
 	description: string | null;
 };
 
+type Curator = {
+	_id: string;
+	name: string;
+};
+
 export async function load() {
-	const screenings = await getDocument<Screening[]>(groqQueries.screenings);
-	return { screenings: screenings ?? [] };
+	const [screenings, curators] = await Promise.all([
+		getDocument<Screening[]>(groqQueries.screenings),
+		getDocument<Curator[]>(groqQueries.activeCurators)
+	]);
+	return {
+		screenings: screenings ?? [],
+		curators: curators ?? []
+	};
 }

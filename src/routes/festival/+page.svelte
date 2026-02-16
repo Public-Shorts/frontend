@@ -94,13 +94,13 @@
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 
-	<div class="font-semibold md:col-span-1">Curatorial Team</div>
-	<div class="md:col-span-3">
-		Federico Zurani, Manus Nijhoff, Mario Guzman, Juyeong Park, Stratos Bichakis, Christina
-		Pitiakoudi, Sena Doğan, Edlin Jap, Lorenzo Tani, Engy El Shenawy, Josue Flores, Moritz Weber,
-		Lilli Grube, Elisabeth Scholz, Pietro Lugaro, Su Durakbaşa.
-	</div>
-	<div class="hidden md:col-span-2 md:block"></div>
+	{#if data.curators.length > 0}
+		<div class="font-semibold md:col-span-1">Curatorial Team</div>
+		<div class="md:col-span-3">
+			{data.curators.map((c) => c.name).join(', ')}.
+		</div>
+		<div class="hidden md:col-span-2 md:block"></div>
+	{/if}
 
 	<div class="font-semibold md:col-span-1">Jury</div>
 	<div class="md:col-span-3">

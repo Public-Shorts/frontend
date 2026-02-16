@@ -4,6 +4,8 @@ import { createClient } from '@sanity/client';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
+// Actions cannot access layout data, so this constant is kept for action deadline checks.
+// Keep in sync with festivalSettings.openCallDeadline in Sanity.
 const OPEN_CALL_DEADLINE = new Date('2026-01-11T23:59:59');
 
 // Authenticated client for server-side operations (mutations, uploads)
@@ -18,8 +20,13 @@ const authenticatedClient = createClient({
 // Session storage for temporary uploads
 const sessionUploads = new Map<string, { screenshots: any[]; poster: any | null }>();
 
-export const load: PageServerLoad = async ({ cookies }) => {
-	if (new Date() > OPEN_CALL_DEADLINE) {
+export const load: PageServerLoad = async ({ cookies, parent }) => {
+	const { festivalSettings } = await parent();
+	const deadline = festivalSettings?.openCallDeadline
+		? new Date(festivalSettings.openCallDeadline)
+		: OPEN_CALL_DEADLINE;
+
+	if (new Date() > deadline) {
 		redirect(302, '/opencall');
 	}
 

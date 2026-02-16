@@ -8,7 +8,7 @@
 	import Navbar from '$lib/components/navbar/navbar.svelte';
 	import Footer from '$lib/components/footer/Footer.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <svelte:head>
@@ -26,7 +26,10 @@
 	{@render children()}
 </main>
 
-<Footer />
+<Footer
+	instagramUrl={data.festivalSettings?.socialMedia?.instagram ?? 'https://instagram.com/public.shorts.festival'}
+	location={data.festivalSettings?.location ?? 'Berlin, DE'}
+/>
 
 <style>
 	:global(body) {

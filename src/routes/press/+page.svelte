@@ -1,6 +1,9 @@
 <script>
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+
+	let { data } = $props();
+	const contactEmail = data.festivalSettings?.contactEmail ?? 'hi@publicshorts.org';
 </script>
 <SEO title="Press" />
 <div class="col-span-2"></div>
@@ -13,7 +16,7 @@
 			>Press package for logo, photos etc.</a
 		>
 		For any questions please contact
-		<a class="text-gallery-900" href="mailto:hi@publicshorts.org">hi@publicshorts.org</a> and mention
-		“press” in the subject.
+		<a class="text-gallery-900" href="mailto:{contactEmail}">{contactEmail}</a> and mention
+		"press" in the subject.
 	</p>
 </GridLayout>

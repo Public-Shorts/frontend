@@ -1,6 +1,9 @@
 <script>
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+
+	let { data } = $props();
+	const contactEmail = data.festivalSettings?.contactEmail ?? 'hi@publicshorts.org';
 </script>
 
 <SEO title="Contact" />
@@ -10,10 +13,10 @@
 	<div class="font-semibold md:col-span-1">Email</div>
 	<div class="md:col-span-3">
 		<a
-			href="mailto:hi@publicshorts.org"
+			href="mailto:{contactEmail}"
 			class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
 		>
-			hi@publicshorts.org
+			{contactEmail}
 		</a>
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>

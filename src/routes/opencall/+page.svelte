@@ -1,16 +1,11 @@
-<script>
+<script lang="ts">
 	import SEO from '$lib/components/SEO.svelte';
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
 	import { goto } from '$app/navigation';
 
-	const openCallDate = new Date('2025-12-12T15:00:00');
-	const openCallDeadline = new Date('2026-01-11T23:59:59');
-	const today = new Date();
-	// check if the current date is past the open call date
-	const isPastOpenCall = today > openCallDate;
-	const isBeforeDeadline = today < openCallDeadline;
-	const isAfterDeadline = today > openCallDeadline;
+	let { data } = $props();
+	const { isPastOpenCall, isBeforeDeadline, isAfterDeadline } = data;
 </script>
 
 <SEO title="Open Call" />

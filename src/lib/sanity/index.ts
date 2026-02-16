@@ -5,9 +5,58 @@ import {
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 
+export type FestivalSettings = {
+  contactEmail: string | null;
+  location: string | null;
+  festivalYear: number | null;
+  festivalDescription: string | null;
+  openCallDeadline: string | null;
+  festivalStartDate: string | null;
+  festivalEndDate: string | null;
+  socialMedia: {
+    instagram?: string;
+  } | null;
+  partners: Array<{
+    name: string;
+    url?: string;
+    logo?: {
+      asset: {
+        _id: string;
+        url: string;
+        metadata: {
+          dimensions: {
+            width: number;
+            height: number;
+            aspectRatio: number;
+          };
+        };
+      };
+      hotspot?: { x: number; y: number; width: number; height: number };
+      crop?: { top: number; bottom: number; left: number; right: number };
+    };
+    _key: string;
+  }> | null;
+};
+
 export const groqQueries = {
   settings: `*[_type == "settings"][0]{
     defaultPage
+  }`,
+  festivalSettings: `*[_type == "festivalSettings"][0]{
+    contactEmail,
+    location,
+    festivalYear,
+    festivalDescription,
+    openCallDeadline,
+    festivalStartDate,
+    festivalEndDate,
+    socialMedia { instagram },
+    partners[] {
+      name,
+      url,
+      "logo": logo { asset->{ _id, url, metadata }, hotspot, crop },
+      _key
+    }
   }`,
   selected: `*[_type == "selected"][0]{
     selection[]->{
@@ -274,6 +323,10 @@ export const groqQueries = {
         }
       }
     }
+  }`,
+  activeCurators: `*[_type == "curator" && _id in *[_type == "review"].curator._ref] | order(name asc) {
+    _id,
+    name
   }`,
   tvSelection: `*[_type == "tvSelection"][0]{
     "films": films[]{

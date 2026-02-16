@@ -1,6 +1,11 @@
-<script>
+<script lang="ts">
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { urlFor } from '$lib/sanity';
+
+	let { data } = $props();
+	const partners = data.festivalSettings?.partners ?? [];
+	const contactEmail = data.festivalSettings?.contactEmail ?? 'hi@publicshorts.org';
 </script>
 <SEO title="Partners" />
 
@@ -12,41 +17,30 @@
 		<p class="mb-12">
 			We are grateful for the support of our partners who help make the 24/7 Video Festival
 			possible. If you are interested in becoming a partner, please reach out to us at
-			<a href="mailto:hi@publicshorts.org">hi@publicshorts.org</a>
+			<a href="mailto:{contactEmail}">{contactEmail}</a>
 		</p>
-		<div class="mt-6 flex flex-col items-start gap-8 md:grid md:grid-cols-3">
-			<a
-				href="https://kanape.studio/"
-				class="flex items-center justify-center saturate-0 transition duration-300 hover:saturate-100"
-			>
-				<img
-					src="/images/partners/kanape.png"
-					alt="Kanapé Logo"
-					class="max-h-12 w-auto object-contain"
-				/>
-			</a>
-
-			<a
-				href="https://zoenoteka.com"
-				class="flex items-center justify-center saturate-0 transition duration-300 hover:saturate-100"
-			>
-				<img
-					src="/images/partners/zonoteka.png"
-					alt="Zönoteka Logo"
-					class="max-h-16 w-auto object-contain"
-				/>
-			</a>
-			<a
-				href="https://www.schoolofma.org/"
-				class="flex items-center justify-center saturate-0 transition duration-300 hover:saturate-100"
-			>
-				<img
-					src="/images/partners/school-of-ma.webp"
-					alt="School of MA Logo"
-					class="max-h-16 w-auto object-contain"
-				/>
-			</a>
-		</div>
+		{#if partners.length > 0}
+			<div class="mt-6 flex flex-col items-start gap-8 md:grid md:grid-cols-3">
+				{#each partners as partner (partner._key)}
+					<a
+						href={partner.url ?? '#'}
+						class="flex items-center justify-center saturate-0 transition duration-300 hover:saturate-100"
+						target="_blank"
+						rel="noreferrer"
+					>
+						{#if partner.logo?.asset}
+							<img
+								src={urlFor(partner.logo).height(64).auto('format').url()}
+								alt="{partner.name} Logo"
+								class="max-h-16 w-auto object-contain"
+							/>
+						{:else}
+							<span class="text-sm text-gallery-500">{partner.name}</span>
+						{/if}
+					</a>
+				{/each}
+			</div>
+		{/if}
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 </GridLayout>

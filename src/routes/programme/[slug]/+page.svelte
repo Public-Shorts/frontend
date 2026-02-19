@@ -7,29 +7,6 @@
 	let { data } = $props();
 	const film = data.film;
 
-	const categoryLabels: Record<string, string> = {
-		abstract: 'Abstract',
-		animation: 'Animation',
-		comedy: 'Comedy',
-		dance: 'Dance',
-		documentary: 'Documentary',
-		environment: 'Environment / Nature',
-		experimental: 'Experimental',
-		horror: 'Horror',
-		lgbtqia: 'LGBTQIA+',
-		mobile: 'Mobile',
-		micro: 'Micro-Short',
-		music_video: 'Music Video',
-		narrative: 'Narrative',
-		performance: 'Performance',
-		sci_fi_fantasy: 'Sci-Fi / Fantasy',
-		social_impact: 'Social Impact',
-		technology: 'Technology',
-		urban: 'Urban',
-		silent_visual: 'Visual-Only',
-		other: 'Other'
-	};
-
 	const screenshotImages = $derived(
 		(film.screenshots ?? []).map((s) => ({
 			src: urlFor(s).width(800).height(450).fit('crop').url(),
@@ -115,22 +92,6 @@
 		<p>{film.synopsis}</p>
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
-
-	{#if film.categories?.length}
-		<div class="font-semibold md:col-span-1">Categories</div>
-		<div class="md:col-span-3">
-			<div class="flex flex-wrap gap-2">
-				{#each film.categories as cat}
-					<span
-						class="rounded-sm border border-gallery-300 px-2 py-0.5 text-sm text-gallery-600"
-					>
-						{categoryLabels[cat] ?? cat}
-					</span>
-				{/each}
-			</div>
-		</div>
-		<div class="hidden md:col-span-2 md:block"></div>
-	{/if}
 
 	{#if film.castAndCrew}
 		<div class="font-semibold md:col-span-1">Cast & Crew</div>

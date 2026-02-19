@@ -73,25 +73,34 @@
 		<div class="font-semibold md:col-span-1">Selection</div>
 		<div class="md:col-span-3">
 			<p>
-				From over 400 open-call submissions, our curatorial team collectively selected
-				{data.selection.totalFilms} short films totaling {totalHours}h{remainingMinutes}m of programming,
-				with an average runtime of ~{data.selection.avgMinutes} minutes per film. The selection spans
+				From open-call submissions, our curatorial team collectively selected
+				{data.selection.totalFilms} short films totaling {totalHours}h{remainingMinutes}m of
+				programming, with an average runtime of ~{data.selection.avgMinutes} minutes per film. The selection
+				spans
 				{data.selection.topCategories.slice(0, 5).join(', ').toLowerCase()}, and more.
 			</p>
 			<p class="mt-3">
-				<a href="/programme" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Full programme</a>
+				<a
+					href="/programme"
+					class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+					>Full programme</a
+				>
 				&middot;
-				<a href="/schedule" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Schedule</a>
+				<a
+					href="/schedule"
+					class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+					>Schedule</a
+				>
 			</p>
 		</div>
 		{#if selectionImages.length > 0}
 			<div class="aspect-video md:col-span-2">
-				<ImageCarousel images={selectionImages} />
+				<ImageCarousel images={selectionImages.reverse()} />
 			</div>
 		{/if}
 	{/if}
 
-	<div class="font-semibold md:col-span-1">Programme Map</div>
+	<div class="font-semibold md:col-span-1">Map</div>
 	<div class="md:col-span-3">
 		A visual map of the entire selection, organized by thematic clusters and curator tags. Explore
 		how the films relate to each other and navigate the programme spatially.
@@ -111,7 +120,7 @@
 				height="963"
 				loading="lazy"
 				decoding="async"
-				class="w-full h-auto transition-opacity hover:opacity-90"
+				class="h-auto w-full transition-opacity hover:opacity-90"
 			/>
 		</a>
 	</div>
@@ -140,7 +149,11 @@
 	<div class="md:col-span-3">
 		All types of video media under 15 minutes, made in the past 3 years are welcome. The festival is
 		curated by a diverse team of curators who collectively shape the selection. See the
-		<a href="/opencall" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">open call</a>
+		<a
+			href="/opencall"
+			class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+			>open call</a
+		>
 		for the 2026 edition.
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>

@@ -20,10 +20,10 @@
 				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/festival">Festival</a
 			>
-			<!-- <a
+			<a
 				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/programme">Programme</a
-			> -->
+			>
 			<a class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400" href="/events"
 				>Events</a
 			>
@@ -34,11 +34,10 @@
 			<a class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400" href="/press"
 				>Press</a
 			>
-
-			<a
+			<!-- <a
 				class=" text-gallery-700 transition-all duration-150 hover:text-gallery-400"
 				href="/opencall">Open Call</a
-			>
+			> -->
 		</div>
 	</section>
 	<div class="absolute right-4 hidden gap-2 lg:flex">

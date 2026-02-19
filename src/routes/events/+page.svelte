@@ -40,7 +40,10 @@
 		<div class="md:col-span-3">
 			<p>
 				In addition to the continuous screening, special in-person events feature Q&As, debates, and
-				discussions.
+				discussions. We would like to thank <a href="https://www.kino-bar.berlin/mieten"
+					>Kino Bar Könighstadt</a
+				> for hosting these events in their cozy cinema space. Please check back for updates on the schedule
+				and lineup of these events.
 			</p>
 			<div class="grid gap-4 md:grid-cols-1">
 				{#each data.screenings as screening}

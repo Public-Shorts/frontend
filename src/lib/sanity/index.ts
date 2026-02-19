@@ -359,7 +359,7 @@ export const groqQueries = {
     date,
     location,
     description,
-    "films": *[_type == "submission" && assignedScreening._ref == ^._id]{
+    "films": films[]->{
       _id,
       englishTitle,
       originalTitle,

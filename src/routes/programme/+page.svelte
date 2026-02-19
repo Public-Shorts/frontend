@@ -20,6 +20,30 @@
 <GridLayout>
 	<h1 class="text-3xl font-bold md:col-span-5 md:col-start-2">Programme</h1>
 
+	<div class="font-semibold md:col-span-1">Explore</div>
+	<div class="md:col-span-3">
+		Navigate the selection visually — films are arranged by thematic clusters and curator tags.
+		<a
+			href="/programme/map"
+			class="mt-1 inline-block underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+		>
+			Open the map
+		</a>
+	</div>
+	<div class="md:col-span-2">
+		<a href="/programme/map" class="block overflow-hidden rounded">
+			<img
+				src="/programme-map.png"
+				alt="Programme map showing thematic clusters of selected films"
+				width="976"
+				height="963"
+				loading="lazy"
+				decoding="async"
+				class="h-auto w-full transition-opacity hover:opacity-90"
+			/>
+		</a>
+	</div>
+
 	{#if data.films.length > 0}
 		<div class="font-semibold md:col-span-1">Selection</div>
 		<div class="md:col-span-5">

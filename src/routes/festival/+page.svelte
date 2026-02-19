@@ -5,6 +5,7 @@
 	import GridLayout from '../../lib/components/GridLayout.svelte';
 	import Icon from '@iconify/svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { urlFor } from '$lib/sanity';
 
 	let { data } = $props();
 
@@ -19,6 +20,16 @@
 			minute: '2-digit'
 		});
 	}
+
+	const selectionImages = $derived(
+		data.selection.topScreenshots.map((s) => ({
+			src: urlFor(s.screenshot).width(600).height(338).fit('crop').url(),
+			alt: s.alt
+		}))
+	);
+
+	const totalHours = $derived(Math.floor(data.selection.totalMinutes / 60));
+	const remainingMinutes = $derived(data.selection.totalMinutes % 60);
 </script>
 
 <SEO />
@@ -58,6 +69,30 @@
 		engage with the festival as an active participant, and review the videos.
 	</div>
 
+	{#if data.selection.totalFilms > 0}
+		<div class="font-semibold md:col-span-1">Selection</div>
+		<div class="md:col-span-3">
+			<p>
+				From over 400 open-call submissions, our curatorial team collectively selected
+				{data.selection.totalFilms} short films totaling {totalHours}h{remainingMinutes}m of programming,
+				with an average runtime of ~{data.selection.avgMinutes} minutes per film. The selection spans
+				{data.selection.topCategories.slice(0, 5).join(', ').toLowerCase()}, and more.
+			</p>
+			<p class="mt-3">
+				<a href="/programme" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Full programme</a>
+				&middot;
+				<a href="/programme/map" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Map</a>
+				&middot;
+				<a href="/schedule" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Schedule</a>
+			</p>
+		</div>
+		{#if selectionImages.length > 0}
+			<div class="aspect-video md:col-span-2">
+				<ImageCarousel images={selectionImages} />
+			</div>
+		{/if}
+	{/if}
+
 	{#if data.screenings.length > 0}
 		<div class="font-semibold md:col-span-1">Events</div>
 		<div class="md:col-span-3">
@@ -78,25 +113,14 @@
 		</div>
 	{/if}
 
-	<div class="font-semibold md:col-span-1">Open Call & Selection</div>
+	<div class="font-semibold md:col-span-1">Open Call</div>
 	<div class="md:col-span-3">
-		<p>
-			All types of video media under 15 minutes, made in the past 3 years are welcome: film, video,
-			documentary, animation, and experimental formats. The festival is curated by a diverse team of
-			curators who collectively shape the selection through open call submissions.
-		</p>
-		<p>
-			See the
-			<a href="/opencall"> open call for submissions </a>
-			for the 2026 edition.
-		</p>
+		All types of video media under 15 minutes, made in the past 3 years are welcome. The festival is
+		curated by a diverse team of curators who collectively shape the selection. See the
+		<a href="/opencall" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">open call</a>
+		for the 2026 edition.
 	</div>
-	<div class="grid grid-cols-2 gap-4 md:col-span-2 md:gap-6">
-		<div class="aspect-video bg-radial/hsl from-gallery-500 to-accent-300"></div>
-		<div class="aspect-video bg-linear-to-tl/hsl from-gallery-400 to-accent-400"></div>
-		<div class="aspect-video bg-linear-to-br/hsl from-gallery-300 to-accent-500"></div>
-		<div class="aspect-video bg-conic/hsl from-gallery-200 to-accent-600"></div>
-	</div>
+	<div class="hidden md:col-span-2 md:block"></div>
 
 	<div class="font-semibold md:col-span-1">Team</div>
 	<div class="md:col-span-3">

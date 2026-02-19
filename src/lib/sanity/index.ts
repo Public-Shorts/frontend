@@ -344,6 +344,20 @@ export const groqQueries = {
       }
     }
   }`,
+  festivalSelection: `*[_type == "festivalSelection"][0]{
+    totalCount,
+    "films": films[] | order(selectionScore desc){
+      selectionScore,
+      "film": film->{
+        _id,
+        englishTitle,
+        directorName,
+        length,
+        categories,
+        "screenshot": screenshots[0]{ asset->{ _id, url, metadata } }
+      }
+    }
+  }`,
   screenings: `*[_type == "screening"] | order(date asc) {
     _id,
     title,

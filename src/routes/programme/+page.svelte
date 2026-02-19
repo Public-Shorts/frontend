@@ -7,12 +7,24 @@
 
 	type SortKey = 'name' | 'year' | 'length';
 	let sortBy = $state<SortKey>('name');
+	let sortAsc = $state(true);
+
+	function toggleSort(key: SortKey) {
+		if (sortBy === key) {
+			sortAsc = !sortAsc;
+		} else {
+			sortBy = key;
+			sortAsc = true;
+		}
+	}
 
 	const sortedFilms = $derived(
 		[...data.films].sort((a, b) => {
-			if (sortBy === 'year') return (b.yearOfCompletion ?? 0) - (a.yearOfCompletion ?? 0);
-			if (sortBy === 'length') return (b.length ?? 0) - (a.length ?? 0);
-			return a.englishTitle.localeCompare(b.englishTitle);
+			const dir = sortAsc ? 1 : -1;
+			if (sortBy === 'year')
+				return dir * ((a.yearOfCompletion ?? 0) - (b.yearOfCompletion ?? 0));
+			if (sortBy === 'length') return dir * ((a.length ?? 0) - (b.length ?? 0));
+			return dir * a.englishTitle.localeCompare(b.englishTitle);
 		})
 	);
 
@@ -63,30 +75,19 @@
 					{data.films.length} films selected for the 2026 edition.
 				</p>
 				<div class="flex gap-1 text-sm">
-					<button
-						onclick={() => (sortBy = 'name')}
-						class="rounded px-2 py-1 transition-colors {sortBy === 'name'
-							? 'bg-gallery-900 text-white'
-							: 'text-gallery-500 hover:text-gallery-700'}"
-					>
-						Name
-					</button>
-					<button
-						onclick={() => (sortBy = 'year')}
-						class="rounded px-2 py-1 transition-colors {sortBy === 'year'
-							? 'bg-gallery-900 text-white'
-							: 'text-gallery-500 hover:text-gallery-700'}"
-					>
-						Year
-					</button>
-					<button
-						onclick={() => (sortBy = 'length')}
-						class="rounded px-2 py-1 transition-colors {sortBy === 'length'
-							? 'bg-gallery-900 text-white'
-							: 'text-gallery-500 hover:text-gallery-700'}"
-					>
-						Length
-					</button>
+					{#each [['name', 'Name'], ['year', 'Year'], ['length', 'Length']] as [key, label]}
+						<button
+							onclick={() => toggleSort(key as SortKey)}
+							class="rounded px-2 py-1 transition-colors {sortBy === key
+								? 'bg-gallery-900 text-white'
+								: 'text-gallery-500 hover:text-gallery-700'}"
+						>
+							{label}
+							{#if sortBy === key}
+								<span class="ml-0.5 text-xs">{sortAsc ? '↑' : '↓'}</span>
+							{/if}
+						</button>
+					{/each}
 				</div>
 			</div>
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

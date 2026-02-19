@@ -5,6 +5,17 @@
 
 	let { data } = $props();
 
+	type SortKey = 'name' | 'year' | 'length';
+	let sortBy = $state<SortKey>('name');
+
+	const sortedFilms = $derived(
+		[...data.films].sort((a, b) => {
+			if (sortBy === 'year') return (b.yearOfCompletion ?? 0) - (a.yearOfCompletion ?? 0);
+			if (sortBy === 'length') return (b.length ?? 0) - (a.length ?? 0);
+			return a.englishTitle.localeCompare(b.englishTitle);
+		})
+	);
+
 	function getImageUrl(film: (typeof data.films)[0]): string | null {
 		const source = film.poster ?? film.screenshot;
 		if (!source) return null;
@@ -47,11 +58,39 @@
 	{#if data.films.length > 0}
 		<div class="font-semibold md:col-span-1">Selection</div>
 		<div class="md:col-span-5">
-			<p class="mb-6 text-gallery-600">
-				{data.films.length} films selected for the 2026 edition.
-			</p>
+			<div class="mb-6 flex items-baseline justify-between">
+				<p class="text-gallery-600">
+					{data.films.length} films selected for the 2026 edition.
+				</p>
+				<div class="flex gap-1 text-sm">
+					<button
+						onclick={() => (sortBy = 'name')}
+						class="rounded px-2 py-1 transition-colors {sortBy === 'name'
+							? 'bg-gallery-900 text-white'
+							: 'text-gallery-500 hover:text-gallery-700'}"
+					>
+						Name
+					</button>
+					<button
+						onclick={() => (sortBy = 'year')}
+						class="rounded px-2 py-1 transition-colors {sortBy === 'year'
+							? 'bg-gallery-900 text-white'
+							: 'text-gallery-500 hover:text-gallery-700'}"
+					>
+						Year
+					</button>
+					<button
+						onclick={() => (sortBy = 'length')}
+						class="rounded px-2 py-1 transition-colors {sortBy === 'length'
+							? 'bg-gallery-900 text-white'
+							: 'text-gallery-500 hover:text-gallery-700'}"
+					>
+						Length
+					</button>
+				</div>
+			</div>
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{#each data.films as film}
+				{#each sortedFilms as film (film._id)}
 					<a href="/programme/{film.slug}" class="group block">
 						<div class="aspect-video w-full overflow-hidden bg-gallery-200">
 							{#if getImageUrl(film)}

@@ -81,8 +81,6 @@
 			<p class="mt-3">
 				<a href="/programme" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Full programme</a>
 				&middot;
-				<a href="/programme/map" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Map</a>
-				&middot;
 				<a href="/schedule" class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900">Schedule</a>
 			</p>
 		</div>
@@ -92,6 +90,31 @@
 			</div>
 		{/if}
 	{/if}
+
+	<div class="font-semibold md:col-span-1">Programme Map</div>
+	<div class="md:col-span-3">
+		A visual map of the entire selection, organized by thematic clusters and curator tags. Explore
+		how the films relate to each other and navigate the programme spatially.
+		<a
+			href="/programme/map"
+			class="mt-1 inline-block underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+		>
+			Open the interactive map
+		</a>
+	</div>
+	<div class="md:col-span-2">
+		<a href="/programme/map" class="block overflow-hidden rounded">
+			<img
+				src="/programme-map.png"
+				alt="Programme map showing thematic clusters of selected films"
+				width="976"
+				height="963"
+				loading="lazy"
+				decoding="async"
+				class="w-full h-auto transition-opacity hover:opacity-90"
+			/>
+		</a>
+	</div>
 
 	{#if data.screenings.length > 0}
 		<div class="font-semibold md:col-span-1">Events</div>

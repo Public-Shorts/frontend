@@ -78,9 +78,9 @@ export async function load() {
 		.slice(0, 8)
 		.map(([key]) => categoryLabels[key] || key);
 
-	// Top 10 screenshots (already sorted by selectionScore desc)
+	// Top 20 screenshots (already sorted by selectionScore desc)
 	const topScreenshots = films
-		.slice(0, 10)
+		.slice(0, 20)
 		.filter((e) => e.film?.screenshot)
 		.map((e) => ({
 			screenshot: e.film!.screenshot,

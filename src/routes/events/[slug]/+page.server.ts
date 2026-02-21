@@ -20,6 +20,7 @@ type Screening = {
 	date: string;
 	location: string;
 	description: string | null;
+	coverImage: { asset: { _id: string; url: string; metadata: unknown } } | null;
 	films: FilmSummary[] | null;
 };
 

@@ -7,6 +7,7 @@ type Screening = {
 	date: string;
 	location: string;
 	description: string | null;
+	coverImage: { asset: { _id: string; url: string; metadata: unknown } } | null;
 };
 
 type Curator = {

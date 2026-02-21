@@ -380,7 +380,8 @@ export const groqQueries = {
     "slug": slug.current,
     date,
     location,
-    description
+    description,
+    "coverImage": coverImage{ asset->{ _id, url, metadata } }
   }`,
   screening: `*[_type == "screening" && slug.current == $slug][0]{
     _id,
@@ -389,6 +390,7 @@ export const groqQueries = {
     date,
     location,
     description,
+    "coverImage": coverImage{ asset->{ _id, url, metadata } },
     "films": films[]->{
       _id,
       englishTitle,

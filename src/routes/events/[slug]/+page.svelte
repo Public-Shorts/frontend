@@ -42,6 +42,18 @@
 		{screening.title}
 	</h1>
 
+	{#if screening.coverImage}
+		<div class="md:col-span-6">
+			<img
+				src={urlFor(screening.coverImage).width(1920).url()}
+				alt={screening.title}
+				class="h-auto w-full"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+	{/if}
+
 	<div class="font-semibold md:col-span-1">Date</div>
 	<div class="md:col-span-3">
 		<p>{eventDate().full}, {eventDate().time}</p>

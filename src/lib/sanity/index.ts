@@ -344,6 +344,22 @@ export const groqQueries = {
       }
     }
   }`,
+  playbackSchedule: `*[_type == "playbackSchedule"][0]{
+    publishedAt, dateStart, dateEnd, totalEntries,
+    "entries": entries[]{
+      startTime, endTime, durationSeconds,
+      "film": film->{
+        _id,
+        englishTitle,
+        originalTitle,
+        directorName,
+        length,
+        categories,
+        "poster": poster{ asset->{ _id, url, metadata } },
+        "screenshot": screenshots[0]{ asset->{ _id, url, metadata } }
+      }
+    }
+  }`,
   festivalSelection: `*[_type == "festivalSelection"][0]{
     totalCount,
     "films": films[] | order(selectionScore desc){

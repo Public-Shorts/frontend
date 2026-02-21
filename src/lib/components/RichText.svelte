@@ -34,9 +34,14 @@
 				{@const isBold = span.marks.includes('strong')}
 				{@const isItalic = span.marks.includes('em')}
 				{#if link}
-					<a href={link.href} class="rich-link"
-						><span class:font-bold={isBold} class:italic={isItalic}>{span.text}</span></a
+					<a
+						href={link.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="rich-link"
 					>
+						<span class:font-bold={isBold} class:italic={isItalic}>{span.text}</span>
+					</a>
 				{:else if isBold && isItalic}
 					<strong><em>{span.text}</em></strong>
 				{:else if isBold}
@@ -50,3 +55,15 @@
 		</svelte:element>
 	{/each}
 </div>
+
+<style>
+	.rich-link {
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		color: inherit;
+		transition: opacity 0.15s;
+	}
+	.rich-link:hover {
+		opacity: 0.7;
+	}
+</style>

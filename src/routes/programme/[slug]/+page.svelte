@@ -1,6 +1,7 @@
 <script lang="ts">
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
+	import MiniGraphSection from '$lib/components/visualiser/MiniGraphSection.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import { urlFor } from '$lib/sanity';
 
@@ -125,5 +126,16 @@
 			{film.previousScreeningLocations}
 		</div>
 		<div class="hidden md:col-span-2 md:block"></div>
+	{/if}
+
+	{#if data.miniGraph}
+		<MiniGraphSection
+			currentFilmId={data.miniGraph.currentFilmId}
+			currentFilmTitle={film.englishTitle}
+			currentFilmSlug={data.miniGraph.currentFilmSlug}
+			metaCategories={data.miniGraph.metaCategories}
+			clusters={data.miniGraph.clusters}
+			neighborFilms={data.miniGraph.neighborFilms}
+		/>
 	{/if}
 </GridLayout>

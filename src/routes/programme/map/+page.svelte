@@ -39,29 +39,66 @@
 			}))
 	);
 
-	let toggles = $state<GraphToggles>({
-		metaCategories: Object.fromEntries(
-			data.metaCategories
-				.filter((mc: any) => mc.filmIds.length > 0)
-				.map((mc: any) => [mc._id, true])
-		),
-		clusters: Object.fromEntries(
-			data.clusters
-				.filter(
-					(c: any) =>
-						c.highlightedFilmIds.length + c.relevantFilmIds.length > 0
-				)
-				.map((c: any) => [c._id, true])
-		),
-	});
+	const activeMcs = data.metaCategories.filter((mc: any) => mc.filmIds.length > 0);
+	const activeCls = data.clusters.filter(
+		(c: any) => c.highlightedFilmIds.length + c.relevantFilmIds.length > 0
+	);
+
+	function buildInitialToggles() {
+		const filter = data.filter;
+		if (filter?.startsWith('mc-')) {
+			const mcId = filter.slice(3);
+			return {
+				toggles: {
+					metaCategories: Object.fromEntries(
+						activeMcs.map((mc: any) => [mc._id, mc._id === mcId])
+					),
+					clusters: Object.fromEntries(
+						activeCls.map((c: any) => [c._id, false])
+					),
+				},
+				showMetaCategories: true,
+				showClusters: false,
+			};
+		}
+		if (filter?.startsWith('cl-')) {
+			const clId = filter.slice(3);
+			return {
+				toggles: {
+					metaCategories: Object.fromEntries(
+						activeMcs.map((mc: any) => [mc._id, false])
+					),
+					clusters: Object.fromEntries(
+						activeCls.map((c: any) => [c._id, c._id === clId])
+					),
+				},
+				showMetaCategories: false,
+				showClusters: true,
+			};
+		}
+		return {
+			toggles: {
+				metaCategories: Object.fromEntries(
+					activeMcs.map((mc: any) => [mc._id, true])
+				),
+				clusters: Object.fromEntries(activeCls.map((c: any) => [c._id, true])),
+			},
+			showMetaCategories: true,
+			showClusters: true,
+		};
+	}
+
+	const initial = buildInitialToggles();
+
+	let toggles = $state<GraphToggles>(initial.toggles);
 
 	let displayOptions = $state<DisplayOptions>({
 		sizeMode: 'connections',
 		labelMode: 'hover',
 		forceStrength: 10,
 		filterMode: 'union',
-		showMetaCategories: true,
-		showClusters: true,
+		showMetaCategories: initial.showMetaCategories,
+		showClusters: initial.showClusters,
 	});
 
 	let searchQuery = $state('');

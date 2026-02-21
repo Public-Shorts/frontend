@@ -35,82 +35,50 @@
 {#if node}
 	<div
 		bind:this={tooltipEl}
-		class="pointer-events-none fixed z-50 max-w-xs rounded-lg border border-gallery-200 bg-gallery-50 p-3 shadow-lg"
+		class="pointer-events-none fixed z-50 max-w-xs rounded-md border border-gallery-200 bg-gallery-50 px-3 py-2.5 shadow-md"
 		style="left: {position.left}px; top: {position.top}px;"
 		transition:fade={{ duration: 80 }}
 	>
 		{#if node.type === 'film'}
 			{@const film = node.data as any}
-			<p class="text-sm font-semibold text-gallery-800">{film.englishTitle}</p>
-			{#if film.length}
-				<p class="mt-1 text-[11px] text-gallery-500">{film.length} min</p>
-			{/if}
-			{#if film.synopsis}
-				<p class="mt-1.5 text-xs text-gallery-600">
-					{film.synopsis.length > 150
-						? film.synopsis.slice(0, 150) + '...'
-						: film.synopsis}
-				</p>
-			{/if}
-			{#if film.categories?.length}
-				<div class="mt-2 flex flex-wrap gap-1">
-					{#each film.categories as cat}
-						<span class="rounded bg-gallery-100 px-1.5 py-0.5 text-[10px] text-gallery-500">
-							{cat}
-						</span>
-					{/each}
-				</div>
+			<div class="flex items-baseline gap-2">
+				<span
+					class="relative -top-px inline-block h-2 w-2 shrink-0 rounded-full"
+					style="background: {node.color}"
+				></span>
+				<span class="text-sm font-semibold leading-tight text-gallery-800">
+					{film.englishTitle}
+				</span>
+			</div>
+			{#if film.directorName || film.length}
+				<span class="mt-1.5 block pl-4 text-[11px] leading-none text-gallery-500">
+					{#if film.directorName}{film.directorName}{/if}
+					{#if film.directorName && film.length}
+						<span class="mx-1 text-gallery-300">·</span>
+					{/if}
+					{#if film.length}{film.length} min{/if}
+				</span>
 			{/if}
 		{:else if node.type === 'meta-category'}
 			{@const mc = node.data as any}
-			<div class="flex items-center gap-2">
+			<div class="flex items-baseline gap-2">
 				<span
-					class="inline-block h-2.5 w-2.5 rounded-sm"
-					style="background: #ff7411"
+					class="relative -top-px inline-block h-2 w-2 shrink-0 rounded-sm"
+					style="background: {node.color}"
 				></span>
-				<p class="text-sm font-semibold text-gallery-800">{mc.name}</p>
-				<span
-					class="rounded bg-gallery-100 px-1.5 py-0.5 text-[10px] text-gallery-500"
-				>
-					{mc.type}
-				</span>
+				<span class="text-sm font-semibold leading-tight text-gallery-800">{mc.name}</span>
 			</div>
-			{#if mc.description}
-				<p class="mt-1 text-xs text-gallery-500">
-					{mc.description.length > 120
-						? mc.description.slice(0, 120) + '...'
-						: mc.description}
-				</p>
-			{/if}
-			<p class="mt-1.5 text-[11px] text-gallery-400">{mc.filmCount} films</p>
+			<span class="mt-1.5 block pl-4 text-[11px] leading-none text-gallery-400">{mc.filmCount} films</span>
 		{:else if node.type === 'cluster'}
 			{@const cl = node.data as any}
-			<div class="flex items-center gap-2">
+			<div class="flex items-baseline gap-2">
 				<span
-					class="inline-block h-2.5 w-2.5 rotate-45 rounded-sm"
-					style="background: #8b5cf6"
+					class="relative -top-px inline-block h-2 w-2 shrink-0 rotate-45 rounded-sm"
+					style="background: {node.color}"
 				></span>
-				<p class="text-sm font-semibold text-gallery-800">{cl.name}</p>
+				<span class="text-sm font-semibold leading-tight text-gallery-800">{cl.name}</span>
 			</div>
-			{#if cl.description}
-				<p class="mt-1 text-xs text-gallery-500">
-					{cl.description.length > 120
-						? cl.description.slice(0, 120) + '...'
-						: cl.description}
-				</p>
-			{/if}
-			{#if cl.keywords?.length > 0}
-				<div class="mt-2 flex flex-wrap gap-1">
-					{#each cl.keywords.slice(0, 6) as kw}
-						<span
-							class="rounded bg-accent-100 px-1.5 py-0.5 text-[10px] text-accent-700"
-						>
-							{kw}
-						</span>
-					{/each}
-				</div>
-			{/if}
-			<p class="mt-1.5 text-[11px] text-gallery-400">{cl.filmCount} films</p>
+			<span class="mt-1.5 block pl-4 text-[11px] leading-none text-gallery-400">{cl.filmCount} films</span>
 		{/if}
 	</div>
 {/if}

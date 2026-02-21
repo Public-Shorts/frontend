@@ -422,6 +422,18 @@ export const groqQueries = {
     "poster": poster{ asset->{ _id, url, metadata } },
     "screenshots": screenshots[]{ asset->{ _id, url, metadata } }
   }`,
+  filmGraphContext: `{
+    "metaCategories": *[_type == "metaCategory" && $id in films[].film._ref]{
+      _id,
+      name,
+      "filmIds": films[].film._ref
+    },
+    "clusters": *[_type == "semanticCluster" && ($id in highlightedFilms[]._ref || $id in relevantFilms[]._ref)]{
+      _id,
+      name,
+      "allFilmIds": [...highlightedFilms[]._ref, ...relevantFilms[]._ref]
+    }
+  }`,
   event: `*[_type == "event" && slug.current == $slug][0]{
     _id,
     title,
@@ -564,10 +576,17 @@ export type PaginatedResponse<T> = {
 };
 
 export function slugify(text: string): string {
-  return text
+  const slug = text
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+  if (slug) return slug;
+  // Fallback for titles with no alphanumeric characters: use a numeric hash
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash * 31 + text.charCodeAt(i)) | 0;
+  }
+  return `film-${Math.abs(hash).toString(36)}`;
 }

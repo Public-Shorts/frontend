@@ -285,3 +285,94 @@ export function formatDuration(minutes: number): string {
 	if (h === 0) return `${m}m`;
 	return `${h}h ${m}m`;
 }
+
+// --- Mini graph (film detail page) ---
+
+export interface MiniGraphInput {
+	currentFilmId: string;
+	currentFilmTitle: string;
+	currentFilmSlug: string;
+	metaCategories: Array<{ _id: string; name: string; filmIds: string[] }>;
+	clusters: Array<{ _id: string; name: string; filmIds: string[] }>;
+	neighborFilms: Array<{
+		_id: string;
+		englishTitle: string;
+		length: number;
+		slug: string;
+	}>;
+}
+
+export function buildMiniGraphData(input: MiniGraphInput): GraphData {
+	const nodes: GraphNode[] = [];
+	const links: GraphLink[] = [];
+	const allFilmIds = new Set<string>();
+
+	// Current film as central node
+	nodes.push({
+		id: input.currentFilmId,
+		type: 'film',
+		label: input.currentFilmTitle,
+		val: 4,
+		color: NODE_TYPE_COLORS.film,
+		active: true,
+		visible: true,
+		data: { _id: input.currentFilmId, englishTitle: input.currentFilmTitle, slug: input.currentFilmSlug },
+	});
+	allFilmIds.add(input.currentFilmId);
+
+	// Neighbor films (dimmed)
+	for (const film of input.neighborFilms) {
+		if (allFilmIds.has(film._id)) continue;
+		allFilmIds.add(film._id);
+		nodes.push({
+			id: film._id,
+			type: 'film',
+			label: film.englishTitle,
+			val: 2,
+			color: NODE_TYPE_COLORS.film,
+			active: false,
+			visible: true,
+			data: film,
+		});
+	}
+
+	// Meta-category nodes + links
+	for (const mc of input.metaCategories) {
+		nodes.push({
+			id: `mc-${mc._id}`,
+			type: 'meta-category',
+			label: mc.name,
+			val: 4,
+			color: NODE_TYPE_COLORS['meta-category'],
+			active: true,
+			visible: true,
+			data: { _id: mc._id, name: mc.name, filmCount: mc.filmIds.length },
+		});
+		for (const filmId of mc.filmIds) {
+			if (allFilmIds.has(filmId)) {
+				links.push({ source: filmId, target: `mc-${mc._id}`, type: 'film-meta' });
+			}
+		}
+	}
+
+	// Cluster nodes + links
+	for (const cl of input.clusters) {
+		nodes.push({
+			id: `cl-${cl._id}`,
+			type: 'cluster',
+			label: cl.name,
+			val: 4,
+			color: NODE_TYPE_COLORS.cluster,
+			active: true,
+			visible: true,
+			data: { _id: cl._id, name: cl.name, filmCount: cl.filmIds.length },
+		});
+		for (const filmId of cl.filmIds) {
+			if (allFilmIds.has(filmId)) {
+				links.push({ source: filmId, target: `cl-${cl._id}`, type: 'film-cluster' });
+			}
+		}
+	}
+
+	return { nodes, links, activeFilmIds: new Set([input.currentFilmId]) };
+}

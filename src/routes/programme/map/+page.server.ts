@@ -38,7 +38,7 @@ const query = `{
 	}
 }`;
 
-export async function load() {
+export async function load({ url }) {
 	const result = await getDocument<any>(query);
 
 	const selectedFilmIds = new Set<string>(result.tvSelection?.filmIds || []);
@@ -98,5 +98,7 @@ export async function load() {
 		),
 	}));
 
-	return { films, metaCategories, clusters };
+	const filter = url.searchParams.get('filter') || null;
+
+	return { films, metaCategories, clusters, filter };
 }

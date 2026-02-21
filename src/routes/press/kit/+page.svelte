@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RichText from '$lib/components/RichText.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 
 	let { data } = $props();
@@ -202,9 +203,14 @@
 							<strong class="screening-title">{screening.title}</strong>
 							<span class="screening-date">{formatScreeningDate(screening.date)}</span>
 							<span class="screening-location">{screening.location}</span>
+							{#if screening.language || screening.duration}
+								<span class="screening-details">
+									{#if screening.language}{screening.language}{/if}{#if screening.language && screening.duration} · {/if}{#if screening.duration}{screening.duration}{/if}
+								</span>
+							{/if}
 						</div>
-						{#if screening.description}
-							<p class="screening-desc">{screening.description}</p>
+						{#if screening.description && screening.description.length > 0}
+							<RichText blocks={screening.description} class="screening-desc" />
 						{/if}
 					</div>
 				{/each}
@@ -502,10 +508,30 @@
 		letter-spacing: 0.05em;
 		color: #857f7a;
 	}
+	.screening-details {
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: #857f7a;
+	}
 	.screening-desc {
 		font-size: 0.875rem;
 		color: #635e59;
 		margin-top: 0.5rem;
+		line-height: 1.5;
+	}
+	.screening-desc :global(p) {
+		margin: 0.25rem 0;
+	}
+	.screening-desc :global(h3) {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: #45413d;
+		margin: 0.5rem 0 0.125rem;
+	}
+	.screening-desc :global(a) {
+		color: #1c1917;
+		text-decoration: underline;
 	}
 
 	/* ---- Partners ---- */

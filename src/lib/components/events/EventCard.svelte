@@ -3,9 +3,17 @@
 		title,
 		date,
 		location,
+		duration,
 		link,
 		href
-	}: { title: string; date: string; location: string; link?: string; href?: string } = $props();
+	}: {
+		title: string;
+		date: string;
+		location: string;
+		duration?: string | null;
+		link?: string;
+		href?: string;
+	} = $props();
 </script>
 
 <div
@@ -47,5 +55,10 @@
 		<span class="text-xs tracking-widest text-gallery-400 uppercase">
 			{location}
 		</span>
+		{#if duration}
+			<span class="text-xs tracking-widest text-gallery-400 uppercase">
+				— {duration}
+			</span>
+		{/if}
 	</div>
 </div>

@@ -51,6 +51,7 @@
 						title={screening.title}
 						date={formatDate(screening.date)}
 						location={screening.location}
+						duration={screening.duration}
 						href="/events/{screening.slug}"
 					/>
 				{/each}

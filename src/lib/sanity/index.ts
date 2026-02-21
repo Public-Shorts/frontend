@@ -380,7 +380,10 @@ export const groqQueries = {
     "slug": slug.current,
     date,
     location,
+    language,
+    duration,
     description,
+    "descriptionPlain": pt::text(description),
     "coverImage": coverImage{ asset->{ _id, url, metadata } }
   }`,
   screening: `*[_type == "screening" && slug.current == $slug][0]{
@@ -389,7 +392,10 @@ export const groqQueries = {
     "slug": slug.current,
     date,
     location,
+    language,
+    duration,
     description,
+    "descriptionPlain": pt::text(description),
     "coverImage": coverImage{ asset->{ _id, url, metadata } },
     "films": films[]->{
       _id,

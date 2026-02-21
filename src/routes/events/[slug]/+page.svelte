@@ -1,5 +1,6 @@
 <script lang="ts">
 	import GridLayout from '$lib/components/GridLayout.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import { urlFor, slugify } from '$lib/sanity';
 
@@ -26,7 +27,7 @@
 	}
 </script>
 
-<SEO title={screening.title} description={screening.description ?? undefined} />
+<SEO title={screening.title} description={screening.descriptionPlain ?? undefined} />
 
 <GridLayout>
 	<div class="md:col-span-6">
@@ -66,10 +67,26 @@
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 
-	{#if screening.description}
+	{#if screening.language}
+		<div class="font-semibold md:col-span-1">Language</div>
+		<div class="md:col-span-3">
+			<p>{screening.language}</p>
+		</div>
+		<div class="hidden md:col-span-2 md:block"></div>
+	{/if}
+
+	{#if screening.duration}
+		<div class="font-semibold md:col-span-1">Duration</div>
+		<div class="md:col-span-3">
+			<p>{screening.duration}</p>
+		</div>
+		<div class="hidden md:col-span-2 md:block"></div>
+	{/if}
+
+	{#if screening.description && screening.description.length > 0}
 		<div class="font-semibold md:col-span-1">About</div>
-		<div class="md:col-span-3 whitespace-pre-line">
-			{screening.description}
+		<div class="md:col-span-3">
+			<RichText blocks={screening.description} class="space-y-3 leading-relaxed text-gallery-700" />
 		</div>
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}

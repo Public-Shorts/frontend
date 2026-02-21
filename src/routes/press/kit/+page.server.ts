@@ -7,7 +7,10 @@ type Screening = {
 	slug: string;
 	date: string;
 	location: string;
-	description: string | null;
+	language: string | null;
+	duration: string | null;
+	description: unknown[] | null;
+	descriptionPlain: string | null;
 };
 
 type Curator = {

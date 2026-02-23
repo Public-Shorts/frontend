@@ -23,7 +23,7 @@
 			const dir = sortAsc ? 1 : -1;
 			if (sortBy === 'year') return dir * ((a.yearOfCompletion ?? 0) - (b.yearOfCompletion ?? 0));
 			if (sortBy === 'length') return dir * ((a.length ?? 0) - (b.length ?? 0));
-			return dir * a.englishTitle.localeCompare(b.englishTitle);
+			return dir * a.englishTitle.trim().localeCompare(b.englishTitle.trim());
 		})
 	);
 

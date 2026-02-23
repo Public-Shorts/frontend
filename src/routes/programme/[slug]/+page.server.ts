@@ -29,6 +29,7 @@ type FilmDetail = {
 	website: string | null;
 	explicit: boolean;
 	explicitDetails: string | null;
+	adult: boolean;
 	castAndCrew: string | null;
 	thanks: string | null;
 	previousScreenings: boolean;

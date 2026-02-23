@@ -85,6 +85,22 @@
 		}
 		return groups;
 	});
+
+	let scheduleExpanded = $state(false);
+
+	const todayBerlin = $derived(
+		new Date(now).toLocaleDateString('en-CA', { timeZone: 'Europe/Berlin' })
+	);
+
+	const visibleDays = $derived(() => {
+		const allDays = screeningsByDay();
+		// Find the index of today or the first future day
+		let startIdx = allDays.findIndex((g) => g.day >= todayBerlin);
+		if (startIdx === -1) startIdx = Math.max(0, allDays.length - 3);
+		const defaultSlice = allDays.slice(startIdx, startIdx + 3);
+		const hasMore = allDays.length > defaultSlice.length;
+		return { defaultSlice, allDays, hasMore };
+	});
 </script>
 
 <SEO
@@ -146,9 +162,11 @@
 		{/if}
 
 		{#if data.screenings.length > 0}
+			{@const { defaultSlice, allDays, hasMore } = visibleDays()}
+			{@const displayed = scheduleExpanded ? allDays : defaultSlice}
 			<div class="text-sm">
 				<h2 class="mb-3 text-base font-semibold text-gallery-800">Schedule</h2>
-				{#each screeningsByDay() as group (group.day)}
+				{#each displayed as group (group.day)}
 					{@const allPast = group.screenings.every((s) => screeningStatus(s) === 'past')}
 					<div class="mb-3" class:opacity-30={allPast}>
 						<div class="mb-1 text-xs font-medium tracking-wide text-gallery-500 uppercase">
@@ -168,6 +186,16 @@
 						</div>
 					</div>
 				{/each}
+				{#if hasMore}
+					<button
+						onclick={() => (scheduleExpanded = !scheduleExpanded)}
+						class="mt-1 cursor-pointer text-xs font-medium text-gallery-500 transition-colors hover:text-gallery-800"
+					>
+						{scheduleExpanded
+							? 'Show less'
+							: `Show all ${allDays.length} days`}
+					</button>
+				{/if}
 			</div>
 		{/if}
 
@@ -222,12 +250,12 @@
 		</div>
 	{/if}
 
-	{#if film.explicit}
+	{#if film.adult}
 		<div class="font-semibold md:col-span-1">Content Note</div>
 		<div class="md:col-span-4">
 			<p class="text-gallery-600">
-				This film contains explicit content.{#if film.explicitDetails}
-					{film.explicitDetails}{/if}
+				Because the content of this video is not suited to all audiences, it is only displayed
+				during our night schedule (23:00–06:00).
 			</p>
 		</div>
 	{/if}

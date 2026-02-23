@@ -91,12 +91,12 @@
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
 
-	<div class="font-semibold md:col-span-1">Tickets</div>
+	<div class="font-semibold md:col-span-1">Reservation</div>
 	<div class="md:col-span-3">
 		<span
 			class="inline-block cursor-not-allowed rounded bg-gallery-300 px-6 py-2 text-sm font-medium text-gallery-500"
 		>
-			Tickets coming soon
+			Reservation coming soon
 		</span>
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
@@ -117,9 +117,7 @@
 							{/if}
 						</div>
 						<div class="pt-3">
-							<h2
-								class="text-base font-semibold text-gallery-800 group-hover:text-accent-500"
-							>
+							<h2 class="text-base font-semibold text-gallery-800 group-hover:text-accent-500">
 								{film.englishTitle}
 							</h2>
 							<p class="mt-1 text-sm text-gallery-500">

@@ -423,6 +423,7 @@ export const groqQueries = {
     website,
     explicit,
     explicitDetails,
+    adult,
     castAndCrew,
     thanks,
     previousScreenings,

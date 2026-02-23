@@ -344,7 +344,7 @@ export const groqQueries = {
       }
     }
   }`,
-  playbackSchedule: `*[_type == "playbackSchedule"][0]{
+  playbackSchedule: (test = false) => `*[_id == "${test ? 'playbackSchedule-test' : 'playbackSchedule'}"][0]{
     publishedAt, dateStart, dateEnd, totalEntries,
     "entries": entries[]{
       startTime, endTime, durationSeconds,

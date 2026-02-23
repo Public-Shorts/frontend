@@ -40,7 +40,7 @@
 
 {#if hasConnections}
 	<div class="font-semibold md:col-span-1">Connections</div>
-	<div class="md:col-span-5">
+	<div class="md:col-span-4">
 		<div class="w-full overflow-hidden" style="height: 350px;">
 			{#if browser}
 				{#await import('./MiniGraphView.svelte') then { default: MiniGraphView }}

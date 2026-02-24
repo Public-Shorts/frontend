@@ -22,9 +22,16 @@
 		{ id: 'cl-2', label: 'Memory & Identity', count: 6 },
 	];
 
+	const screeningItems = [
+		{ id: 'sc-1', label: 'Screening 1', count: 10 },
+		{ id: 'sc-2', label: 'Screening 2', count: 8 },
+		{ id: 'sc-3', label: 'Screening 3', count: 7 },
+	];
+
 	let toggles = $state<GraphToggles>({
 		metaCategories: { 'mc-1': true, 'mc-2': true, 'mc-3': true },
 		clusters: { 'cl-1': true, 'cl-2': true },
+		screenings: { 'sc-1': true, 'sc-2': true, 'sc-3': true },
 	});
 
 	let displayOptions = $state<DisplayOptions>({
@@ -34,6 +41,7 @@
 		filterMode: 'union',
 		showMetaCategories: true,
 		showClusters: true,
+		showScreenings: true,
 	});
 
 	let searchQuery = $state('');
@@ -52,6 +60,7 @@
 				onZoomToFit={() => {}}
 				{metaCategoryItems}
 				{clusterItems}
+				{screeningItems}
 			/>
 			<div class="flex-1 bg-gallery-100 p-4">
 				<p class="text-xs text-gallery-400">Graph area</p>
@@ -67,6 +76,7 @@
 				toggles={{
 					metaCategories: { 'mc-1': true, 'mc-2': false, 'mc-3': false },
 					clusters: { 'cl-1': false, 'cl-2': false },
+					screenings: { 'sc-1': true, 'sc-2': false, 'sc-3': false },
 				}}
 				displayOptions={{
 					sizeMode: 'fixed',
@@ -75,6 +85,7 @@
 					filterMode: 'intersection',
 					showMetaCategories: true,
 					showClusters: false,
+					showScreenings: true,
 				}}
 				searchQuery="doc"
 				onToggleChange={() => {}}
@@ -83,6 +94,7 @@
 				onZoomToFit={() => {}}
 				{metaCategoryItems}
 				{clusterItems}
+				{screeningItems}
 			/>
 			<div class="flex-1 bg-gallery-100 p-4">
 				<p class="text-xs text-gallery-400">Graph area</p>

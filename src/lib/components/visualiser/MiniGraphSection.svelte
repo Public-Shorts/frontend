@@ -9,6 +9,7 @@
 		currentFilmSlug: string;
 		metaCategories: MiniGraphInput['metaCategories'];
 		clusters: MiniGraphInput['clusters'];
+		screenings: MiniGraphInput['screenings'];
 		neighborFilms: MiniGraphInput['neighborFilms'];
 	}
 
@@ -18,6 +19,7 @@
 		currentFilmSlug,
 		metaCategories,
 		clusters,
+		screenings,
 		neighborFilms,
 	}: Props = $props();
 
@@ -31,11 +33,12 @@
 			currentFilmSlug,
 			metaCategories,
 			clusters,
+			screenings,
 			neighborFilms,
 		})
 	);
 
-	const hasConnections = $derived(metaCategories.length > 0 || clusters.length > 0);
+	const hasConnections = $derived(metaCategories.length > 0 || clusters.length > 0 || screenings.length > 0);
 </script>
 
 {#if hasConnections}
@@ -82,6 +85,12 @@
 						style="background: #8b5cf6"
 					></span>
 					Cluster
+				</span>
+				<span class="flex items-center gap-1.5">
+					<svg class="h-2 w-2" viewBox="0 0 10 10">
+						<polygon points="5,0 10,8.66 0,8.66" fill="#eab308" />
+					</svg>
+					Screening
 				</span>
 			</div>
 			<a

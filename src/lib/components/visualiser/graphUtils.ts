@@ -1,5 +1,5 @@
-export type NodeType = 'film' | 'meta-category' | 'cluster';
-export type LinkType = 'film-meta' | 'film-cluster';
+export type NodeType = 'film' | 'meta-category' | 'cluster' | 'screening';
+export type LinkType = 'film-meta' | 'film-cluster' | 'film-screening';
 export type SizeMode = 'connections' | 'fixed';
 export type LabelMode = 'always' | 'hover' | 'never';
 export type FilterMode = 'union' | 'intersection';
@@ -7,6 +7,7 @@ export type FilterMode = 'union' | 'intersection';
 export interface GraphToggles {
 	metaCategories: Record<string, boolean>;
 	clusters: Record<string, boolean>;
+	screenings: Record<string, boolean>;
 }
 
 export interface DisplayOptions {
@@ -16,6 +17,7 @@ export interface DisplayOptions {
 	filterMode: FilterMode;
 	showMetaCategories: boolean;
 	showClusters: boolean;
+	showScreenings: boolean;
 }
 
 export interface GraphNode {
@@ -66,10 +68,17 @@ export interface ClusterNodeData {
 	filmCount: number;
 }
 
+export interface ScreeningNodeData {
+	_id: string;
+	name: string;
+	filmCount: number;
+}
+
 const NODE_TYPE_COLORS: Record<NodeType, string> = {
 	film: '#857f7a',
 	'meta-category': '#ff7411',
 	cluster: '#8b5cf6',
+	screening: '#eab308',
 };
 
 function getFilmSize(sizeMode: SizeMode, connectionCount?: number): number {
@@ -87,13 +96,15 @@ export function computeActiveFilmIds(
 	films: FilmNodeData[],
 	metaCategories: { _id: string; filmIds: { filmId: string }[] }[],
 	clusters: { _id: string; highlightedFilmIds: string[]; relevantFilmIds: string[] }[],
+	screenings: { _id: string; filmIds: string[] }[],
 	toggles: GraphToggles,
 	displayOptions: DisplayOptions
 ): Set<string> {
 	const hasMc = displayOptions.showMetaCategories && hasAnyEnabled(toggles.metaCategories);
 	const hasCl = displayOptions.showClusters && hasAnyEnabled(toggles.clusters);
+	const hasSc = displayOptions.showScreenings && hasAnyEnabled(toggles.screenings);
 
-	if (!hasMc && !hasCl) {
+	if (!hasMc && !hasCl && !hasSc) {
 		return new Set(films.map((f) => f._id));
 	}
 
@@ -109,6 +120,12 @@ export function computeActiveFilmIds(
 		for (const cluster of clusters) {
 			if (!toggles.clusters[cluster._id]) continue;
 			itemSets.push(new Set([...cluster.highlightedFilmIds, ...cluster.relevantFilmIds]));
+		}
+
+	if (hasSc)
+		for (const screening of screenings) {
+			if (!toggles.screenings[screening._id]) continue;
+			itemSets.push(new Set(screening.filmIds));
 		}
 
 	if (itemSets.length === 0) {
@@ -148,6 +165,11 @@ export function buildGraphData(
 		highlightedFilmIds: string[];
 		relevantFilmIds: string[];
 	}[],
+	screenings: {
+		_id: string;
+		name: string;
+		filmIds: string[];
+	}[],
 	toggles: GraphToggles,
 	displayOptions: DisplayOptions
 ): GraphData {
@@ -159,6 +181,7 @@ export function buildGraphData(
 		films,
 		metaCategories,
 		clusters,
+		screenings,
 		toggles,
 		displayOptions
 	);
@@ -244,6 +267,37 @@ export function buildGraphData(
 			}
 		}
 
+	// Screening nodes + links
+	if (displayOptions.showScreenings)
+		for (const screening of screenings) {
+			const validFilmIds = screening.filmIds.filter((id) => filmIdSet.has(id));
+			if (validFilmIds.length === 0) continue;
+			const enabled = !!toggles.screenings[screening._id];
+
+			nodes.push({
+				id: `sc-${screening._id}`,
+				type: 'screening',
+				label: screening.name,
+				val: 5,
+				color: NODE_TYPE_COLORS.screening,
+				active: enabled,
+				visible: true,
+				data: {
+					_id: screening._id,
+					name: screening.name,
+					filmCount: validFilmIds.length,
+				} as ScreeningNodeData,
+			});
+
+			for (const filmId of validFilmIds) {
+				links.push({
+					source: filmId,
+					target: `sc-${screening._id}`,
+					type: 'film-screening',
+				});
+			}
+		}
+
 	if (displayOptions.sizeMode === 'connections') {
 		const connectionCounts = new Map<string, number>();
 		for (const link of links) {
@@ -294,6 +348,7 @@ export interface MiniGraphInput {
 	currentFilmSlug: string;
 	metaCategories: Array<{ _id: string; name: string; filmIds: string[] }>;
 	clusters: Array<{ _id: string; name: string; filmIds: string[] }>;
+	screenings: Array<{ _id: string; name: string; filmIds: string[] }>;
 	neighborFilms: Array<{
 		_id: string;
 		englishTitle: string;
@@ -370,6 +425,25 @@ export function buildMiniGraphData(input: MiniGraphInput): GraphData {
 		for (const filmId of cl.filmIds) {
 			if (allFilmIds.has(filmId)) {
 				links.push({ source: filmId, target: `cl-${cl._id}`, type: 'film-cluster' });
+			}
+		}
+	}
+
+	// Screening nodes + links
+	for (const sc of input.screenings) {
+		nodes.push({
+			id: `sc-${sc._id}`,
+			type: 'screening',
+			label: sc.name,
+			val: 4,
+			color: NODE_TYPE_COLORS.screening,
+			active: true,
+			visible: true,
+			data: { _id: sc._id, name: sc.name, filmCount: sc.filmIds.length },
+		});
+		for (const filmId of sc.filmIds) {
+			if (allFilmIds.has(filmId)) {
+				links.push({ source: filmId, target: `sc-${sc._id}`, type: 'film-screening' });
 			}
 		}
 	}

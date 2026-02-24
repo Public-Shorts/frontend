@@ -35,6 +35,11 @@ const query = `{
 		keywords,
 		"highlightedFilmIds": highlightedFilms[]._ref,
 		"relevantFilmIds": relevantFilms[]._ref
+	},
+	"screenings": *[_type == "screening"] | order(title asc) {
+		_id,
+		title,
+		"filmIds": films[]._ref
 	}
 }`;
 
@@ -98,7 +103,13 @@ export async function load({ url }) {
 		),
 	}));
 
+	const screenings = (result.screenings || []).map((s: any) => ({
+		_id: s._id,
+		name: s.title || 'Untitled Screening',
+		filmIds: (s.filmIds || []).filter((id: string) => selectedFilmIds.has(id)),
+	}));
+
 	const filter = url.searchParams.get('filter') || null;
 
-	return { films, metaCategories, clusters, filter };
+	return { films, metaCategories, clusters, screenings, filter };
 }

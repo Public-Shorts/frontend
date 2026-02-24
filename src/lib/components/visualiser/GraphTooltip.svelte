@@ -79,6 +79,15 @@
 				<span class="text-sm font-semibold leading-tight text-gallery-800">{cl.name}</span>
 			</div>
 			<span class="mt-1.5 block pl-4 text-[11px] leading-none text-gallery-400">{cl.filmCount} films</span>
+		{:else if node.type === 'screening'}
+			{@const sc = node.data as any}
+			<div class="flex items-baseline gap-2">
+				<svg class="relative -top-px h-2 w-2 shrink-0" viewBox="0 0 10 10">
+					<polygon points="5,0 10,8.66 0,8.66" fill={node.color} />
+				</svg>
+				<span class="text-sm font-semibold leading-tight text-gallery-800">{sc.name}</span>
+			</div>
+			<span class="mt-1.5 block pl-4 text-[11px] leading-none text-gallery-400">{sc.filmCount} films</span>
 		{/if}
 	</div>
 {/if}

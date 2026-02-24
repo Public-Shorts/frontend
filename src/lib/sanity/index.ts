@@ -441,6 +441,11 @@ export const groqQueries = {
       _id,
       name,
       "allFilmIds": [...highlightedFilms[]._ref, ...relevantFilms[]._ref]
+    },
+    "screenings": *[_type == "screening" && $id in films[]._ref]{
+      _id,
+      "name": title,
+      "filmIds": films[]._ref
     }
   }`,
   event: `*[_type == "event" && slug.current == $slug][0]{

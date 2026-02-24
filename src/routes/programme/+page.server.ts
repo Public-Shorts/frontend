@@ -13,7 +13,7 @@ type FilmSummary = {
 };
 
 type SelectionEntry = {
-	selectionMethod: 'highlight' | 'score';
+	selectionMethod: 'highlight' | 'score' | 'screening';
 	film: FilmSummary;
 };
 
@@ -38,5 +38,5 @@ export async function load() {
 		return { ...film, slug };
 	});
 
-	return { films: filmsWithSlugs };
+	return { films: filmsWithSlugs, tvSelectionCount: entries.length };
 }

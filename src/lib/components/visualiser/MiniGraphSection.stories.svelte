@@ -18,6 +18,7 @@
 		currentFilmSlug: string;
 		metaCategories: Array<{ _id: string; name: string; filmIds: string[] }>;
 		clusters: Array<{ _id: string; name: string; filmIds: string[] }>;
+		screenings: Array<{ _id: string; name: string; filmIds: string[] }>;
 		neighborFilms: Array<{ _id: string; englishTitle: string; length: number; slug: string }>;
 	} | null>(null);
 	let sanityLoaded = $state(false);
@@ -49,6 +50,7 @@
 			currentFilmSlug: film._id,
 			metaCategories: mcs ?? [],
 			clusters: cls ?? [],
+			screenings: [],
 			neighborFilms: (neighbors ?? []).map((n) => ({ ...n, slug: n._id })),
 		};
 		sanityLoaded = true;
@@ -71,6 +73,9 @@
 				clusters={[
 					{ _id: 'cl-1', name: 'Urban Landscapes', filmIds: ['f1', 'f2'] },
 				]}
+				screenings={[
+					{ _id: 'sc-1', name: 'Screening 1', filmIds: ['f1', 'f2', 'f3'] },
+				]}
 				neighborFilms={[
 					{ _id: 'f2', englishTitle: 'Concrete Lullaby', length: 8, slug: 'concrete-lullaby' },
 					{ _id: 'f3', englishTitle: 'After the Rain', length: 15, slug: 'after-the-rain' },
@@ -90,6 +95,7 @@
 				currentFilmSlug="isolated-film"
 				metaCategories={[]}
 				clusters={[]}
+				screenings={[]}
 				neighborFilms={[]}
 			/>
 			<p class="col-span-6 text-sm text-gallery-400">

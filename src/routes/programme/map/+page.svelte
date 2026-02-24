@@ -39,10 +39,21 @@
 			}))
 	);
 
+	let screeningItems = $derived(
+		data.screenings
+			.filter((s: any) => s.filmIds.length > 0)
+			.map((s: any) => ({
+				id: s._id,
+				label: s.name,
+				count: s.filmIds.length,
+			}))
+	);
+
 	const activeMcs = data.metaCategories.filter((mc: any) => mc.filmIds.length > 0);
 	const activeCls = data.clusters.filter(
 		(c: any) => c.highlightedFilmIds.length + c.relevantFilmIds.length > 0
 	);
+	const activeScs = data.screenings.filter((s: any) => s.filmIds.length > 0);
 
 	function buildInitialToggles() {
 		const filter = data.filter;
@@ -56,9 +67,13 @@
 					clusters: Object.fromEntries(
 						activeCls.map((c: any) => [c._id, false])
 					),
+					screenings: Object.fromEntries(
+						activeScs.map((s: any) => [s._id, false])
+					),
 				},
 				showMetaCategories: true,
 				showClusters: false,
+				showScreenings: false,
 			};
 		}
 		if (filter?.startsWith('cl-')) {
@@ -71,9 +86,32 @@
 					clusters: Object.fromEntries(
 						activeCls.map((c: any) => [c._id, c._id === clId])
 					),
+					screenings: Object.fromEntries(
+						activeScs.map((s: any) => [s._id, false])
+					),
 				},
 				showMetaCategories: false,
 				showClusters: true,
+				showScreenings: false,
+			};
+		}
+		if (filter?.startsWith('sc-')) {
+			const scId = filter.slice(3);
+			return {
+				toggles: {
+					metaCategories: Object.fromEntries(
+						activeMcs.map((mc: any) => [mc._id, false])
+					),
+					clusters: Object.fromEntries(
+						activeCls.map((c: any) => [c._id, false])
+					),
+					screenings: Object.fromEntries(
+						activeScs.map((s: any) => [s._id, s._id === scId])
+					),
+				},
+				showMetaCategories: false,
+				showClusters: false,
+				showScreenings: true,
 			};
 		}
 		return {
@@ -82,9 +120,11 @@
 					activeMcs.map((mc: any) => [mc._id, true])
 				),
 				clusters: Object.fromEntries(activeCls.map((c: any) => [c._id, true])),
+				screenings: Object.fromEntries(activeScs.map((s: any) => [s._id, true])),
 			},
 			showMetaCategories: true,
 			showClusters: true,
+			showScreenings: true,
 		};
 	}
 
@@ -99,6 +139,7 @@
 		filterMode: 'union',
 		showMetaCategories: initial.showMetaCategories,
 		showClusters: initial.showClusters,
+		showScreenings: initial.showScreenings,
 	});
 
 	let searchQuery = $state('');
@@ -112,6 +153,7 @@
 			data.films,
 			data.metaCategories,
 			data.clusters,
+			data.screenings,
 			toggles,
 			displayOptions
 		);
@@ -185,6 +227,19 @@
 					clusters: { ...toggles.clusters, [id]: !toggles.clusters[id] },
 				};
 			}
+		} else if (node.type === 'screening') {
+			const id = node.id.replace('sc-', '');
+			const allOn = screeningItems.every((i: any) => toggles.screenings[i.id]);
+			if (allOn) {
+				const solo: Record<string, boolean> = {};
+				for (const i of screeningItems) solo[i.id] = i.id === id;
+				toggles = { ...toggles, screenings: solo };
+			} else {
+				toggles = {
+					...toggles,
+					screenings: { ...toggles.screenings, [id]: !toggles.screenings[id] },
+				};
+			}
 		}
 	}
 </script>
@@ -205,6 +260,7 @@
 		onZoomToFit={() => graphViewRef?.zoomToFit()}
 		{metaCategoryItems}
 		{clusterItems}
+		{screeningItems}
 	/>
 
 	<div class="relative min-w-0 flex-1">

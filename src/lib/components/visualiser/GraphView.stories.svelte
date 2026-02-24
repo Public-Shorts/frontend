@@ -23,6 +23,7 @@
 		filterMode: 'union',
 		showMetaCategories: true,
 		showClusters: true,
+		showScreenings: true,
 	};
 
 	const mockGraphData: GraphData = {

@@ -71,7 +71,7 @@
 		<div class="md:col-span-5">
 			<div class="mb-6 flex items-baseline justify-between">
 				<p class="text-gallery-600">
-					{data.films.length} films selected for the 2026 edition.
+					{data.tvSelectionCount} films selected for the 2026 edition.
 				</p>
 				<div class="flex gap-1 text-sm">
 					{#each [['name', 'Name'], ['year', 'Year'], ['length', 'Length']] as [key, label]}

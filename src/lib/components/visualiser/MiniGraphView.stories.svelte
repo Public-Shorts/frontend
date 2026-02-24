@@ -27,6 +27,9 @@
 		clusters: [
 			{ _id: 'cl-1', name: 'Urban Landscapes', filmIds: ['f1', 'f2'] },
 		],
+		screenings: [
+			{ _id: 'sc-1', name: 'Screening 1', filmIds: ['f1', 'f2', 'f3'] },
+		],
 		neighborFilms: [
 			{ _id: 'f2', englishTitle: 'Concrete Lullaby', length: 8, slug: 'concrete-lullaby' },
 			{ _id: 'f3', englishTitle: 'After the Rain', length: 15, slug: 'after-the-rain' },
@@ -70,6 +73,7 @@
 			currentFilmSlug: film._id,
 			metaCategories: mcs ?? [],
 			clusters: cls ?? [],
+			screenings: [],
 			neighborFilms,
 		});
 		sanityLoaded = true;

@@ -180,6 +180,8 @@
 				return `rgba(204, 70, 0, ${opacity})`;
 			case 'film-cluster':
 				return `rgba(124, 58, 237, ${opacity})`;
+			case 'film-screening':
+				return `rgba(234, 179, 8, ${opacity})`;
 			default:
 				return `rgba(69, 65, 61, ${opacity})`;
 		}
@@ -203,6 +205,8 @@
 			drawRoundedRect(ctx, node.x - radius, node.y - radius, radius * 2, radius * 2, 3);
 		} else if (node.type === 'cluster') {
 			drawDiamond(ctx, node.x, node.y, radius);
+		} else if (node.type === 'screening') {
+			drawTriangle(ctx, node.x, node.y, radius);
 		} else {
 			ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
 		}
@@ -210,7 +214,7 @@
 		ctx.fillStyle = color;
 		ctx.fill();
 
-		if (!dimmed && (node.type === 'meta-category' || node.type === 'cluster')) {
+		if (!dimmed && (node.type === 'meta-category' || node.type === 'cluster' || node.type === 'screening')) {
 			ctx.shadowColor = node.color;
 			ctx.shadowBlur = 8;
 			ctx.fill();
@@ -258,6 +262,13 @@
 		ctx.lineTo(x + r, y);
 		ctx.lineTo(x, y + r);
 		ctx.lineTo(x - r, y);
+		ctx.closePath();
+	}
+
+	function drawTriangle(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
+		ctx.moveTo(x, y - r);
+		ctx.lineTo(x + r * 0.866, y + r * 0.5);
+		ctx.lineTo(x - r * 0.866, y + r * 0.5);
 		ctx.closePath();
 	}
 

@@ -274,6 +274,7 @@
 			currentFilmSlug={data.miniGraph.currentFilmSlug}
 			metaCategories={data.miniGraph.metaCategories}
 			clusters={data.miniGraph.clusters}
+			screenings={data.miniGraph.screenings}
 			neighborFilms={data.miniGraph.neighborFilms}
 		/>
 	{/if}

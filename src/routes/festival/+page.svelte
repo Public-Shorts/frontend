@@ -204,10 +204,10 @@
 			partners
 		</a>
 		and supporters, and to all the artists submitting their works. Thank you to
-		<a href="https://bgo.la/">Bruno Goal</a>
+		<a href="https://bgo.la/">Bruno Gola</a>
 		for his technical support. Special thanks to
 		<a href="https://www.fwuest.com/"> Florian Wüst </a>
-		for his support and advising throughout the whole process. We
+		for his support and advising throughout the whole process.
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 

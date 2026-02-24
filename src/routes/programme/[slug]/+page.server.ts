@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 import { getDocument, groqQueries, slugify } from '$lib/sanity';
 
 type SelectionEntry = {
-	selectionMethod: 'highlight' | 'score';
+	selectionMethod: 'highlight' | 'score' | 'screening';
 	film: {
 		_id: string;
 		englishTitle: string;
@@ -48,6 +48,11 @@ type GraphContext = {
 		_id: string;
 		name: string;
 		allFilmIds: string[];
+	}>;
+	screenings: Array<{
+		_id: string;
+		name: string;
+		filmIds: string[];
 	}>;
 };
 
@@ -124,6 +129,14 @@ export async function load({ params, url }) {
 		}))
 		.filter((c) => c.filmIds.length > 0);
 
+	const graphScreenings = (graphContext?.screenings ?? [])
+		.map((s) => ({
+			_id: s._id,
+			name: s.name,
+			filmIds: (s.filmIds ?? []).filter((id) => selectedFilmIds.has(id)),
+		}))
+		.filter((s) => s.filmIds.length > 0);
+
 	// Collect neighbor film IDs
 	const neighborIdSet = new Set<string>();
 	for (const mc of metaCategories) {
@@ -133,6 +146,11 @@ export async function load({ params, url }) {
 	}
 	for (const c of clusters) {
 		for (const id of c.filmIds) {
+			if (id !== matchedId) neighborIdSet.add(id);
+		}
+	}
+	for (const s of graphScreenings) {
+		for (const id of s.filmIds) {
 			if (id !== matchedId) neighborIdSet.add(id);
 		}
 	}
@@ -173,6 +191,7 @@ export async function load({ params, url }) {
 			currentFilmSlug: params.slug,
 			metaCategories,
 			clusters,
+			screenings: graphScreenings,
 			neighborFilms,
 		},
 	};

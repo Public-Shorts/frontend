@@ -198,7 +198,7 @@
 			</p>
 			<div class="screenings-list">
 				{#each data.screenings as screening (screening._id)}
-					<div class="screening-row">
+					<div class="screening-row bg-white">
 						<div class="screening-meta">
 							<strong class="screening-title">{screening.title}</strong>
 							<span class="screening-date">{formatScreeningDate(screening.date)}</span>

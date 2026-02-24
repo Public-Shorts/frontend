@@ -83,6 +83,18 @@
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
 
+<div class="font-semibold md:col-span-1">Tickets</div>
+	<div class="md:col-span-3">
+    <a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+      <span
+        class="text-xl inline-block rounded bg-orange-300 px-6 py-2 text-white font-semibold"
+      >
+        Tickets
+      </span>
+    </a>
+	</div>
+	<div class="hidden md:col-span-2 md:block"></div>
+
 	{#if screening.description && screening.description.length > 0}
 		<div class="font-semibold md:col-span-1">About</div>
 		<div class="md:col-span-3">
@@ -91,15 +103,6 @@
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
 
-	<div class="font-semibold md:col-span-1">Tickets</div>
-	<div class="md:col-span-3">
-		<span
-			class="inline-block cursor-not-allowed rounded bg-gallery-300 px-6 py-2 text-sm font-medium text-gallery-500"
-		>
-			Tickets coming soon
-		</span>
-	</div>
-	<div class="hidden md:col-span-2 md:block"></div>
 
 	{#if screening.films && screening.films.length > 0}
 		<div class="font-semibold md:col-span-1">Films</div>

@@ -87,9 +87,9 @@
 	<div class="md:col-span-3">
     <a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
       <span
-        class="text-xl inline-block rounded bg-orange-300 px-6 py-2 text-white font-semibold"
+        class="text-xl inline-block rounded hover:bg-accent-400 bg-accent-500 transition-colors px-6 py-2 text-white font-semibold"
       >
-        Tickets
+        Reserve now
       </span>
     </a>
 	</div>
@@ -120,9 +120,7 @@
 							{/if}
 						</div>
 						<div class="pt-3">
-							<h2
-								class="text-base font-semibold text-gallery-800 group-hover:text-accent-500"
-							>
+							<h2 class="text-base font-semibold text-gallery-800 group-hover:text-accent-500">
 								{film.englishTitle}
 							</h2>
 							<p class="mt-1 text-sm text-gallery-500">

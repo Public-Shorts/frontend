@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { error } from '@sveltejs/kit';
 import { getDocument, groqQueries, slugify } from '$lib/sanity';
 
@@ -28,6 +29,7 @@ type FilmDetail = {
 	website: string | null;
 	explicit: boolean;
 	explicitDetails: string | null;
+	adult: boolean;
 	castAndCrew: string | null;
 	thanks: string | null;
 	previousScreenings: boolean;
@@ -49,7 +51,21 @@ type GraphContext = {
 	}>;
 };
 
-export async function load({ params }) {
+type ScheduleEntry = {
+	startTime: string;
+	endTime: string;
+	durationSeconds: number;
+	film: {
+		_id: string;
+		englishTitle: string;
+	} | null;
+};
+
+type PlaybackSchedule = {
+	entries: ScheduleEntry[] | null;
+};
+
+export async function load({ params, url }) {
 	const selection = await getDocument<TvSelection>(groqQueries.tvSelection);
 	const entries = selection?.films ?? [];
 
@@ -79,9 +95,12 @@ export async function load({ params }) {
 
 	const selectedFilmIds = new Set(entries.filter((e) => e.film).map((e) => e.film._id));
 
-	const [film, graphContext] = await Promise.all([
+	const useTest = dev && url.searchParams.get('source') !== 'production';
+
+	const [film, graphContext, schedule] = await Promise.all([
 		getDocument<FilmDetail>(groqQueries.filmDetail, { id: matchedId }),
 		getDocument<GraphContext>(groqQueries.filmGraphContext, { id: matchedId }),
+		getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(useTest)),
 	]);
 
 	if (!film) {
@@ -140,8 +159,15 @@ export async function load({ params }) {
 		}));
 	}
 
+	const screenings = (schedule?.entries ?? [])
+		.filter((e) => e.film && e.film._id === matchedId)
+		.map((e) => ({ startTime: e.startTime, durationSeconds: e.durationSeconds }));
+
 	return {
 		film,
+		screenings,
+		dev,
+		source: useTest ? 'test' : 'production',
 		miniGraph: {
 			currentFilmId: matchedId,
 			currentFilmSlug: params.slug,

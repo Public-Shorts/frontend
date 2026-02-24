@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { getDocument, groqQueries } from '$lib/sanity';
 
 type ScheduleEntry = {
@@ -24,12 +25,15 @@ type PlaybackSchedule = {
 	entries: ScheduleEntry[] | null;
 };
 
-export async function load() {
-	const data = await getDocument<PlaybackSchedule>(groqQueries.playbackSchedule);
+export async function load({ url }) {
+	const useTest = dev && url.searchParams.get('source') !== 'production';
+	const data = await getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(useTest));
 	const entries = data?.entries?.filter((e) => e.film) ?? [];
 
 	return {
 		schedule: data ?? null,
 		entries,
+		dev,
+		source: useTest ? 'test' : 'production',
 	};
 }

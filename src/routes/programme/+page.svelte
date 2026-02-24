@@ -21,15 +21,14 @@
 	const sortedFilms = $derived(
 		[...data.films].sort((a, b) => {
 			const dir = sortAsc ? 1 : -1;
-			if (sortBy === 'year')
-				return dir * ((a.yearOfCompletion ?? 0) - (b.yearOfCompletion ?? 0));
+			if (sortBy === 'year') return dir * ((a.yearOfCompletion ?? 0) - (b.yearOfCompletion ?? 0));
 			if (sortBy === 'length') return dir * ((a.length ?? 0) - (b.length ?? 0));
-			return dir * a.englishTitle.localeCompare(b.englishTitle);
+			return dir * a.englishTitle.trim().localeCompare(b.englishTitle.trim());
 		})
 	);
 
 	function getImageUrl(film: (typeof data.films)[0]): string | null {
-		const source = film.poster ?? film.screenshot;
+		const source = film.screenshot ?? film.poster;
 		if (!source) return null;
 		return urlFor(source).width(600).height(338).fit('crop').url();
 	}
@@ -103,9 +102,7 @@
 							{/if}
 						</div>
 						<div class="pt-3">
-							<h2
-								class="text-base font-semibold text-gallery-800 group-hover:text-accent-500"
-							>
+							<h2 class="text-base font-semibold text-gallery-800 group-hover:text-accent-500">
 								{film.englishTitle}
 							</h2>
 							<p class="mt-1 text-sm text-gallery-500">

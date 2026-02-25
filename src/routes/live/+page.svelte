@@ -25,7 +25,8 @@
 			const playing = scheduleEl.querySelector('[data-playing]');
 			if (!playing) return;
 			const el = playing as HTMLElement;
-			scheduleEl.scrollTop = el.offsetTop - scheduleEl.offsetTop - scheduleEl.clientHeight / 2 + el.clientHeight / 2;
+			scheduleEl.scrollTop =
+				el.offsetTop - scheduleEl.offsetTop - scheduleEl.clientHeight / 2 + el.clientHeight / 2;
 		});
 
 		return () => clearInterval(interval);
@@ -64,35 +65,6 @@
 		if (now >= startMs && now < endMs) return 'playing';
 		if (now >= endMs) return 'past';
 		return 'upcoming';
-	}
-
-	// --- Social media link parsing ---
-
-	function parseSocialLink(raw: string): { url: string; label: string } | null {
-		const trimmed = raw.trim();
-		if (!trimmed) return null;
-
-		// Already a full URL (instagram.com, other)
-		const urlMatch = trimmed.match(/https?:\/\/(www\.)?(instagram\.com|instagr\.am)\/([^\s/?#]+)/i);
-		if (urlMatch) {
-			const handle = urlMatch[3];
-			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
-		}
-
-		// Full URL to some other platform
-		if (/^https?:\/\//i.test(trimmed)) {
-			const display = trimmed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
-			return { url: trimmed, label: display };
-		}
-
-		// @handle or plain handle (assume Instagram)
-		const handle = trimmed.replace(/^@/, '');
-		if (/^[a-zA-Z0-9._]+$/.test(handle)) {
-			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
-		}
-
-		// Fallback: just display the text as-is, no link
-		return null;
 	}
 
 	// --- Derived state ---
@@ -153,9 +125,9 @@
 	const hasExpandedContent = $derived(() => {
 		if (!currentDetails) return false;
 		return !!(
-			currentDetails.synopsis ||
-			currentDetails.castAndCrew ||
-			currentDetails.thanks ||
+			currentDetails.synopsisPlain ||
+			currentDetails.castAndCrewPlain ||
+			currentDetails.thanksPlain ||
 			currentMiniGraph
 		);
 	});
@@ -198,12 +170,12 @@
 		{@const img = imageUrl()}
 
 		<!-- Now Playing badge -->
-		<div class="md:col-span-6">
+		<!-- <div class="md:col-span-6">
 			<div class="flex items-center gap-2 text-sm text-gallery-500">
 				<span class="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
 				Now Playing
 			</div>
-		</div>
+		</div> -->
 
 		<!-- Image -->
 		{#if img}
@@ -239,31 +211,26 @@
 			<div>
 				<p class="font-semibold">{film.directorName}</p>
 				<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
-					{#if details?.website}
+					{#each details?.website ?? [] as link}
 						<a
-							href={details.website}
+							href={link.url}
 							target="_blank"
 							rel="noreferrer"
 							class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
 						>
-							{details.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+							{link.label || link.url}
 						</a>
-					{/if}
-					{#if details?.socialMedia}
-						{@const social = parseSocialLink(details.socialMedia)}
-						{#if social}
-							<a
-								href={social.url}
-								target="_blank"
-								rel="noreferrer"
-								class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
-							>
-								{social.label}
-							</a>
-						{:else}
-							<span class="text-sm text-gallery-500">{details.socialMedia}</span>
-						{/if}
-					{/if}
+					{/each}
+					{#each details?.socialMedia ?? [] as link}
+						<a
+							href={link.url}
+							target="_blank"
+							rel="noreferrer"
+							class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+						>
+							{link.label || link.url}
+						</a>
+					{/each}
 				</div>
 			</div>
 
@@ -302,24 +269,24 @@
 
 		<!-- Expanded details (progressive disclosure) -->
 		{#if expanded}
-			{#if details?.synopsis}
+			{#if details?.synopsisPlain}
 				<div class="font-semibold md:col-span-1">Synopsis</div>
 				<div class="md:col-span-5">
-					<p class="leading-relaxed text-gallery-700">{details.synopsis}</p>
+					<p class="leading-relaxed text-gallery-700">{details.synopsisPlain}</p>
 				</div>
 			{/if}
 
-			{#if details?.castAndCrew}
+			{#if details?.castAndCrewPlain}
 				<div class="font-semibold md:col-span-1">Cast & Crew</div>
 				<div class="text-sm whitespace-pre-line text-gallery-600 md:col-span-5">
-					{details.castAndCrew}
+					{details.castAndCrewPlain}
 				</div>
 			{/if}
 
-			{#if details?.thanks}
+			{#if details?.thanksPlain}
 				<div class="font-semibold md:col-span-1">Thanks</div>
 				<div class="text-sm whitespace-pre-line text-gallery-600 md:col-span-5">
-					{details.thanks}
+					{details.thanksPlain}
 				</div>
 			{/if}
 

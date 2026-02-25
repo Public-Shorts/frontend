@@ -3,30 +3,12 @@
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import ImageCarousel from '$lib/components/ImageCarousel.svelte';
 	import MiniGraphSection from '$lib/components/visualiser/MiniGraphSection.svelte';
+	import RichText from '$lib/components/RichText.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import { urlFor } from '$lib/sanity';
 
 	let { data } = $props();
 	const film = data.film;
-
-	function parseSocialLink(raw: string): { url: string; label: string } | null {
-		const trimmed = raw.trim();
-		if (!trimmed) return null;
-		const urlMatch = trimmed.match(
-			/https?:\/\/(www\.)?(instagram\.com|instagr\.am)\/([^\s/?#]+)/i
-		);
-		if (urlMatch) {
-			return { url: `https://instagram.com/${urlMatch[3]}`, label: `@${urlMatch[3]}` };
-		}
-		if (/^https?:\/\//i.test(trimmed)) {
-			return { url: trimmed, label: trimmed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') };
-		}
-		const handle = trimmed.replace(/^@/, '');
-		if (/^[a-zA-Z0-9._]+$/.test(handle)) {
-			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
-		}
-		return null;
-	}
 
 	const screenshotImages = $derived(
 		(film.screenshots ?? []).map((s) => ({
@@ -124,7 +106,7 @@
 
 <SEO
 	title={film.englishTitle}
-	description={film.synopsis?.slice(0, 160)}
+	description={film.synopsisPlain?.slice(0, 160)}
 	imageUrl={posterUrl ?? undefined}
 />
 
@@ -160,33 +142,28 @@
 		<p>
 			{film.directorName}
 		</p>
-		{#if film.website || film.socialMedia}
+		{#if film.website?.length || film.socialMedia?.length}
 			<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
-				{#if film.website}
+				{#each film.website ?? [] as link}
 					<a
-						href={film.website}
+						href={link.url}
 						target="_blank"
 						rel="noreferrer"
 						class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
 					>
-						{film.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+						{link.label || link.url}
 					</a>
-				{/if}
-				{#if film.socialMedia}
-					{@const social = parseSocialLink(film.socialMedia)}
-					{#if social}
-						<a
-							href={social.url}
-							target="_blank"
-							rel="noreferrer"
-							class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
-						>
-							{social.label}
-						</a>
-					{:else}
-						<span class="text-sm text-gallery-500">{film.socialMedia}</span>
-					{/if}
-				{/if}
+				{/each}
+				{#each film.socialMedia ?? [] as link}
+					<a
+						href={link.url}
+						target="_blank"
+						rel="noreferrer"
+						class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+					>
+						{link.label || link.url}
+					</a>
+				{/each}
 			</div>
 		{/if}
 	</div>
@@ -268,22 +245,24 @@
 		</p>
 	</div>
 
-	<div class="font-semibold md:col-span-1">Synopsis</div>
-	<div class="md:col-span-4">
-		<p>{film.synopsis}</p>
-	</div>
-
-	{#if film.castAndCrew}
-		<div class="font-semibold md:col-span-1">Cast & Crew</div>
-		<div class="whitespace-pre-line md:col-span-4">
-			{film.castAndCrew}
+	{#if film.synopsis?.length}
+		<div class="font-semibold md:col-span-1">Synopsis</div>
+		<div class="md:col-span-4">
+			<RichText blocks={film.synopsis} />
 		</div>
 	{/if}
 
-	{#if film.thanks}
+	{#if film.castAndCrew?.length}
+		<div class="font-semibold md:col-span-1">Cast & Crew</div>
+		<div class="md:col-span-4">
+			<RichText blocks={film.castAndCrew} />
+		</div>
+	{/if}
+
+	{#if film.thanks?.length}
 		<div class="font-semibold md:col-span-1">Thanks</div>
-		<div class="whitespace-pre-line md:col-span-4">
-			{film.thanks}
+		<div class="md:col-span-4">
+			<RichText blocks={film.thanks} />
 		</div>
 	{/if}
 
@@ -297,10 +276,10 @@
 		</div>
 	{/if}
 
-	{#if film.previousScreenings && film.previousScreeningLocations}
+	{#if film.previousScreenings && film.previousScreeningLocations?.length}
 		<div class="font-semibold md:col-span-1">Previous Screenings</div>
-		<div class="whitespace-pre-line md:col-span-4">
-			{film.previousScreeningLocations}
+		<div class="md:col-span-4">
+			<RichText blocks={film.previousScreeningLocations} />
 		</div>
 	{/if}
 

@@ -32,6 +32,21 @@ export const entries: EntryGenerator = async () => {
 	return slugs;
 };
 
+type SocialLink = {
+	_key: string;
+	platform: string;
+	url: string;
+	label: string;
+};
+
+type Block = {
+	_type: 'block';
+	_key: string;
+	style: string;
+	children: Array<{ _type: 'span'; _key: string; text: string; marks: string[] }>;
+	markDefs: Array<{ _type: string; _key: string; href?: string }>;
+};
+
 type FilmDetail = {
 	_id: string;
 	englishTitle: string;
@@ -40,18 +55,19 @@ type FilmDetail = {
 	yearOfCompletion: number;
 	length: number;
 	filmLanguage: string[];
-	synopsis: string;
+	synopsis: Block[] | null;
+	synopsisPlain: string | null;
 	categories: string[];
 	categoryOther: string | null;
-	website: string | null;
-	socialMedia: string | null;
+	website: SocialLink[] | null;
+	socialMedia: SocialLink[] | null;
 	explicit: boolean;
 	explicitDetails: string | null;
 	adult: boolean;
-	castAndCrew: string | null;
-	thanks: string | null;
+	castAndCrew: Block[] | null;
+	thanks: Block[] | null;
 	previousScreenings: boolean;
-	previousScreeningLocations: string | null;
+	previousScreeningLocations: Block[] | null;
 	poster: { asset: { _id: string; url: string } } | null;
 	screenshots: Array<{ asset: { _id: string; url: string } }> | null;
 };

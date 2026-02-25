@@ -46,11 +46,13 @@
 
 <button
 	onclick={toggle}
-	class="flex items-center gap-1.5 text-sm text-gallery-600 transition-colors hover:text-gallery-900"
-	aria-label={status === 'connected' || status === 'connecting' ? 'Disconnect live audio' : 'Connect live audio'}
+	class="flex items-center gap-2 text-base text-gallery-600 transition-colors hover:text-gallery-900"
+	aria-label={status === 'connected' || status === 'connecting'
+		? 'Disconnect live audio'
+		: 'Connect live audio'}
 >
-	<span class="inline-block h-2 w-2 rounded-full {dotColor}"></span>
 	<span>{label}</span>
+	<span class="inline-block h-3 w-3 rounded-full {dotColor}"></span>
 </button>
 
 <audio bind:this={audioEl} class="hidden"></audio>

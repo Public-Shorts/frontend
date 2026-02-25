@@ -21,13 +21,20 @@ type PlaybackSchedule = {
 	entries: ScheduleEntry[] | null;
 };
 
+type SocialLink = {
+	_key: string;
+	platform: string;
+	url: string;
+	label: string;
+};
+
 type FilmDetails = {
 	_id: string;
-	synopsis: string | null;
-	website: string | null;
-	socialMedia: string | null;
-	castAndCrew: string | null;
-	thanks: string | null;
+	synopsisPlain: string | null;
+	website: SocialLink[] | null;
+	socialMedia: SocialLink[] | null;
+	castAndCrewPlain: string | null;
+	thanksPlain: string | null;
 };
 
 type GraphContext = {
@@ -69,7 +76,12 @@ export async function load({ url }) {
 	const [films, graphContexts] = await Promise.all([
 		getDocument<FilmDetails[]>(
 			`*[_type == "submission" && _id in $ids]{
-				_id, synopsis, website, socialMedia, castAndCrew, thanks
+				_id,
+				"synopsisPlain": pt::text(synopsis),
+				website[]{ _key, platform, url, label },
+				socialMedia[]{ _key, platform, url, label },
+				"castAndCrewPlain": pt::text(castAndCrew),
+				"thanksPlain": pt::text(thanks)
 			}`,
 			{ ids: filmIds }
 		),

@@ -1,5 +1,6 @@
 export const ISO_LANGUAGES = [
 	{ title: 'Silent / No Dialogue', value: 'silent' },
+	{ title: 'Music Video', value: 'music_video' },
 	{ title: 'Afar', value: 'aa' },
 	{ title: 'Abkhazian', value: 'ab' },
 	{ title: 'Afrikaans', value: 'af' },

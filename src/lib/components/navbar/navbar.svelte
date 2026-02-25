@@ -70,13 +70,20 @@
 		{/if}
 		<LanguageSwitcher />
 	</div>
-	<button
-		class="absolute right-4 flex flex-col gap-2 lg:hidden"
-		aria-label="Toggle navigation"
-		on:click={() => (open = !open)}
-	>
-		<Icon icon="material-symbols:menu" width="64" />
-	</button>
+	<div class="absolute right-4 flex items-center gap-4 lg:hidden">
+		{#if showAudio && browser}
+			{#await import('./LiveAudioToggle.svelte') then module}
+				<module.default />
+			{/await}
+		{/if}
+		<button
+			class="flex flex-col gap-2"
+			aria-label="Toggle navigation"
+			on:click={() => (open = !open)}
+		>
+			<Icon icon="material-symbols:menu" width="64" />
+		</button>
+	</div>
 </nav>
 
 {#if open}
@@ -90,11 +97,6 @@
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
 
-		{#if showAudio && browser}
-			{#await import('./LiveAudioToggle.svelte') then module}
-				<module.default />
-			{/await}
-		{/if}
 		<LanguageSwitcher />
 	</nav>
 {/if}

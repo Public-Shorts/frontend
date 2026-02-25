@@ -3,6 +3,7 @@ import { SANITY_TOKEN } from '$env/static/private';
 import { createClient } from '@sanity/client';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { textToBlocks, parseSocialMediaToLinks, parseWebsiteToLinks } from '$lib/server/portableText';
 
 // Actions cannot access layout data, so this constant is kept for action deadline checks.
 // Keep in sync with festivalSettings.openCallDeadline in Sanity.
@@ -296,20 +297,26 @@ export const actions = {
 			const categoriesArray = categories ? categories.split(',').map((cat) => cat.trim()) : [];
 
 			// Create submission document
+			const socialMediaRaw = formData.get('socialMedia')?.toString();
+			const websiteRaw = formData.get('website')?.toString();
+			const castAndCrewRaw = formData.get('castAndCrew')?.toString();
+			const thanksRaw = formData.get('thanks')?.toString();
+			const additionalInfoRaw = formData.get('additionalInfo')?.toString();
+
 			const submission = {
 				_type: 'submission',
 				submitterName,
 				email,
 				phone: formData.get('phone')?.toString() || undefined,
-				socialMedia: formData.get('socialMedia')?.toString() || undefined,
-				website: formData.get('website')?.toString() || undefined,
+				socialMedia: socialMediaRaw ? parseSocialMediaToLinks(socialMediaRaw) : undefined,
+				website: websiteRaw ? parseWebsiteToLinks(websiteRaw) : undefined,
 				directorName,
 				originalTitle,
 				englishTitle,
 				yearOfCompletion: parseInt(yearOfCompletion),
 				length: parseInt(length),
 				filmLanguage: filmLanguageArray,
-				synopsis,
+				synopsis: synopsis ? textToBlocks(synopsis) : undefined,
 				categories: categoriesArray,
 				categoryOther: formData.get('categoryOther')?.toString() || undefined,
 				explicit,
@@ -317,15 +324,17 @@ export const actions = {
 				aiUsed,
 				aiExplanation: aiExplanation || undefined,
 				previousScreenings,
-				previousScreeningLocations: previousScreeningLocations || undefined,
+				previousScreeningLocations: previousScreeningLocations
+					? textToBlocks(previousScreeningLocations)
+					: undefined,
 				linkToWatch,
 				linkPassword: linkPassword || undefined,
 				linkToDownload,
 				screenshots: screenshotAssets,
 				poster: posterAsset || undefined,
-				castAndCrew: formData.get('castAndCrew')?.toString() || undefined,
-				thanks: formData.get('thanks')?.toString() || undefined,
-				additionalInfo: formData.get('additionalInfo')?.toString() || undefined,
+				castAndCrew: castAndCrewRaw ? textToBlocks(castAndCrewRaw) : undefined,
+				thanks: thanksRaw ? textToBlocks(thanksRaw) : undefined,
+				additionalInfo: additionalInfoRaw ? textToBlocks(additionalInfoRaw) : undefined,
 				specialRequirements: formData.get('specialRequirements')?.toString() || undefined,
 				termsAccepted
 			};

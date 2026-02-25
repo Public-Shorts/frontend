@@ -72,6 +72,12 @@
 			<div class="mb-6 flex items-baseline justify-between">
 				<p class="text-gallery-600">
 					{data.tvSelectionCount} films selected for the 2026 edition.
+					<a
+						href="/schedule"
+						class="underline! decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+					>
+						Full schedule →
+					</a>
 				</p>
 				<div class="flex gap-1 text-sm">
 					{#each [['name', 'Name'], ['year', 'Year'], ['length', 'Length']] as [key, label]}

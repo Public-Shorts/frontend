@@ -9,6 +9,25 @@
 	let { data } = $props();
 	const film = data.film;
 
+	function parseSocialLink(raw: string): { url: string; label: string } | null {
+		const trimmed = raw.trim();
+		if (!trimmed) return null;
+		const urlMatch = trimmed.match(
+			/https?:\/\/(www\.)?(instagram\.com|instagr\.am)\/([^\s/?#]+)/i
+		);
+		if (urlMatch) {
+			return { url: `https://instagram.com/${urlMatch[3]}`, label: `@${urlMatch[3]}` };
+		}
+		if (/^https?:\/\//i.test(trimmed)) {
+			return { url: trimmed, label: trimmed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') };
+		}
+		const handle = trimmed.replace(/^@/, '');
+		if (/^[a-zA-Z0-9._]+$/.test(handle)) {
+			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
+		}
+		return null;
+	}
+
 	const screenshotImages = $derived(
 		(film.screenshots ?? []).map((s) => ({
 			src: urlFor(s).width(800).height(450).fit('crop').url(),
@@ -140,18 +159,36 @@
 	<div class="md:col-span-4">
 		<p>
 			{film.directorName}
-			{#if film.website}
-				<br />
-				<a
-					href={film.website}
-					target="_blank"
-					rel="noreferrer"
-					class="text-sm underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
-				>
-					{film.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-				</a>
-			{/if}
 		</p>
+		{#if film.website || film.socialMedia}
+			<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
+				{#if film.website}
+					<a
+						href={film.website}
+						target="_blank"
+						rel="noreferrer"
+						class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+					>
+						{film.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+					</a>
+				{/if}
+				{#if film.socialMedia}
+					{@const social = parseSocialLink(film.socialMedia)}
+					{#if social}
+						<a
+							href={social.url}
+							target="_blank"
+							rel="noreferrer"
+							class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+						>
+							{social.label}
+						</a>
+					{:else}
+						<span class="text-sm text-gallery-500">{film.socialMedia}</span>
+					{/if}
+				{/if}
+			</div>
+		{/if}
 	</div>
 	<!-- Right column: screenings sidebar (spans all rows on desktop) -->
 	<div class="md:col-span-1 md:col-start-6 md:row-span-6">

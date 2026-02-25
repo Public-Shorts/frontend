@@ -44,6 +44,7 @@ type FilmDetail = {
 	categories: string[];
 	categoryOther: string | null;
 	website: string | null;
+	socialMedia: string | null;
 	explicit: boolean;
 	explicitDetails: string | null;
 	adult: boolean;

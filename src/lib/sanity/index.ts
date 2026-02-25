@@ -421,6 +421,7 @@ export const groqQueries = {
     categories,
     categoryOther,
     website,
+    socialMedia,
     explicit,
     explicitDetails,
     adult,

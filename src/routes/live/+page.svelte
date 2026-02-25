@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import GridLayout from '$lib/components/GridLayout.svelte';
+	import MiniGraphSection from '$lib/components/visualiser/MiniGraphSection.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import { urlFor, slugify } from '$lib/sanity';
 
@@ -9,16 +11,21 @@
 	type Entry = (typeof data.entries)[number];
 
 	let now = $state(Date.now());
+	let expanded = $state(false);
+	let scheduleEl = $state<HTMLDivElement>();
 
 	onMount(() => {
 		const interval = setInterval(() => {
 			now = Date.now();
 		}, 1000);
 
+		// Scroll schedule container so current entry is visible
 		requestAnimationFrame(() => {
-			document
-				.querySelector('[data-now-playing]')
-				?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			if (!scheduleEl) return;
+			const playing = scheduleEl.querySelector('[data-playing]');
+			if (!playing) return;
+			const el = playing as HTMLElement;
+			scheduleEl.scrollTop = el.offsetTop - scheduleEl.offsetTop - scheduleEl.clientHeight / 2 + el.clientHeight / 2;
 		});
 
 		return () => clearInterval(interval);
@@ -40,7 +47,7 @@
 			minute: '2-digit',
 			second: '2-digit',
 			timeZone: 'Europe/Berlin',
-			hour12: false,
+			hour12: false
 		});
 	}
 
@@ -59,14 +66,46 @@
 		return 'upcoming';
 	}
 
+	// --- Social media link parsing ---
+
+	function parseSocialLink(raw: string): { url: string; label: string } | null {
+		const trimmed = raw.trim();
+		if (!trimmed) return null;
+
+		// Already a full URL (instagram.com, other)
+		const urlMatch = trimmed.match(/https?:\/\/(www\.)?(instagram\.com|instagr\.am)\/([^\s/?#]+)/i);
+		if (urlMatch) {
+			const handle = urlMatch[3];
+			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
+		}
+
+		// Full URL to some other platform
+		if (/^https?:\/\//i.test(trimmed)) {
+			const display = trimmed.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+			return { url: trimmed, label: display };
+		}
+
+		// @handle or plain handle (assume Instagram)
+		const handle = trimmed.replace(/^@/, '');
+		if (/^[a-zA-Z0-9._]+$/.test(handle)) {
+			return { url: `https://instagram.com/${handle}`, label: `@${handle}` };
+		}
+
+		// Fallback: just display the text as-is, no link
+		return null;
+	}
+
 	// --- Derived state ---
 
 	const currentIndex = $derived(data.entries.findIndex((e) => entryStatus(e) === 'playing'));
-
 	const currentEntry = $derived(currentIndex >= 0 ? data.entries[currentIndex] : null);
 
 	const currentDetails = $derived(
 		currentEntry?.film ? data.filmDetailsMap[currentEntry.film._id] : null
+	);
+
+	const currentMiniGraph = $derived(
+		currentEntry?.film ? (data.miniGraphMap[currentEntry.film._id] ?? null) : null
 	);
 
 	const progress = $derived(() => {
@@ -95,12 +134,31 @@
 			currentEntry.film.originalTitle !== currentEntry.film.englishTitle
 	);
 
-	// Next up (first upcoming entry after current)
 	const nextEntry = $derived(
 		currentIndex >= 0 && currentIndex + 1 < data.entries.length
 			? data.entries[currentIndex + 1]
 			: null
 	);
+
+	// Reset expanded when film changes
+	let lastFilmId = $state<string | null>(null);
+	$effect(() => {
+		const id = currentEntry?.film?._id ?? null;
+		if (id !== lastFilmId) {
+			expanded = false;
+			lastFilmId = id;
+		}
+	});
+
+	const hasExpandedContent = $derived(() => {
+		if (!currentDetails) return false;
+		return !!(
+			currentDetails.synopsis ||
+			currentDetails.castAndCrew ||
+			currentDetails.thanks ||
+			currentMiniGraph
+		);
+	});
 </script>
 
 <SEO
@@ -139,10 +197,10 @@
 		{@const p = progress()}
 		{@const img = imageUrl()}
 
-		<!-- Now Playing header -->
+		<!-- Now Playing badge -->
 		<div class="md:col-span-6">
 			<div class="flex items-center gap-2 text-sm text-gallery-500">
-				<span class="inline-block h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+				<span class="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
 				Now Playing
 			</div>
 		</div>
@@ -158,57 +216,74 @@
 			</div>
 		{/if}
 
-		<!-- Film info -->
-		<div class="flex flex-col gap-4 {img ? 'md:col-span-4' : 'md:col-span-6'}">
+		<!-- Compact film info (always visible) -->
+		<div class="flex flex-col gap-3 {img ? 'md:col-span-4' : 'md:col-span-6'}">
 			<div>
 				<h1 class="text-3xl font-bold">
-					{film.englishTitle}
+					<a
+						href="/programme/{slugify(film.englishTitle)}"
+						class="transition-colors hover:text-accent-500"
+					>
+						{film.englishTitle}
+					</a>
 				</h1>
-				{#if showOriginalTitle}
-					<p class="mt-1 text-lg text-gallery-500">{film.originalTitle}</p>
-				{/if}
+
+				<p class="mt-1 text-lg text-gallery-500">
+					{#if showOriginalTitle}
+						{film.originalTitle + ' · '}
+					{/if}
+					{film.length} min
+				</p>
 			</div>
 
 			<div>
 				<p class="font-semibold">{film.directorName}</p>
-				{#if details?.website}
-					<a
-						href={details.website}
-						target="_blank"
-						rel="noreferrer"
-						class="text-sm text-gallery-500 underline decoration-gallery-400 underline-offset-2 hover:text-gallery-800"
-					>
-						{details.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
-					</a>
-				{/if}
+				<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
+					{#if details?.website}
+						<a
+							href={details.website}
+							target="_blank"
+							rel="noreferrer"
+							class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+						>
+							{details.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+						</a>
+					{/if}
+					{#if details?.socialMedia}
+						{@const social = parseSocialLink(details.socialMedia)}
+						{#if social}
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noreferrer"
+								class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
+							>
+								{social.label}
+							</a>
+						{:else}
+							<span class="text-sm text-gallery-500">{details.socialMedia}</span>
+						{/if}
+					{/if}
+				</div>
 			</div>
 
-			<p class="text-sm text-gallery-500">
-				{film.length} min{#if film.categories?.length}&ensp;·&ensp;{film.categories.join(', ')}{/if}
-			</p>
-
-			{#if details?.synopsis}
-				<p class="leading-relaxed text-gallery-700">{details.synopsis}</p>
-			{/if}
-
-			{#if details?.castAndCrew}
-				<div>
-					<p class="text-sm font-semibold text-gallery-500">Cast & Crew</p>
-					<p class="whitespace-pre-line text-sm text-gallery-600">{details.castAndCrew}</p>
-				</div>
-			{/if}
-
-			{#if details?.thanks}
-				<div>
-					<p class="text-sm font-semibold text-gallery-500">Thanks</p>
-					<p class="whitespace-pre-line text-sm text-gallery-600">{details.thanks}</p>
-				</div>
+			<!-- More Info toggle -->
+			{#if hasExpandedContent()}
+				<button
+					onclick={() => (expanded = !expanded)}
+					class="mt-1 flex cursor-pointer items-center gap-1.5 self-start text-sm font-medium text-gallery-500 transition-colors hover:text-gallery-800"
+				>
+					<span class="inline-block transition-transform duration-200" class:rotate-90={expanded}>
+						&#9654;
+					</span>
+					{expanded ? 'Less info' : 'More info'}
+				</button>
 			{/if}
 		</div>
 
 		<!-- Progress bar -->
 		<div class="md:col-span-6">
-			<div class="flex items-center gap-3 text-xs font-mono text-gallery-500">
+			<div class="flex items-center gap-3 font-mono text-xs text-gallery-500">
 				<span>{formatMMSS(p.elapsed)}</span>
 				<div class="relative h-1.5 flex-1 overflow-hidden rounded-full bg-gallery-200">
 					<div
@@ -225,15 +300,51 @@
 			{/if}
 		</div>
 
+		<!-- Expanded details (progressive disclosure) -->
+		{#if expanded}
+			{#if details?.synopsis}
+				<div class="font-semibold md:col-span-1">Synopsis</div>
+				<div class="md:col-span-5">
+					<p class="leading-relaxed text-gallery-700">{details.synopsis}</p>
+				</div>
+			{/if}
+
+			{#if details?.castAndCrew}
+				<div class="font-semibold md:col-span-1">Cast & Crew</div>
+				<div class="text-sm whitespace-pre-line text-gallery-600 md:col-span-5">
+					{details.castAndCrew}
+				</div>
+			{/if}
+
+			{#if details?.thanks}
+				<div class="font-semibold md:col-span-1">Thanks</div>
+				<div class="text-sm whitespace-pre-line text-gallery-600 md:col-span-5">
+					{details.thanks}
+				</div>
+			{/if}
+
+			{#if currentMiniGraph}
+				<MiniGraphSection
+					currentFilmId={currentMiniGraph.currentFilmId}
+					currentFilmTitle={film.englishTitle}
+					currentFilmSlug={currentMiniGraph.currentFilmSlug}
+					metaCategories={currentMiniGraph.metaCategories}
+					clusters={currentMiniGraph.clusters}
+					screenings={currentMiniGraph.screenings}
+					neighborFilms={currentMiniGraph.neighborFilms}
+				/>
+			{/if}
+		{/if}
+
 		<!-- Schedule -->
 		<div class="md:col-span-6">
 			<h2 class="mb-3 text-base font-semibold">Schedule</h2>
-			<div class="schedule max-h-80 overflow-y-auto">
+			<div class="schedule max-h-80 overflow-y-auto" bind:this={scheduleEl}>
 				{#each data.entries as entry, i}
 					{#if entry.film}
 						{@const status = entryStatus(entry)}
 						<a
-							data-now-playing={status === 'playing' ? '' : undefined}
+							data-playing={status === 'playing' ? '' : undefined}
 							href="/programme/{slugify(entry.film.englishTitle)}"
 							class="flex items-baseline gap-4 border-b border-gallery-200/50 py-2 text-sm transition-colors
 								{status === 'past'

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { browser } from '$app/environment';
 	import favicon from '$lib/assets/favicon.svg';
 	import favicon32 from '$lib/assets/favicon-32x32.png';
 	import favicon16 from '$lib/assets/favicon-16x16.png';
@@ -21,9 +22,9 @@
 </svelte:head>
 
 <Navbar
-	scheduleDateStart={data.scheduleDateStart}
-	scheduleDateEnd={data.scheduleDateEnd}
-	isDev={data.dev}
+	scheduleDateStart={browser ? data.scheduleDateStart : null}
+	scheduleDateEnd={browser ? data.scheduleDateEnd : null}
+	isDev={browser && data.dev}
 />
 
 <main class="w-full bg-gallery-100 text-gallery-700 min-h-[calc(100dvh-97px)] sm:min-h-[calc(100dvh-121px)]">

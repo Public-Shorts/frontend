@@ -2,6 +2,8 @@
 	import GridLayout from '$lib/components/GridLayout.svelte';
 	import RichText from '$lib/components/RichText.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { page } from '$app/state';
+
 	import { urlFor, slugify } from '$lib/sanity';
 
 	let { data } = $props();
@@ -83,15 +85,34 @@
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
 
-<div class="font-semibold md:col-span-1">Tickets</div>
+	<div class="font-semibold md:col-span-1">Tickets</div>
+
 	<div class="md:col-span-3">
-    <a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
-      <span
-        class="text-xl inline-block rounded hover:bg-accent-400 bg-accent-500 transition-colors px-6 py-2 text-white font-semibold"
-      >
-        Reserve now
-      </span>
-    </a>
+		{#if page.url.pathname.includes('screening-2')}
+			<a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+				<span
+					class="inline-block rounded bg-accent-500 px-6 py-2 text-xl font-semibold text-white transition-colors hover:bg-accent-400"
+				>
+					Reserve now
+				</span>
+			</a>
+		{:else if page.url.pathname.includes('screening-3')}
+			<a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+				<span
+					class="inline-block rounded bg-accent-500 px-6 py-2 text-xl font-semibold text-white transition-colors hover:bg-accent-400"
+				>
+					Reserve now
+				</span>
+			</a>
+		{:else}
+			<a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+				<span
+					class="inline-block rounded bg-accent-500 px-6 py-2 text-xl font-semibold text-white transition-colors hover:bg-accent-400"
+				>
+					Reserve now
+				</span>
+			</a>
+		{/if}
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 
@@ -102,7 +123,6 @@
 		</div>
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
-
 
 	{#if screening.films && screening.films.length > 0}
 		<div class="font-semibold md:col-span-1">Films</div>

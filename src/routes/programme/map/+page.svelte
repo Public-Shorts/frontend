@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
+	import { browser, dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { ChevronLeft, ChevronRight, Download } from 'lucide-svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import GraphView from '$lib/components/visualiser/GraphView.svelte';
@@ -56,7 +57,7 @@
 	const activeScs = data.screenings.filter((s: any) => s.filmIds.length > 0);
 
 	function buildInitialToggles() {
-		const filter = data.filter;
+		const filter = browser ? new URLSearchParams(window.location.search).get('filter') : null;
 		if (filter?.startsWith('mc-')) {
 			const mcId = filter.slice(3);
 			return {

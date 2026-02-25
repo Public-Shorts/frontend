@@ -543,7 +543,7 @@ export const groqQueries = {
 export const client = createClient({
   projectId: PUBLIC_SANITY_PROJECT_ID,
   dataset: PUBLIC_SANITY_DATASET,
-  useCdn: false, // `false` if you want to ensure fresh data
+  useCdn: true,
   apiVersion: "2025-02-21", // date of setup
 });
 

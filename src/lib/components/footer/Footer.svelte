@@ -52,7 +52,7 @@
 			<h4 class="text-xs tracking-widest text-gallery-900 uppercase">Legal</h4>
 			<div class="flex flex-col gap-2">
 				<a href="/impressum" class="hover:text-gallery-900"> Impressum </a>
-				<a href="/terms-of-service" class="hover:text-gallery-900"> Terms of Service </a>
+				<a href="/terms-and-conditions" class="hover:text-gallery-900"> Terms of Service </a>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import { error } from '@sveltejs/kit';
 import { getDocument, groqQueries, slugify } from '$lib/sanity';
+import type { EntryGenerator } from './$types';
 
 type SelectionEntry = {
 	selectionMethod: 'highlight' | 'score' | 'screening';
@@ -13,6 +14,22 @@ type SelectionEntry = {
 
 type TvSelection = {
 	films: SelectionEntry[] | null;
+};
+
+export const entries: EntryGenerator = async () => {
+	const selection = await getDocument<TvSelection>(groqQueries.tvSelection);
+	const films = selection?.films ?? [];
+	const slugCounts = new Map<string, number>();
+	const slugs: Array<{ slug: string }> = [];
+	for (const entry of films) {
+		if (!entry.film) continue;
+		let slug = slugify(entry.film.englishTitle);
+		const count = slugCounts.get(slug) ?? 0;
+		slugCounts.set(slug, count + 1);
+		if (count > 0) slug = `${slug}-${slugify(entry.film.directorName)}`;
+		slugs.push({ slug });
+	}
+	return slugs;
 };
 
 type FilmDetail = {

@@ -1,5 +1,13 @@
 import { error } from '@sveltejs/kit';
 import { getDocument, groqQueries } from '$lib/sanity';
+import type { EntryGenerator } from './$types';
+
+export const entries: EntryGenerator = async () => {
+	const screenings = await getDocument<Array<{ slug: string }>>(
+		`*[_type == "screening"]{ "slug": slug.current }`
+	);
+	return (screenings ?? []).map((s) => ({ slug: s.slug }));
+};
 
 type FilmSummary = {
 	_id: string;

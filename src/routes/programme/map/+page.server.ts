@@ -43,7 +43,7 @@ const query = `{
 	}
 }`;
 
-export async function load({ url }) {
+export async function load() {
 	const result = await getDocument<any>(query);
 
 	const selectedFilmIds = new Set<string>(result.tvSelection?.filmIds || []);
@@ -109,7 +109,5 @@ export async function load({ url }) {
 		filmIds: (s.filmIds || []).filter((id: string) => selectedFilmIds.has(id)),
 	}));
 
-	const filter = url.searchParams.get('filter') || null;
-
-	return { films, metaCategories, clusters, screenings, filter };
+	return { films, metaCategories, clusters, screenings };
 }

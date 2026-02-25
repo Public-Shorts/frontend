@@ -20,7 +20,11 @@
 	
 </svelte:head>
 
-<Navbar />
+<Navbar
+	scheduleDateStart={data.scheduleDateStart}
+	scheduleDateEnd={data.scheduleDateEnd}
+	isDev={data.dev}
+/>
 
 <main class="w-full bg-gallery-100 text-gallery-700 min-h-[calc(100dvh-97px)] sm:min-h-[calc(100dvh-121px)]">
 	{@render children()}

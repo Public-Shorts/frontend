@@ -1,10 +1,31 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
 	import Icon from '@iconify/svelte';
 	import Logo from '../logo/logo.svelte';
 
+	let {
+		scheduleDateStart = null,
+		scheduleDateEnd = null,
+		isDev = false
+	}: {
+		scheduleDateStart: string | null;
+		scheduleDateEnd: string | null;
+		isDev: boolean;
+	} = $props();
+
 	let open = false;
+	let showAudio = $state(isDev);
+
+	onMount(() => {
+		if (isDev) return;
+		if (!scheduleDateStart || !scheduleDateEnd) return;
+		const now = Date.now();
+		const start = new Date(scheduleDateStart).getTime();
+		const end = new Date(scheduleDateEnd).getTime();
+		showAudio = now >= start && now <= end;
+	});
 </script>
 
 <nav
@@ -42,7 +63,7 @@
 		</div>
 	</section>
 	<div class="absolute right-4 hidden items-center gap-4 lg:flex">
-		{#if browser}
+		{#if showAudio && browser}
 			{#await import('./LiveAudioToggle.svelte') then module}
 				<module.default />
 			{/await}
@@ -69,7 +90,7 @@
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
 
-		{#if browser}
+		{#if showAudio && browser}
 			{#await import('./LiveAudioToggle.svelte') then module}
 				<module.default />
 			{/await}

@@ -1,4 +1,5 @@
 <script>
+	import { browser } from '$app/environment';
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
 	import Icon from '@iconify/svelte';
 	import Logo from '../logo/logo.svelte';
@@ -40,7 +41,12 @@
 			> -->
 		</div>
 	</section>
-	<div class="absolute right-4 hidden gap-2 lg:flex">
+	<div class="absolute right-4 hidden items-center gap-4 lg:flex">
+		{#if browser}
+			{#await import('./LiveAudioToggle.svelte') then module}
+				<module.default />
+			{/await}
+		{/if}
 		<LanguageSwitcher />
 	</div>
 	<button
@@ -63,6 +69,11 @@
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
 		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
 
+		{#if browser}
+			{#await import('./LiveAudioToggle.svelte') then module}
+				<module.default />
+			{/await}
+		{/if}
 		<LanguageSwitcher />
 	</nav>
 {/if}

@@ -87,6 +87,10 @@
 		return groups;
 	});
 
+	function ensureProtocol(url: string): string {
+		return /^https?:\/\//.test(url) ? url : `https://${url}`;
+	}
+
 	let scheduleExpanded = $state(false);
 
 	const todayBerlin = $derived(
@@ -146,7 +150,7 @@
 			<div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
 				{#each film.website ?? [] as link}
 					<a
-						href={link.url}
+						href={ensureProtocol(link.url)}
 						target="_blank"
 						rel="noreferrer"
 						class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"
@@ -156,7 +160,7 @@
 				{/each}
 				{#each film.socialMedia ?? [] as link}
 					<a
-						href={link.url}
+						href={ensureProtocol(link.url)}
 						target="_blank"
 						rel="noreferrer"
 						class="text-sm text-gallery-500 underline decoration-gallery-300 underline-offset-2 hover:text-gallery-800"

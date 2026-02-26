@@ -19,6 +19,10 @@
 	let showAudio = $state(isDev);
 
 	onMount(() => {
+		if (navigator.userAgent.includes('Firefox')) {
+			showAudio = false;
+			return;
+		}
 		if (isDev) return;
 		if (!scheduleDateStart || !scheduleDateEnd) return;
 		const now = Date.now();

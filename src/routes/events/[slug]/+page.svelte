@@ -89,7 +89,7 @@
 
 	<div class="md:col-span-3">
 		{#if page.url.pathname.includes('screening-2')}
-			<a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+			<a href="https://forms.gle/tjnHeK2SWnf13GmU9" target="_blank">
 				<span
 					class="inline-block rounded bg-accent-500 px-6 py-2 text-xl font-semibold text-white transition-colors hover:bg-accent-400"
 				>
@@ -97,7 +97,7 @@
 				</span>
 			</a>
 		{:else if page.url.pathname.includes('screening-3')}
-			<a href="https://forms.gle/utruZzCRLENuh1xr5" target="_blank">
+			<a href="https://forms.gle/rGya9osEbKaCbCiZ6" target="_blank">
 				<span
 					class="inline-block rounded bg-accent-500 px-6 py-2 text-xl font-semibold text-white transition-colors hover:bg-accent-400"
 				>

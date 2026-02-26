@@ -122,6 +122,15 @@
 		}
 	});
 
+	const scheduleEntries = $derived(() => {
+		if (currentIndex >= 0) {
+			const startIdx = Math.max(0, currentIndex - 3);
+			return data.entries.slice(startIdx);
+		}
+		// Nothing playing — show the last few entries
+		return data.entries.slice(-3);
+	});
+
 	const hasExpandedContent = $derived(() => {
 		if (!currentDetails) return false;
 		return !!(
@@ -139,12 +148,12 @@
 />
 
 <GridLayout>
-	{#if data.dev}
+	{#if data.dev || data.source === 'test'}
 		<div class="md:col-span-6">
 			<div class="flex items-center gap-2 text-sm">
 				<span class="text-gallery-500">Source:</span>
 				<a
-					href="/live"
+					href="/live?source=test"
 					class="rounded px-2 py-1 transition-colors {data.source === 'test'
 						? 'bg-gallery-200 text-gallery-900'
 						: 'text-gallery-500 hover:text-gallery-700'}"
@@ -307,7 +316,7 @@
 		<div class="md:col-span-6">
 			<h2 class="mb-3 text-base font-semibold">Schedule</h2>
 			<div class="schedule max-h-80 overflow-y-auto" bind:this={scheduleEl}>
-				{#each data.entries as entry, i}
+				{#each scheduleEntries() as entry, i}
 					{#if entry.film}
 						{@const status = entryStatus(entry)}
 						<a

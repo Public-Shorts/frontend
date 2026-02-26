@@ -53,7 +53,8 @@ type MiniGraphData = {
 };
 
 export async function load({ url }) {
-	const useTest = dev && url.searchParams.get('source') !== 'production';
+	const source = url.searchParams.get('source');
+	const useTest = source === 'test' || (dev && source !== 'production');
 	const schedule = await getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(useTest));
 	const entries = (schedule?.entries ?? []).filter((e) => e.film);
 

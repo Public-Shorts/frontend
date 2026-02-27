@@ -2,7 +2,6 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
-	import Icon from '@iconify/svelte';
 	import Logo from '../logo/logo.svelte';
 
 	let {
@@ -33,7 +32,7 @@
 </script>
 
 <nav
-	class=" flex w-full items-center justify-center border-b border-gallery-200 bg-gallery-50 py-12"
+	class="relative z-10 flex w-full items-center justify-center border-b border-gallery-200 bg-gallery-50 py-12"
 >
 	<a href="/" class="absolute left-4 w-28 fill-gallery-800">
 		<Logo />
@@ -74,18 +73,21 @@
 		{/if}
 		<LanguageSwitcher />
 	</div>
-	<div class="absolute right-4 flex items-center gap-4 lg:hidden">
+	<div class="absolute inset-y-0 right-4 z-50 flex items-center gap-4 lg:hidden">
 		{#if showAudio && browser}
 			{#await import('./LiveAudioToggle.svelte') then module}
 				<module.default />
 			{/await}
 		{/if}
 		<button
-			class="flex flex-col gap-2"
+			type="button"
+			class="flex h-16 w-16 cursor-pointer flex-col items-center justify-center gap-2.5"
 			aria-label="Toggle navigation"
 			onclick={() => (open = !open)}
 		>
-			<Icon icon="material-symbols:menu" width="64" />
+			<span class="block h-1 w-12 bg-gallery-800"></span>
+			<span class="block h-1 w-12 bg-gallery-800"></span>
+			<span class="block h-1 w-12 bg-gallery-800"></span>
 		</button>
 	</div>
 </nav>

@@ -238,6 +238,9 @@
 		<div class="relative -mx-4 md:col-span-6 md:-mx-8 {isPlaying ? '' : 'pointer-events-none opacity-50 grayscale'}">
 			<div class="border-l-2 {isPlaying ? 'border-accent-500 bg-white/60' : 'border-gallery-300 bg-gallery-100/50'} px-4 py-6 md:px-8">
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-6">
+					{#if !isPlaying}
+						<p class="text-sm text-gallery-500 md:hidden">Up Next</p>
+					{/if}
 					<!-- Image -->
 					{#if img}
 						<div class="md:col-span-2">
@@ -250,9 +253,9 @@
 					{/if}
 
 					<!-- Film info -->
-					<div class="flex flex-col gap-3 {img ? 'md:col-span-4' : 'md:col-span-6'}">
+					<div class="relative flex flex-col gap-3 {img ? 'md:col-span-4' : 'md:col-span-6'}">
 						{#if !isPlaying}
-							<p class="text-sm text-gallery-500">Up Next</p>
+							<p class="absolute -top-5 left-0 hidden text-sm text-gallery-500 md:block">Up Next</p>
 						{/if}
 						<h1 class="text-3xl font-bold">
 							<a

@@ -6,8 +6,10 @@
 	import ClapButton from '$lib/components/ClapButton.svelte';
 	import CommentButton from '$lib/components/CommentButton.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import Icon from '@iconify/svelte';
 	import { urlFor, slugify } from '$lib/sanity';
 	import { createClapListener } from '$lib/sanity/realtimeClaps';
+	import { getAudioStream } from '$lib/stores/audioStream.svelte';
 
 	let { data } = $props();
 
@@ -18,9 +20,16 @@
 	let scheduleEl = $state<HTMLDivElement>();
 	let clapCounts = $state<Record<string, number>>({ ...data.initialClaps });
 
+	let showAudio = $state(data.dev);
 	let clapListener: ReturnType<typeof createClapListener> | null = null;
 
 	onMount(() => {
+		if (browser && navigator.userAgent.includes('Firefox')) {
+			showAudio = false;
+		} else if (!data.dev) {
+			showAudio = data.entries.length > 0;
+		}
+
 		const interval = setInterval(() => {
 			now = Date.now();
 		}, 1000);
@@ -107,29 +116,6 @@
 		return { fraction, elapsed, remaining };
 	});
 
-	const imageUrl = $derived(() => {
-		if (!currentEntry?.film) return null;
-		if (currentEntry.film.poster) {
-			return urlFor(currentEntry.film.poster).width(600).height(800).fit('crop').url();
-		}
-		if (currentEntry.film.screenshot) {
-			return urlFor(currentEntry.film.screenshot).width(800).height(450).fit('crop').url();
-		}
-		return null;
-	});
-
-	const showOriginalTitle = $derived(
-		currentEntry?.film &&
-			currentEntry.film.originalTitle &&
-			currentEntry.film.originalTitle !== currentEntry.film.englishTitle
-	);
-
-	const nextEntry = $derived(
-		currentIndex >= 0 && currentIndex + 1 < data.entries.length
-			? data.entries[currentIndex + 1]
-			: null
-	);
-
 	// Previous film (1 entry, different film ID from current)
 	const previousEntry = $derived(() => {
 		const startIdx = currentIndex >= 0 ? currentIndex - 1 : data.entries.length - 1;
@@ -213,6 +199,12 @@
 		);
 	});
 
+	// Unified display: current playing film, or next upcoming
+	const displayEntry = $derived(() => {
+		if (currentEntry) return currentEntry;
+		return betweenFilms()?.nextUp ?? null;
+	});
+
 	function filmThumbnailUrl(entry: Entry): string | null {
 		if (!entry.film) return null;
 		if (entry.film.screenshot) return urlFor(entry.film.screenshot).width(400).height(225).fit('crop').url();
@@ -234,39 +226,17 @@
 />
 
 <GridLayout>
-	<!-- {#if data.dev || data.source === 'test'}
-		<div class="md:col-span-6">
-			<div class="flex items-center gap-2 text-sm">
-				<span class="text-gallery-500">Source:</span>
-				<a
-					href="/live?source=test"
-					class="rounded px-2 py-1 transition-colors {data.source === 'test'
-						? 'bg-gallery-200 text-gallery-900'
-						: 'text-gallery-500 hover:text-gallery-700'}"
-				>
-					Test
-				</a>
-				<a
-					href="/live?source=production"
-					class="rounded px-2 py-1 transition-colors {data.source === 'production'
-						? 'bg-gallery-200 text-gallery-900'
-						: 'text-gallery-500 hover:text-gallery-700'}"
-				>
-					Production
-				</a>
-			</div>
-		</div>
-	{/if} -->
+	{#if displayEntry()?.film}
+		{@const entry = displayEntry()!}
+		{@const film = entry.film!}
+		{@const isPlaying = !!currentEntry}
+		{@const details = isPlaying ? currentDetails : (data.filmDetailsMap[film._id] ?? null)}
+		{@const img = entryImageUrl(entry)}
+		{@const p = isPlaying ? progress() : { fraction: 0, elapsed: 0, remaining: entry.durationSeconds }}
 
-	{#if currentEntry?.film}
-		{@const film = currentEntry.film}
-		{@const details = currentDetails}
-		{@const p = progress()}
-		{@const img = imageUrl()}
-
-		<!-- Current film block with accented background -->
-		<div class="relative -mx-4 md:col-span-6 md:-mx-8">
-			<div class="border-l-2 border-accent-500 bg-white/60 px-4 py-6 md:px-8">
+		<!-- Main film block — identical structure for playing & up-next -->
+		<div class="relative -mx-4 md:col-span-6 md:-mx-8 {isPlaying ? '' : 'pointer-events-none opacity-50 grayscale'}">
+			<div class="border-l-2 {isPlaying ? 'border-accent-500 bg-white/60' : 'border-gallery-300 bg-gallery-100/50'} px-4 py-6 md:px-8">
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-6">
 					<!-- Image -->
 					{#if img}
@@ -281,32 +251,30 @@
 
 					<!-- Film info -->
 					<div class="flex flex-col gap-3 {img ? 'md:col-span-4' : 'md:col-span-6'}">
-						<!-- Title row with inline clap + comment -->
-						<div class="flex flex-wrap items-start gap-x-4 gap-y-2">
-							<div class="min-w-0 flex-1">
-								<h1 class="text-3xl font-bold">
-									<a
-										href="/programme/{slugify(film.englishTitle)}"
-										class="transition-colors hover:text-accent-500"
-									>
-										{film.englishTitle}
-									</a>
-								</h1>
-							</div>
-							<div class="flex items-center gap-1">
-								<ClapButton filmId={film._id} totalClaps={clapCounts[film._id] ?? 0} showLabel />
-								{#if commentableFilmIds().has(film._id)}
-									<CommentButton filmId={film._id} showLabel />
+						{#if !isPlaying}
+							<p class="text-sm text-gallery-500">Up Next</p>
+						{/if}
+						<h1 class="text-3xl font-bold">
+							<a
+								href="/programme/{slugify(film.englishTitle)}"
+								class="transition-colors hover:text-accent-500"
+							>
+								{film.englishTitle}
+							</a>
+						</h1>
+
+						<div class="flex items-baseline gap-x-4 gap-y-1">
+							<p class="text-lg text-gallery-500">
+								{#if film.originalTitle && film.originalTitle !== film.englishTitle}
+									{film.originalTitle + ' · '}
 								{/if}
+								{film.length} min
+							</p>
+							<div class="flex items-baseline gap-1">
+								<ClapButton filmId={film._id} totalClaps={clapCounts[film._id] ?? 0} showLabel disabled={!isPlaying} />
+								<CommentButton filmId={film._id} showLabel />
 							</div>
 						</div>
-
-						<p class="text-lg text-gallery-500">
-							{#if showOriginalTitle}
-								{film.originalTitle + ' · '}
-							{/if}
-							{film.length} min
-						</p>
 
 						<div>
 							<p class="font-semibold">{film.directorName}</p>
@@ -345,17 +313,36 @@
 						<div class="flex items-center gap-3 font-mono text-xs text-gallery-500">
 							<span>{formatMMSS(p.elapsed)}</span>
 							<div class="relative h-1.5 flex-1 overflow-hidden rounded-full bg-gallery-200">
-								<div
-									class="absolute inset-y-0 left-0 rounded-full bg-accent-500 transition-[width] duration-1000 ease-linear"
-									style:width="{p.fraction * 100}%"
-								></div>
+								{#if isPlaying}
+									<div
+										class="absolute inset-y-0 left-0 rounded-full bg-accent-500 transition-[width] duration-1000 ease-linear"
+										style:width="{p.fraction * 100}%"
+									></div>
+								{/if}
 							</div>
 							<span>-{formatMMSS(p.remaining)}</span>
+							{#if showAudio}
+								{@const audio = getAudioStream()}
+								<button
+									onclick={audio.toggle}
+									class="flex items-center gap-1.5 text-gallery-500 transition-colors hover:text-gallery-800"
+									aria-label={audio.status === 'connected' || audio.status === 'connecting' ? 'Disconnect live audio' : 'Tune in to live audio'}
+								>
+									{#if audio.status === 'connected'}
+										<Icon icon="ri:volume-up-line" width="16" class="text-green-600" />
+									{:else if audio.status === 'connecting'}
+										<Icon icon="ri:loader-4-line" width="16" class="animate-spin" />
+									{:else}
+										<Icon icon="ri:volume-mute-line" width="16" />
+										<span class="font-sans text-xs">Tune in</span>
+									{/if}
+								</button>
+							{/if}
 						</div>
 					</div>
 
-					<!-- More Info (full width, below progress bar) -->
-					{#if hasExpandedContent()}
+					<!-- More Info -->
+					{#if details?.castAndCrewPlain || details?.thanksPlain || (isPlaying && currentMiniGraph)}
 						<div class="md:col-span-6">
 							<button
 								onclick={() => (expanded = !expanded)}
@@ -383,7 +370,7 @@
 										</div>
 									{/if}
 
-									{#if currentMiniGraph}
+									{#if isPlaying && currentMiniGraph}
 										<MiniGraphSection
 											currentFilmId={currentMiniGraph.currentFilmId}
 											currentFilmTitle={film.englishTitle}
@@ -415,7 +402,7 @@
 								<img
 									src={thumb}
 									alt={prev.film!.englishTitle}
-									class="h-14 w-22 rounded object-cover opacity-60 grayscale"
+									class="h-18 w-32 object-cover opacity-60 grayscale"
 								/>
 							</a>
 						{/if}
@@ -442,157 +429,52 @@
 			</div>
 		{/if}
 
-		<!-- Upcoming -->
+		<!-- Schedule -->
 		<div class="md:col-span-6">
-			<h2 class="mb-3 text-sm font-semibold text-gallery-500">Upcoming</h2>
+			<h2 class="mb-3 text-sm font-semibold text-gallery-500">{isPlaying ? 'Upcoming' : 'Schedule'}</h2>
 			<div class="schedule max-h-80 overflow-y-auto" bind:this={scheduleEl}>
 				{#each scheduleEntries() as entry}
-					{#if entry.film && entryStatus(entry) === 'upcoming'}
-						<a
-							href="/programme/{slugify(entry.film.englishTitle)}"
-							class="flex items-baseline gap-4 border-b border-gallery-200/50 py-2 text-sm text-gallery-600 transition-colors hover:text-accent-500"
-						>
-							<span class="w-20 shrink-0 font-mono text-xs">
-								{formatTimeHMS(entry.startTime)}
-							</span>
-							<span class="min-w-0 flex-1 truncate">
-								{entry.film.englishTitle}
-							</span>
-							<span class="shrink-0 font-mono text-xs text-gallery-400">
-								{formatMMSS(entry.durationSeconds)}
-							</span>
-						</a>
+					{#if entry.film}
+						{@const status = entryStatus(entry)}
+						{#if isPlaying ? status === 'upcoming' : true}
+							<a
+								data-playing={status === 'playing' ? '' : undefined}
+								href="/programme/{slugify(entry.film.englishTitle)}"
+								class="flex items-baseline gap-4 border-b border-gallery-200/50 py-2 text-sm transition-colors
+									{status === 'past'
+									? 'opacity-30'
+									: 'text-gallery-600 hover:text-accent-500'}"
+							>
+								<span class="w-20 shrink-0 font-mono text-xs">
+									{formatTimeHMS(entry.startTime)}
+								</span>
+								<span class="min-w-0 flex-1 truncate">
+									{entry.film.englishTitle}
+								</span>
+								<span class="shrink-0 font-mono text-xs text-gallery-400">
+									{formatMMSS(entry.durationSeconds)}
+								</span>
+							</a>
+						{/if}
 					{/if}
 				{/each}
 			</div>
 		</div>
 
 	{:else}
-		<!-- Between films / nothing playing -->
-		{@const bf = betweenFilms()}
-
-		{#if bf?.nextUp?.film}
-			{@const film = bf.nextUp.film}
-			{@const img = entryImageUrl(bf.nextUp)}
-			<!-- Upcoming film — same layout as current but greyed out -->
-			<div class="relative -mx-4 opacity-50 grayscale md:col-span-6 md:-mx-8">
-				<div class="border-l-2 border-gallery-300 bg-gallery-100/50 px-4 py-6 md:px-8">
-					<div class="grid grid-cols-1 gap-6 md:grid-cols-6">
-						{#if img}
-							<div class="md:col-span-2">
-								<img
-									src={img}
-									alt={film.englishTitle}
-									class="w-full object-cover {film.poster ? 'aspect-3/4' : 'aspect-video'}"
-								/>
-							</div>
-						{/if}
-
-						<div class="flex flex-col gap-3 {img ? 'md:col-span-4' : 'md:col-span-6'}">
-							<div>
-								<p class="mb-1 text-sm text-gallery-500">Up Next</p>
-								<h1 class="text-3xl font-bold">{film.englishTitle}</h1>
-								<p class="mt-1 text-lg text-gallery-500">
-									{film.length} min
-								</p>
-							</div>
-							<p class="font-semibold">{film.directorName}</p>
-						</div>
-
-						<!-- Empty progress bar -->
-						<div class="md:col-span-6">
-							<div class="flex items-center gap-3 font-mono text-xs text-gallery-400">
-								<span>00:00</span>
-								<div class="relative h-1.5 flex-1 overflow-hidden rounded-full bg-gallery-200"></div>
-								<span>-{formatMMSS(bf.nextUp.durationSeconds)}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		{:else}
-			<div class="md:col-span-6">
-				<h1 class="text-3xl font-bold">Now Playing</h1>
-				<p class="mt-4 text-gallery-600">
-					Nothing is currently playing. Check the
-					<a
-						href="/schedule"
-						class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
-					>
-						full schedule
-					</a>
-					for upcoming screenings.
-				</p>
-			</div>
-		{/if}
-
-		{#if bf?.lastPast?.film}
-			{@const film = bf.lastPast.film}
-			{@const thumb = filmThumbnailUrl(bf.lastPast)}
-			<!-- Previous film -->
-			<div class="md:col-span-6">
-				<h2 class="mb-3 text-sm font-semibold text-gallery-500">Previous</h2>
-				<div class="flex gap-4">
-					{#if thumb}
-						<a href="/programme/{slugify(film.englishTitle)}" class="shrink-0">
-							<img
-								src={thumb}
-								alt={film.englishTitle}
-								class="h-16 w-24 rounded object-cover"
-							/>
-						</a>
-					{/if}
-					<div class="min-w-0 flex-1">
-						<h3 class="font-medium">
-							<a
-								href="/programme/{slugify(film.englishTitle)}"
-								class="transition-colors hover:text-accent-500"
-							>
-								{film.englishTitle}
-							</a>
-						</h3>
-						<p class="text-sm text-gallery-500">{film.directorName}</p>
-						<div class="mt-1.5 flex items-center gap-1">
-							<ClapButton
-								filmId={film._id}
-								totalClaps={clapCounts[film._id] ?? 0}
-								showLabel
-							/>
-							<CommentButton filmId={film._id} showLabel />
-						</div>
-					</div>
-				</div>
-			</div>
-		{/if}
-
-		<!-- Schedule (between films) -->
+		<!-- Nothing playing, nothing upcoming -->
 		<div class="md:col-span-6">
-			<h2 class="mb-3 text-base font-semibold">Schedule</h2>
-			<div class="schedule max-h-80 overflow-y-auto" bind:this={scheduleEl}>
-				{#each scheduleEntries() as entry}
-					{#if entry.film}
-						{@const status = entryStatus(entry)}
-						<a
-							data-playing={status === 'playing' ? '' : undefined}
-							href="/programme/{slugify(entry.film.englishTitle)}"
-							class="flex items-baseline gap-4 border-b border-gallery-200/50 py-2 text-sm transition-colors
-								{status === 'past'
-								? 'opacity-30'
-								: 'text-gallery-600 hover:text-accent-500'}"
-						>
-							<span class="w-20 shrink-0 font-mono text-xs">
-								{formatTimeHMS(entry.startTime)}
-							</span>
-							<span class="min-w-0 flex-1 truncate">
-								{entry.film.englishTitle}
-							</span>
-							<span class="shrink-0 font-mono text-xs text-gallery-400">
-								{formatMMSS(entry.durationSeconds)}
-							</span>
-						</a>
-					{/if}
-				{/each}
-			</div>
+			<h1 class="text-3xl font-bold">Now Playing</h1>
+			<p class="mt-4 text-gallery-600">
+				Nothing is currently playing. Check the
+				<a
+					href="/schedule"
+					class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+				>
+					full schedule
+				</a>
+				for upcoming screenings.
+			</p>
 		</div>
 	{/if}
 </GridLayout>

@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { getDocument, groqQueries } from '$lib/sanity';
 
 export const prerender = false;
@@ -81,7 +82,7 @@ export async function load() {
 		getDocument<Screening[]>(groqQueries.screenings),
 		getDocument<Curator[]>(groqQueries.activeCurators),
 		getDocument<FestivalSelection>(groqQueries.festivalSelection),
-		getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(false))
+		getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(dev))
 	]);
 
 	const scheduleEntries = (schedule?.entries ?? []).filter((e) => e.film);

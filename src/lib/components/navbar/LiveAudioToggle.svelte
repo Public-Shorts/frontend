@@ -1,58 +1,30 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
-	import { env } from '$env/dynamic/public';
-	import { createJanusStream, type StreamStatus, type JanusStream } from '$lib/janus-stream';
+	import { getAudioStream } from '$lib/stores/audioStream.svelte';
 
-	const SERVER = 'wss://janus.enabler.space/janus';
-	const STREAM_ID = env.PUBLIC_JANUS_STREAM_ID ? Number(env.PUBLIC_JANUS_STREAM_ID) : 10;
-
-	let status = $state<StreamStatus>('idle');
-	let audioEl = $state<HTMLAudioElement>();
-	let stream: JanusStream | null = null;
-
-	function handleStatus(s: StreamStatus, detail?: string) {
-		status = s;
-	}
-
-	function toggle() {
-		if (!audioEl) return;
-		if (status === 'connected' || status === 'connecting') {
-			stream?.disconnect();
-			stream = null;
-		} else {
-			stream = createJanusStream(SERVER, audioEl, handleStatus, STREAM_ID);
-			stream.connect();
-		}
-	}
-
-	onDestroy(() => {
-		stream?.destroy();
-	});
+	const audio = getAudioStream();
 
 	const dotColor = $derived(
-		status === 'connected'
+		audio.status === 'connected'
 			? 'bg-green-500'
-			: status === 'connecting'
+			: audio.status === 'connecting'
 				? 'bg-amber-400 animate-pulse'
-				: status === 'error'
+				: audio.status === 'error'
 					? 'bg-red-500'
 					: 'bg-gallery-400'
 	);
 
 	const label = $derived(
-		status === 'connected' ? 'Live' : status === 'connecting' ? 'Connecting' : 'Listen'
+		audio.status === 'connected' ? 'LIVE' : audio.status === 'connecting' ? 'Connecting' : 'Tune in'
 	);
 </script>
 
 <button
-	onclick={toggle}
+	onclick={audio.toggle}
 	class="flex items-center gap-2 text-base text-gallery-600 transition-colors hover:text-gallery-900"
-	aria-label={status === 'connected' || status === 'connecting'
+	aria-label={audio.status === 'connected' || audio.status === 'connecting'
 		? 'Disconnect live audio'
 		: 'Connect live audio'}
 >
 	<span>{label}</span>
 	<span class="inline-block h-3 w-3 rounded-full {dotColor}"></span>
 </button>
-
-<audio bind:this={audioEl} class="hidden"></audio>

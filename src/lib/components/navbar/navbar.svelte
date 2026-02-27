@@ -15,7 +15,7 @@
 		isDev: boolean;
 	} = $props();
 
-	let open = false;
+	let open = $state(false);
 	let showAudio = $state(isDev);
 
 	onMount(() => {
@@ -83,7 +83,7 @@
 		<button
 			class="flex flex-col gap-2"
 			aria-label="Toggle navigation"
-			on:click={() => (open = !open)}
+			onclick={() => (open = !open)}
 		>
 			<Icon icon="material-symbols:menu" width="64" />
 		</button>
@@ -94,12 +94,12 @@
 	<nav
 		class="flex flex-col gap-8 border-b border-gallery-200 bg-gallery-50 px-8 py-16 text-2xl lg:hidden"
 	>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/festival">Festival</a>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/programme">Programme</a>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/events">Events</a>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/partners">Partners</a>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
-		<a on:click={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/festival">Festival</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/programme">Programme</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/events">Events</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/partners">Partners</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/press">Press</a>
+		<a onclick={() => (open = !open)} class="bold text-gallery-700" href="/opencall">Open Call</a>
 
 		<LanguageSwitcher />
 	</nav>

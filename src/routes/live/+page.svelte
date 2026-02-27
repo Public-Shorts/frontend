@@ -338,46 +338,6 @@
 							<p class="text-sm leading-relaxed text-gallery-600">{details.synopsisPlain}</p>
 						{/if}
 
-						<!-- More Info toggle -->
-						{#if hasExpandedContent()}
-							<button
-								onclick={() => (expanded = !expanded)}
-								class="mt-1 flex cursor-pointer items-center gap-1.5 self-start text-sm font-medium text-gallery-500 transition-colors hover:text-gallery-800"
-							>
-								<span class="inline-block transition-transform duration-200" class:rotate-90={expanded}>
-									&#9654;
-								</span>
-								{expanded ? 'Less info' : 'More info'}
-							</button>
-						{/if}
-
-						{#if expanded}
-							{#if details?.castAndCrewPlain}
-								<div>
-									<p class="text-xs font-semibold text-gallery-500">Cast & Crew</p>
-									<p class="mt-0.5 text-sm whitespace-pre-line text-gallery-600">{details.castAndCrewPlain}</p>
-								</div>
-							{/if}
-
-							{#if details?.thanksPlain}
-								<div>
-									<p class="text-xs font-semibold text-gallery-500">Thanks</p>
-									<p class="mt-0.5 text-sm whitespace-pre-line text-gallery-600">{details.thanksPlain}</p>
-								</div>
-							{/if}
-
-							{#if currentMiniGraph}
-								<MiniGraphSection
-									currentFilmId={currentMiniGraph.currentFilmId}
-									currentFilmTitle={film.englishTitle}
-									currentFilmSlug={currentMiniGraph.currentFilmSlug}
-									metaCategories={currentMiniGraph.metaCategories}
-									clusters={currentMiniGraph.clusters}
-									screenings={currentMiniGraph.screenings}
-									neighborFilms={currentMiniGraph.neighborFilms}
-								/>
-							{/if}
-						{/if}
 					</div>
 
 					<!-- Progress bar -->
@@ -393,6 +353,51 @@
 							<span>-{formatMMSS(p.remaining)}</span>
 						</div>
 					</div>
+
+					<!-- More Info (full width, below progress bar) -->
+					{#if hasExpandedContent()}
+						<div class="md:col-span-6">
+							<button
+								onclick={() => (expanded = !expanded)}
+								class="flex cursor-pointer items-center gap-1.5 text-sm font-medium text-gallery-500 transition-colors hover:text-gallery-800"
+							>
+								<span class="inline-block transition-transform duration-200" class:rotate-90={expanded}>
+									&#9654;
+								</span>
+								{expanded ? 'Less info' : 'More info'}
+							</button>
+
+							{#if expanded}
+								<div class="mt-3 flex flex-col gap-4">
+									{#if details?.castAndCrewPlain}
+										<div>
+											<p class="text-xs font-semibold text-gallery-500">Cast & Crew</p>
+											<p class="mt-0.5 text-sm whitespace-pre-line text-gallery-600">{details.castAndCrewPlain}</p>
+										</div>
+									{/if}
+
+									{#if details?.thanksPlain}
+										<div>
+											<p class="text-xs font-semibold text-gallery-500">Thanks</p>
+											<p class="mt-0.5 text-sm whitespace-pre-line text-gallery-600">{details.thanksPlain}</p>
+										</div>
+									{/if}
+
+									{#if currentMiniGraph}
+										<MiniGraphSection
+											currentFilmId={currentMiniGraph.currentFilmId}
+											currentFilmTitle={film.englishTitle}
+											currentFilmSlug={currentMiniGraph.currentFilmSlug}
+											metaCategories={currentMiniGraph.metaCategories}
+											clusters={currentMiniGraph.clusters}
+											screenings={currentMiniGraph.screenings}
+											neighborFilms={currentMiniGraph.neighborFilms}
+										/>
+									{/if}
+								</div>
+							{/if}
+						</div>
+					{/if}
 				</div>
 			</div>
 		</div>

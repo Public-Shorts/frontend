@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { createJanusStream, type StreamStatus, type JanusStream } from '$lib/janus-stream';
+import type { StreamStatus, JanusStream } from '$lib/janus-stream';
 import { env } from '$env/dynamic/public';
 
 const SERVER = 'wss://janus.enabler.space/janus';
@@ -20,10 +20,11 @@ function ensureAudioEl() {
 	return audioEl;
 }
 
-function connect() {
+async function connect() {
 	const el = ensureAudioEl();
 	if (!el) return;
 	if (status === 'connected' || status === 'connecting') return;
+	const { createJanusStream } = await import('$lib/janus-stream');
 	stream = createJanusStream(
 		SERVER,
 		el,

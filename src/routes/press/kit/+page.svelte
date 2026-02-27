@@ -231,7 +231,7 @@
 	<section class="kit-section">
 		<h2 class="section-title">Team</h2>
 		<p class="section-body">
-			Célestin Meunier, Manus Nijhoff, Sena Doğan, Lilli Grube, and Su Durakbaşa.
+			<a href="https://celest.in">Célestin Meunier</a>, <a href="https://manusnijhoff.nl">Manus Nijhoff</a>, Sena Doğan, Lilli Grube, and Su Durakbaşa.
 		</p>
 	</section>
 

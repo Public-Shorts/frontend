@@ -71,8 +71,8 @@
 		</p>
 
 		<ul class="text-gallery-700">
-			<li>Célestin Meunier</li>
-			<li>Manus Nijhoff</li>
+			<li><a href="https://celest.in">Célestin Meunier</a></li>
+			<li><a href="https://manusnijhoff.nl">Manus Nijhoff</a></li>
 			<li>Sena Dogan</li>
 			<li>Lilli Grube</li>
 			<li>Su Durakbaşa</li>

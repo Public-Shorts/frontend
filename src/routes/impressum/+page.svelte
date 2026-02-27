@@ -8,7 +8,7 @@
 		<div>
 			<span class="text-gallery-700 font-semibold">Vertreten durch:</span><br />
 			Célestin Meunier
-			<div>Horbrechstraße 54,</div>
+			<div>Hobrechstraße 54,</div>
 			<div>12047 Berlin</div>
 			<div>Deutschland</div>
 		</div>

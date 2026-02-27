@@ -400,7 +400,7 @@
 
 	<div class="font-semibold md:col-span-1">Team</div>
 	<div class="md:col-span-3">
-		Célestin Meunier, Manus Nijhoff, Sena Doğan, Lilli Grube, and Su Durakbaşa.
+		<a href="https://celest.in">Célestin Meunier</a>, <a href="https://manusnijhoff.nl">Manus Nijhoff</a>, Sena Doğan, Lilli Grube, and Su Durakbaşa.
 	</div>
 	<div class="hidden md:col-span-2 md:block"></div>
 

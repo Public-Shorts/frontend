@@ -1,13 +1,75 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import ImageCarousel from '../../lib/components/ImageCarousel.svelte';
-
+	import NowPlayingCard from '$lib/components/NowPlayingCard.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
 	import GridLayout from '../../lib/components/GridLayout.svelte';
 	import Icon from '@iconify/svelte';
 	import SEO from '$lib/components/SEO.svelte';
 	import { urlFor } from '$lib/sanity';
+	import { createClapListener } from '$lib/sanity/realtimeClaps';
 
 	let { data } = $props();
+
+	let now = $state(Date.now());
+	let clapCounts = $state<Record<string, number>>({ ...data.initialClaps });
+	let clapListener: ReturnType<typeof createClapListener> | null = null;
+
+	onMount(() => {
+		const interval = setInterval(() => { now = Date.now(); }, 1000);
+
+		clapListener = createClapListener(data.initialClaps);
+		const unsubscribe = clapListener.subscribe((claps) => {
+			const updated: Record<string, number> = {};
+			for (const [k, v] of claps) updated[k] = v;
+			clapCounts = updated;
+		});
+
+		return () => {
+			clearInterval(interval);
+			unsubscribe();
+			clapListener?.destroy();
+		};
+	});
+
+	function parseIso(iso: string): Date {
+		let s = iso;
+		if (!s.includes('+') && !s.includes('Z')) s += '+01:00';
+		s = s.replace(/([+-])(\d)$/, '$10$2:00');
+		s = s.replace(/([+-]\d{2})$/, '$1:00');
+		return new Date(s);
+	}
+
+	// Find current and previous entries from schedule
+	const currentEntry = $derived(() => {
+		for (let i = data.scheduleEntries.length - 1; i >= 0; i--) {
+			const entry = data.scheduleEntries[i];
+			const startMs = parseIso(entry.startTime).getTime();
+			const endMs = startMs + entry.durationSeconds * 1000;
+			if (now >= startMs && now < endMs) return entry;
+		}
+		return null;
+	});
+
+	const previousEntry = $derived(() => {
+		const curr = currentEntry();
+		if (!curr) {
+			// Nothing playing, find last past entry
+			for (let i = data.scheduleEntries.length - 1; i >= 0; i--) {
+				const entry = data.scheduleEntries[i];
+				const endMs = parseIso(entry.startTime).getTime() + entry.durationSeconds * 1000;
+				if (now >= endMs && entry.film) return entry;
+			}
+			return null;
+		}
+		// Find the entry just before current with a different film
+		const currIdx = data.scheduleEntries.indexOf(curr);
+		for (let i = currIdx - 1; i >= 0; i--) {
+			const entry = data.scheduleEntries[i];
+			if (entry.film && entry.film._id !== curr.film?._id) return entry;
+		}
+		return null;
+	});
 
 	function formatDate(iso: string): string {
 		const d = new Date(iso);
@@ -68,6 +130,28 @@
 		</a>, accessible to anyone passing by at any time of day or night. The public is also invited to
 		engage with the festival as an active participant, and review the videos.
 	</div>
+
+	{#if data.scheduleEntries.length > 0}
+		<div class="font-semibold md:col-span-1">Now Playing</div>
+		<div class="md:col-span-3">
+			<p class="mb-3 text-sm text-gallery-500">Watch the live programme and vote for your favourite short films.</p>
+			<NowPlayingCard
+				currentEntry={currentEntry()}
+				previousEntry={previousEntry()}
+				{clapCounts}
+				compact
+			/>
+			<p class="mt-3">
+				<a
+					href="/live"
+					class="underline decoration-gallery-500 underline-offset-2 hover:text-gallery-900"
+				>
+					Full live experience
+				</a>
+			</p>
+		</div>
+		<div class="hidden md:col-span-2 md:block"></div>
+	{/if}
 
 	{#if data.selection.totalFilms > 0}
 		<div class="font-semibold md:col-span-1">Selection</div>

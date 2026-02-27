@@ -1,6 +1,8 @@
 import { dev } from '$app/environment';
 import { getDocument, groqQueries, slugify } from '$lib/sanity';
 
+export const prerender = false;
+
 type ScheduleEntry = {
 	startTime: string;
 	endTime: string;
@@ -195,5 +197,15 @@ export async function load({ url }) {
 		}
 	}
 
-	return { entries, filmDetailsMap, miniGraphMap, dev, source: useTest ? 'test' : 'production' };
+	// Fetch initial clap counts for all films
+	const clapDocs = await getDocument<Array<{ filmId: string; count: number }>>(
+		`*[_type == "audienceClap" && film._ref in $ids]{ "filmId": film._ref, count }`,
+		{ ids: filmIds }
+	);
+	const initialClaps: Record<string, number> = {};
+	for (const doc of clapDocs ?? []) {
+		initialClaps[doc.filmId] = (initialClaps[doc.filmId] ?? 0) + doc.count;
+	}
+
+	return { entries, filmDetailsMap, miniGraphMap, initialClaps, dev, source: useTest ? 'test' : 'production' };
 }

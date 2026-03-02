@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import { getDocument, groqQueries } from '$lib/sanity';
 
 export const prerender = false;
@@ -58,47 +57,12 @@ const categoryLabels: Record<string, string> = {
 	other: 'Other'
 };
 
-type ScheduleEntry = {
-	startTime: string;
-	endTime: string;
-	durationSeconds: number;
-	film: {
-		_id: string;
-		englishTitle: string;
-		originalTitle: string;
-		directorName: string;
-		length: number;
-		poster: { asset: { _id: string; url: string; metadata: unknown } } | null;
-		screenshot: { asset: { _id: string; url: string; metadata: unknown } } | null;
-	} | null;
-};
-
-type PlaybackSchedule = {
-	entries: ScheduleEntry[] | null;
-};
-
 export async function load() {
-	const [screenings, curators, selection, schedule] = await Promise.all([
+	const [screenings, curators, selection] = await Promise.all([
 		getDocument<Screening[]>(groqQueries.screenings),
 		getDocument<Curator[]>(groqQueries.activeCurators),
-		getDocument<FestivalSelection>(groqQueries.festivalSelection),
-		getDocument<PlaybackSchedule>(groqQueries.playbackSchedule(dev))
+		getDocument<FestivalSelection>(groqQueries.festivalSelection)
 	]);
-
-	const scheduleEntries = (schedule?.entries ?? []).filter((e) => e.film);
-
-	// Fetch clap counts for schedule films
-	const scheduleFilmIds = [...new Set(scheduleEntries.map((e) => e.film!._id))];
-	let initialClaps: Record<string, number> = {};
-	if (scheduleFilmIds.length > 0) {
-		const clapDocs = await getDocument<Array<{ filmId: string; count: number }>>(
-			`*[_type == "audienceClap" && film._ref in $ids]{ "filmId": film._ref, count }`,
-			{ ids: scheduleFilmIds }
-		);
-		for (const doc of clapDocs ?? []) {
-			initialClaps[doc.filmId] = (initialClaps[doc.filmId] ?? 0) + doc.count;
-		}
-	}
 
 	const films = (selection?.films ?? []).filter((e) => e.film);
 	const totalFilms = films.length;
@@ -135,8 +99,6 @@ export async function load() {
 			avgMinutes,
 			topCategories,
 			topScreenshots
-		},
-		scheduleEntries,
-		initialClaps
+		}
 	};
 }

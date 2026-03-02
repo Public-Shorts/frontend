@@ -32,6 +32,7 @@ type Screening = {
 	description: unknown[] | null;
 	descriptionPlain: string | null;
 	coverImage: { asset: { _id: string; url: string; metadata: unknown } } | null;
+	publishedPublicly: boolean | null;
 	films: FilmSummary[] | null;
 };
 

@@ -397,6 +397,7 @@ export const groqQueries = {
     description,
     "descriptionPlain": pt::text(description),
     "coverImage": coverImage{ asset->{ _id, url, metadata } },
+    publishedPublicly,
     "films": films[]->{
       _id,
       englishTitle,

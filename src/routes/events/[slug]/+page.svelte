@@ -124,7 +124,7 @@
 		<div class="hidden md:col-span-2 md:block"></div>
 	{/if}
 
-	{#if screening.films && screening.films.length > 0}
+	{#if screening.publishedPublicly && screening.films && screening.films.length > 0}
 		<div class="font-semibold md:col-span-1">Films</div>
 		<div class="md:col-span-5">
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
